@@ -1,36 +1,33 @@
-const express = require('express');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+const grpc = require('grpc');
+const protoLoader = require('@grpc/proto-loader');
 
-const { logger } = require('../../config/');
-const rootRoute = require('../routes/');
+const PROTO_PATH = __dirname + '/../grpc-protos/account.proto';
 
-let morganFormat = ':method :url :status :res[content-length] - :response-time ms';
+const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+  keepCase: true,
+  longs: String,
+  enums: String,
+  defaults: true,
+  oneofs: true
+});
 
-const start = ({ port }) => {
-  return new Promise((resolve, reject) => {
-    if (!port)
-      reject(new Error('port is require'));
+const start = () => new Promise((resolve, reject) => {
+  const account_proto = grpc.loadPackageDefinition(packageDefinition).account;
 
-    const app = express();
+  const createAccount = (call, callback) => {
+    console.log(call)
+    callback(null, { message: 'CREATE_ACCOUNT', account: call.request });
+  }
 
-    if (process.env.NODE_ENV === 'production')
-      morganFormat = 'combined';
+  const server = new grpc.Server();
+  
+  server.addService(account_proto.Account.service, {
+    createAccount
+  });
 
-    app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.json());
+  server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
+  server.start();
+  resolve(server);
+});
 
-    app.use(helmet());
-    app.use(morgan(morganFormat, { stream: logger.stream}));
-
-    app.use(cookieParser());
-
-    app.use('/api', rootRoute);
-
-    const server = app.listen(port, () => resolve(server));
-  })
-}
-
-module.exports = Object.create({ start })
+module.exports = Object.create({ start });

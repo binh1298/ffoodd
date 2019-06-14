@@ -12,10 +12,7 @@ database.connect()
     return server.start(serverConfigs)
   })
   .then(app => {
-    logger.info(`SERVER IS NOW LISTENING ON PORT ${app.address().port}`);
-    app.on('app.close', () => {
-      logger.info('App closed');
-    });
+    logger.info(`gRPC IS READY`);
   })
   .catch(err => {
     logger.error(err.message);

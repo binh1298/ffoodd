@@ -9,6 +9,9 @@ service Account {
 message AccountRequest {
   string username = 1;
   string password = 2;
+  string email = 3;
+  string lastname  = 4;
+  string firstname = 5;
 }
 
 message AccountReply {

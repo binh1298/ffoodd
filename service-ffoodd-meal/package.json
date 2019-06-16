@@ -1,7 +1,7 @@
 {
-  "name": "micro-api",
+  "name": "SERVICE-FFOODD-MEAL",
   "version": "1.0.0",
-  "description": "Microservices module api",
+  "description": "Microservices service meal",
   "main": "index.js",
   "author": "Quang Dat Pham <quangdat2000.pham@gmail.com>",
   "repository": "quangdatpham/nodejs-microservices",
@@ -22,7 +22,7 @@
     "inspect:complexity": "plato ."
   },
   "keywords": [
-    "api",
+    "meal",
     "microservices",
     "nodejs",
     "express",

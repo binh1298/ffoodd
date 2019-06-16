@@ -6,6 +6,8 @@ service Account {
   rpc Create (CreateRequest) returns (DefaultReply) {}
 
   rpc NewEmailVerifyKey (NewEmailVerifyKeyRequest) returns (DefaultReply) {}
+
+  rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
 }
 
 message CreateRequest {
@@ -19,6 +21,11 @@ message CreateRequest {
 message NewEmailVerifyKeyRequest {
   string id = 1;
   string username = 2;
+}
+
+message VerifyEmailRequest {
+  string id = 1;
+  string key = 2;
 }
 
 message DefaultReply {

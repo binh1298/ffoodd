@@ -28,7 +28,12 @@ const newEmailVerifyKey = async (call, callback, next) => {
   callback(null, { success:true, message: messages.EMAIL_VERIFY_KEY });
 }
 
+const verifyEmail = async (call, callback, next) => {
+  
+}
+
 module.exports = {
   create,
-  newEmailVerifyKey
+  newEmailVerifyKey,
+  verifyEmail
 }

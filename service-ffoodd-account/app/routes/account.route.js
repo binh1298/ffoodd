@@ -8,4 +8,6 @@ router.create = createRoute(controller.create);
 
 router.newEmailVerifyKey = createRoute(controller.newEmailVerifyKey);
 
+router.verifyEmail = createRoute(controller.verifyEmail);
+
 module.exports = router;

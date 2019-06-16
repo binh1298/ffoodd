@@ -40,6 +40,26 @@ const newEmailVerifyKey = async ({ id, username }) => {
   return { email: account.email, emailVerifyKey };
 }
 
+const verifyEmail = async ({ id, email }) => {
+  const account = await AccountModel.findById(id);
+
+  if (account.emailVerifyKey != key)
+    return await 'Key invalid';
+
+  if (
+    moment(account.expirationEmailKey)
+      .isBefore( (new Date()).toJSON() )
+  ) {
+    return await 'Key expired';
+  }
+  
+  account.isVerified = true;
+
+  account.save();
+
+  return await 'Verified';
+}
+
 /**private */
 const generateExpirationDate = () => {
     const date = (new Date).toJSON();
@@ -49,7 +69,7 @@ const generateExpirationDate = () => {
     ).toJSON();
 }
 
-const randomKey = length =>Array.from({ length })
+const randomKey = length => Array.from({ length })
   .map(() => Math.floor(Math.random() * 10))
   .join('');
 
@@ -60,7 +80,7 @@ module.exports = {
   // findRolesById,
   // findByUsername,
   // isVerified,
-  // verifyEmail,
+  verifyEmail,
   // verifyPassword,
   // updatePasswordById
 }

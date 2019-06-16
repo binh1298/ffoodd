@@ -1,6 +1,11 @@
 const { logger } = require('../../config/');
 
 const createRoute = (...handlers) => {
+  for (let i = 0; i < handlers.length; i ++) {
+    if(typeof(handlers[i]) !== 'function')
+      return logger.error(`CREATE_ROUTE expect function but got ${typeof(handlers[i])}`);
+  }
+
   const routeState = {
     isNext: true,
     error: null

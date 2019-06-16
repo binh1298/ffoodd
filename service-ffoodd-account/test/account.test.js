@@ -11,9 +11,10 @@ describe('Account gRPC-client', () => {
           password: 'dat'
         };
 
-        client.createAccount(account, (err, response) => {
-          assert(response.message, 'CREATE_ACCOUNT');
-          assert(response.account, account);
+        client.create(account, (err, response) => {
+          assert.equal(err, null);
+          assert.equal(response.message, 'CREATE_ACCOUNT');
+          assert.deepEqual(response.account, account);
           done();
         });
       });

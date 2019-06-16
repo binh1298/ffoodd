@@ -4,7 +4,8 @@ const Account = require('../repositories/account.repository');
 const messages = {
   CREATE_ACCOUNT: 'CREATE_ACCOUNT',
   EMAIL_NOT_PROVIDED: 'EMAIL_NOT_PROVIDED',
-  EMAIL_VERIFY_KEY: 'EMAIL_VERIFY_KEY'
+  EMAIL_VERIFY_KEY: 'EMAIL_VERIFY_KEY',
+  FIND_BY_USERNAME: 'FIND_BY_USERNAME'
 }
 
 const create = async (call, callback, next) => {
@@ -29,11 +30,19 @@ const newEmailVerifyKey = async (call, callback, next) => {
 }
 
 const verifyEmail = async (call, callback, next) => {
-  
+
+}
+
+const findByUsername = async (call, callback, next) => {
+  const [ err, account ] = await to(Account.findByUsername(call.request.username));
+  if (err) return next(err);
+
+  callback(null, { success: true, message: messages.FIND_BY_USERNAME, account })
 }
 
 module.exports = {
   create,
   newEmailVerifyKey,
-  verifyEmail
+  verifyEmail,
+  findByUsername
 }

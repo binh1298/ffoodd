@@ -8,6 +8,18 @@ service Account {
   rpc NewEmailVerifyKey (NewEmailVerifyKeyRequest) returns (DefaultReply) {}
 
   rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
+
+  rpc FindByUsername (FindByUsernameRequest) returns (FindByUsernameReply) {}
+}
+
+message AccountModel {
+  string id = 1;
+  string username = 2;
+  string eamil = 3;
+  string lastname  = 4;
+  string firstname = 5;
+  bool isVerified = 6;
+  repeated string roles = 7;
 }
 
 message CreateRequest {
@@ -26,6 +38,16 @@ message NewEmailVerifyKeyRequest {
 message VerifyEmailRequest {
   string id = 1;
   string key = 2;
+}
+
+message FindByUsernameRequest {
+  string username = 1;
+}
+
+message FindByUsernameReply {
+  bool success = 1;
+  string message = 2;
+  AccountModel account = 3;
 }
 
 message DefaultReply {

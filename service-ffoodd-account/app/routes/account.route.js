@@ -10,4 +10,6 @@ router.newEmailVerifyKey = createRoute(controller.newEmailVerifyKey);
 
 router.verifyEmail = createRoute(controller.verifyEmail);
 
+router.findByUsername = createRoute(controller.findByUsername);
+
 module.exports = router;

@@ -60,6 +60,10 @@ const verifyEmail = async ({ id, email }) => {
   return await 'Verified';
 }
 
+const findByUsername = async username => {
+  return await AccountModel.findOne({ username });
+}
+
 /**private */
 const generateExpirationDate = () => {
     const date = (new Date).toJSON();
@@ -77,10 +81,10 @@ module.exports = {
   findById,
   create,
   newEmailVerifyKey,
-  // findRolesById,
-  // findByUsername,
-  // isVerified,
   verifyEmail,
+  findByUsername,
+  // findRolesById,
+  // isVerified,
   // verifyPassword,
   // updatePasswordById
 }

@@ -3,7 +3,7 @@
 require('dotenv').config();
 
 const server = require('./server/server');
-const { database, serverConfigs, logger } = require('../config/');
+const { database, serverConfigs, logger } = require('../config');
 
 database.connect()
   .then(() => {

@@ -3,6 +3,7 @@
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 const AccountModel = require('../models/account.model');
+const ObjectID = require('mongoose').ObjectId;
 
 const findById = async id => {
   return await AccountModel.findById(id);
@@ -18,32 +19,25 @@ const create = async ({ username, password, email, lastname, firstname }) => {
   return await account.save();
 }
 
-const newEmailVerifyKey = ({ id, username }) => {
-  
-}
+const newEmailVerifyKey = async ({ id, username }) => {
+  const queryOptions = {};
 
-const isVerified = id => {
-    
-}
+  if (id) queryOptions._id =  ObjectId(id);
+  if (username) queryOptions.username =  username;
 
-const verifyEmail = ({id, key}) => {
-    
-}
+  const account = await AccountModel.findOne(queryOptions);
+  if (!account)
+    return null;
 
-const verifyPassword = ({ username, key }) => {
-    
-}
+  const emailVerifyKey = randomKey(6);
+  const verifyEmailKeyExpDate = generateExpirationDate();
 
-const updatePasswordById = ({ id, password }) => {
-    
-}
+  account.emailVerifyKey = emailVerifyKey;
+  account.verifyEmailKeyExpDate = verifyEmailKeyExpDate;
 
-const findRolesById = id => {
-    
-}
+  account.save();
 
-const findByUsername = username => {
-
+  return { email: account.email, emailVerifyKey };
 }
 
 /**private */
@@ -62,11 +56,11 @@ const randomKey = length =>Array.from({ length })
 module.exports = {
   findById,
   create,
-  findRolesById,
-  findByUsername,
   newEmailVerifyKey,
-  isVerified,
-  verifyEmail,
-  verifyPassword,
-  updatePasswordById
+  // findRolesById,
+  // findByUsername,
+  // isVerified,
+  // verifyEmail,
+  // verifyPassword,
+  // updatePasswordById
 }

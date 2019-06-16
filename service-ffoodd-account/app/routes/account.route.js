@@ -4,6 +4,8 @@ const auth = require('../middlewares/auth.middleware');
 
 const router = {};
 
-router.create = createRoute(auth.requireAuth, controller.create);
+router.create = createRoute(controller.create);
+
+router.newEmailVerifyKey = createRoute(controller.newEmailVerifyKey);
 
 module.exports = router;

@@ -17,6 +17,7 @@ describe('Account gRPC-client', () => {
         };
 
         client.create(account, async (err, response) => {
+          assert(response.success, true)
           assert.equal(err, null);
           assert.equal(response.message, 'CREATE_ACCOUNT');
           account.should.have.property('username', account.username);

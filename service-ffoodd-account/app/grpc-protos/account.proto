@@ -3,7 +3,7 @@ syntax = "proto3";
 package account;
 
 service Account {
-  rpc CreateAccount (AccountRequest) returns (AccountReply) {}
+  rpc Create (AccountRequest) returns (AccountReply) {}
 }
 
 message AccountRequest {

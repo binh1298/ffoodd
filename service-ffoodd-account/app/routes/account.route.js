@@ -12,4 +12,6 @@ router.verifyEmail = createRoute(controller.verifyEmail);
 
 router.findByUsername = createRoute(controller.findByUsername);
 
+router.resetPassword = createRoute(controller.resetPassword);
+
 module.exports = router;

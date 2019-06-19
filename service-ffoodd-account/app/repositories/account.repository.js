@@ -27,7 +27,7 @@ const newEmailVerifyKey = async ({ id, username }) => {
 
   const account = await AccountModel.findOne(queryOptions);
   if (!account)
-    return null;
+    return false;
 
   const emailVerifyKey = randomKey(6);
   const verifyEmailKeyExpDate = generateExpirationDate();
@@ -44,24 +44,56 @@ const verifyEmail = async ({ id, email }) => {
   const account = await AccountModel.findById(id);
 
   if (account.emailVerifyKey != key)
-    return await 'Key invalid';
+    return await false;
 
   if (
     moment(account.expirationEmailKey)
       .isBefore( (new Date()).toJSON() )
   ) {
-    return await 'Key expired';
+    return await false;
   }
   
   account.isVerified = true;
 
   account.save();
 
-  return await 'Verified';
+  return await true;
 }
 
 const findByUsername = async username => {
   return await AccountModel.findOne({ username });
+
+  if (!account)
+    return false;
+}
+
+const isVerified = async id => {
+  const account = await AccountModel.findOne({ id }).select('isVerified');
+
+  return await account.isVerified;
+}
+
+const resetPassword = async ({ username, key, password }) => {
+  const account = await AccountModel.findOne({ username });
+
+  if (!account)
+    return false;
+
+  if (account.emailVerifyKey != key)
+    return await false;
+
+  if (
+    moment(account.expirationEmailKey)
+      .isBefore( (new Date()).toJSON() )
+  ) {
+    return await false;
+  }
+
+  account.password = await bcript.hash(password, 10);
+
+  account.save();
+
+  return true;
 }
 
 /**private */
@@ -83,8 +115,8 @@ module.exports = {
   newEmailVerifyKey,
   verifyEmail,
   findByUsername,
+  isVerified,
+  resetPassword,
   // findRolesById,
-  // isVerified,
-  // verifyPassword,
   // updatePasswordById
 }

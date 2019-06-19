@@ -10,6 +10,8 @@ service Account {
   rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
 
   rpc FindByUsername (FindByUsernameRequest) returns (FindByUsernameReply) {}
+
+  rpc ResetPassword (ResetPasswordRequest) returns (DefaultReply) {}
 }
 
 message AccountModel {
@@ -48,6 +50,12 @@ message FindByUsernameReply {
   bool success = 1;
   string message = 2;
   AccountModel account = 3;
+}
+
+message ResetPasswordRequest {
+  string username = 1;
+  string password = 2;
+  string key = 3;
 }
 
 message DefaultReply {

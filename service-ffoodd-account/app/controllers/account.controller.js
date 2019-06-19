@@ -5,7 +5,9 @@ const messages = {
   CREATE_ACCOUNT: 'CREATE_ACCOUNT',
   EMAIL_NOT_PROVIDED: 'EMAIL_NOT_PROVIDED',
   EMAIL_VERIFY_KEY: 'EMAIL_VERIFY_KEY',
-  FIND_BY_USERNAME: 'FIND_BY_USERNAME'
+  FIND_BY_USERNAME: 'FIND_BY_USERNAME',
+  RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED',
+  PASSWORD_RESETTED: 'PASSWORD_RESETTED'
 }
 
 const create = async (call, callback, next) => {
@@ -40,9 +42,21 @@ const findByUsername = async (call, callback, next) => {
   callback(null, { success: true, message: messages.FIND_BY_USERNAME, account })
 }
 
+const resetPassword = async (call, callback, next) => {
+  const { username, password, key } = call.request;
+  const [ err, result ] = await to(Account.resetPassword({ username, password, key }));
+  if (err) return next(err);
+
+  if (!result)
+     return callback(null, { success: false, message: messages.RESET_PASSWORD_FAILED});
+
+  callback(null, { success: true, message: PASSWORD_RESETTED });
+}
+
 module.exports = {
   create,
   newEmailVerifyKey,
   verifyEmail,
-  findByUsername
+  findByUsername,
+  resetPassword
 }

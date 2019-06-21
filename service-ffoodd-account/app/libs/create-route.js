@@ -25,7 +25,7 @@ const createRoute = (...handlers) => {
   };
 
   const handleError = (call, callback) => {
-    logger.info(`Something when wrong :{} ${routeState.error.stack}`);
+    logger.error(`Something when wrong :{} ${routeState.error.stack}`);
     callback({ message: 'Something when wrong :{}' }, null);
   }
 

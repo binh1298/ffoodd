@@ -58,6 +58,11 @@ message ResetPasswordRequest {
   string key = 3;
 }
 
+message UpdatePasswordRequest {
+  string id = 1;
+  string password = 2;
+}
+
 message DefaultReply {
   bool success = 1;
   string message = 2;

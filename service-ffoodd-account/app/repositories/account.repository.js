@@ -29,21 +29,21 @@ const newEmailVerifyKey = async ({ id, username }) => {
   if (!account)
     return false;
 
-  const emailVerifyKey = randomKey(6);
+  const verifyEmailKey = randomKey(6);
   const verifyEmailKeyExpDate = generateExpirationDate();
 
-  account.emailVerifyKey = emailVerifyKey;
+  account.verifyEmailKey = verifyEmailKey;
   account.verifyEmailKeyExpDate = verifyEmailKeyExpDate;
 
   account.save();
 
-  return { email: account.email, emailVerifyKey };
+  return { email: account.email, verifyEmailKey };
 }
 
 const verifyEmail = async ({ id, email }) => {
   const account = await AccountModel.findById(id);
 
-  if (account.emailVerifyKey != key)
+  if (account.verifyEmailKey != key)
     return await false;
 
   if (
@@ -79,7 +79,7 @@ const resetPassword = async ({ username, key, password }) => {
   if (!account)
     return false;
 
-  if (account.emailVerifyKey != key)
+  if (account.verifyEmailKey != key)
     return await false;
 
   if (
@@ -105,6 +105,16 @@ const generateExpirationDate = () => {
     ).toJSON();
 }
 
+const updatePasswordById = async ({ id, password }) => {
+  const account = AccountModel.findOne({ id });
+
+  account.password = await bcript.hash(password, 10);
+
+  account.save();
+
+  return true;
+}
+
 const randomKey = length => Array.from({ length })
   .map(() => Math.floor(Math.random() * 10))
   .join('');
@@ -118,5 +128,5 @@ module.exports = {
   isVerified,
   resetPassword,
   // findRolesById,
-  // updatePasswordById
+  updatePasswordById
 }

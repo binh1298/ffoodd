@@ -1,3 +1,5 @@
+'use strict';
+
 const { to } = require('await-to-js')
 const Account = require('../repositories/account.repository');
 
@@ -7,7 +9,8 @@ const messages = {
   EMAIL_VERIFY_KEY: 'EMAIL_VERIFY_KEY',
   FIND_BY_USERNAME: 'FIND_BY_USERNAME',
   RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED',
-  PASSWORD_RESETTED: 'PASSWORD_RESETTED'
+  PASSWORD_RESETTED: 'PASSWORD_RESETTED',
+  PASSWORD_UPDATED: 'PASSWORD_UPDATED'
 }
 
 const create = async (call, callback, next) => {
@@ -50,7 +53,14 @@ const resetPassword = async (call, callback, next) => {
   if (!result)
      return callback(null, { success: false, message: messages.RESET_PASSWORD_FAILED});
 
-  callback(null, { success: true, message: PASSWORD_RESETTED });
+  callback(null, { success: true, message: messages.PASSWORD_RESETTED });
+}
+
+const updatePassword = async (call, callback, next) => {
+  const password = call.request;
+  const [ err, result ] = Account.updatePasswordById({ id, password });
+
+  callback(null, { success: true, message: messages.PASSWORD_UPDATED});
 }
 
 module.exports = {
@@ -58,5 +68,6 @@ module.exports = {
   newEmailVerifyKey,
   verifyEmail,
   findByUsername,
-  resetPassword
+  resetPassword,
+  updatePassword
 }

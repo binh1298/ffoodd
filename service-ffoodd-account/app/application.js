@@ -13,12 +13,7 @@ process.on('uncaughtRejection', (err, promise) => {
   logger.error('Unhandled Rejection', err);
 })
 
-database.connect()
-  .then(() => {
-    logger.info(`Connected to MongoDB`);
-  
-    return server.start(serverConfigs)
-  })
+server.start()
   .then(app => {
     logger.info(`gRPC IS READY`);
   })

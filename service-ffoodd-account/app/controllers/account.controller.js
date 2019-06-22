@@ -14,7 +14,7 @@ const messages = {
 }
 
 const create = async (call, callback, next) => {
-  const [ err, account ] = await to(Account.create(call.request));
+  const [ err ] = await to(Account.create(call.request));
   if (err) return next(err);
 
   //sendEmail create account
@@ -23,7 +23,7 @@ const create = async (call, callback, next) => {
 }
 
 const newEmailVerifyKey = async (call, callback, next) => {
-  const [ err, { email, emailVerifyKey } ] = await to(Account.newEmailVerifyKey(call.request));
+  const [ err, { email, verifyEmailKey } ] = await to(Account.newEmailVerifyKey(call.request));
   if (err) return next(err);
 
   if (!email)

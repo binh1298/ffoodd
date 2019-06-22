@@ -20,7 +20,6 @@ describe('Account gRPC-client', () => {
           assert(response.success, true)
           assert.equal(err, null);
           assert.equal(response.message, 'CREATE_ACCOUNT');
-          account.should.have.property('username', account.username);
           done();
         });
       });

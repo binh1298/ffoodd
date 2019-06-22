@@ -17,11 +17,10 @@ const createRoute = (...handlers) => {
   }
 
   const next = err => {
-    if (err) {
-      return routeState.error = err;
-    }
+    if (err)
+      routeState.error = err;
 
-    routeState.isNext = true
+    routeState.isNext = true;
   };
 
   const handleError = (call, callback) => {
@@ -29,19 +28,18 @@ const createRoute = (...handlers) => {
     callback({ message: 'Something when wrong :{}' }, null);
   }
 
-  return (call, callback) => {
+  return async (call, callback) => {
     for (let i = 0; i < handlers.length; i++) {
-      if (routeState.error) {
-        handleError(call, callback);
-        break;
-      }
-
       if (!routeState.isNext)
         break;
 
       routeState.isNext = false;
 
-      handlers[i](call, callback, next);
+      await handlers[i](call, callback, next);
+    }
+
+    if (routeState.error) {
+      handleError(call, callback);
     }
 
     resetState();

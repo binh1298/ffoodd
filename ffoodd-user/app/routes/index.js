@@ -19,7 +19,7 @@ module.exports = container => {
       accountRoute(container)
     );
 
-    // router.use('/auth', authRoute(container));
+    router.use('/auth', authRoute(container));
 
     return router;
 }

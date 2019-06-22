@@ -16,12 +16,12 @@ const start = async container => {
   const { requestMiddleware } = container.resolve('middlewares');
   
   if (!port)
-      reject(new Error('port is require'));
+    reject(new Error('port is require'));
 
   const app = express();
 
   if (process.env.NODE_ENV === 'production')
-      morganFormat = 'combined';
+    morganFormat = 'combined';
 
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
@@ -33,7 +33,7 @@ const start = async container => {
 
   app.use(requestMiddleware.wirePreRequest);
   
-  app.use('/api', rootRoute(container));
+  app.use('/user', rootRoute(container));
 
   app.use(requestMiddleware.wirePostRequest);
 

@@ -71,6 +71,7 @@ module.exports = container => {
 
   const requireRole = roles => async (req, res, next) => {
     const [ err, accountRoles ] = await to(services.Account.getRolesById(req.user.id));
+    if (err) return next(err);
 
     if (roles.some(role => accountRoles.includes(role)))
       return next();

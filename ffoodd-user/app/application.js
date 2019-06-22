@@ -4,7 +4,7 @@ require('dotenv').config();
 const { asValue } = require('awilix');
 
 const server = require('./server/server');
-// const middlewares = require('./middlewares/');
+const middlewares = require('./middlewares/');
 const config = require('../config/');
 
 async function start() {
@@ -22,8 +22,8 @@ async function start() {
     // const services = await services.start();
     // container.register({ services: asValue(services) });
 
-    // const middleware = await middlewares.initialize(container);
-    // container.register({ middlewares: asValue(middlewares) });
+    const resolvedMiddlewares = await middlewares.initialize(container);
+    container.register({ middlewares: asValue(resolvedMiddlewares) });
 
     const app = await server.start(container);
 

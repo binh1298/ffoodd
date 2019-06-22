@@ -3,7 +3,7 @@
 const { MongoClient } = require('mongodb');
 const configs = require('./db.config');
 
-const connect = options => new Promise((resolve, reject) => {
+const connect = () => new Promise((resolve, reject) => {
   MongoClient.connect(
     configs.connectionString,
     configs.attributes,
@@ -17,4 +17,4 @@ const connect = options => new Promise((resolve, reject) => {
   )
 })
 
-module.exports = Object.assign({}, {connect})
+module.exports = Object.create({ connect });

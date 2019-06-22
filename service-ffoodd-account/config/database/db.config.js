@@ -5,9 +5,6 @@ module.exports = Object.create({
   password: process.env.DB_PASS || 'ffoodd',
   attributes: {
     useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    autoIndex: false,
     reconnectTries: Number.MAX_VALUE,
     reconnectInterval: 500,
     poolSize: 10,

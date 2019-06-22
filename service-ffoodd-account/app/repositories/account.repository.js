@@ -12,13 +12,13 @@ database.connect()
   });
 
 const findById = async id => {
-  return await collection.findOne({ _id: ObjectId(id) });
+  return collection.findOne({ _id: ObjectId(id) });
 }
 
 const create = async ({ username, password, email, lastname, firstname }) => {
   const hashPassword = await bcrypt.hash(password, 10);
 
-  return await collection.insertOne({
+  return collection.insertOne({
     username, password: hashPassword, email, lastname, firstname
   });
 }
@@ -42,31 +42,28 @@ const verifyEmail = async ({ id, email }) => {
   const account = await collection.findOne({ _id: ObjectId(id) });
 
   if (account.verifyEmailKey != key)
-    return await false;
+    return false;
 
   if (
     moment(account.expirationEmailKey)
       .isBefore( (new Date()).toJSON() )
   ) {
-    return await false;
+    return false;
   }
   
   collection.updateOne(account, { $set: { isVerified: true } });
 
-  return await true;
+  return true;
 }
 
 const findByUsername = async username => {
   return await collection.findOne({ username });
-
-  if (!account)
-    return false;
 }
 
 const isVerified = async id => {
   const account = await collection.findOne({ _id: OjbectId(id) });
 
-  return await account.isVerified;
+  return account.isVerified;
 }
 
 const resetPassword = async ({ username, key, password }) => {
@@ -76,13 +73,13 @@ const resetPassword = async ({ username, key, password }) => {
     return false;
 
   if (account.verifyEmailKey != key)
-    return await false;
+    return false;
 
   if (
     moment(account.expirationEmailKey)
       .isBefore( (new Date()).toJSON() )
   ) {
-    return await false;
+    return false;
   }
 
   const newPassword = await bcript.hash(password, 10);

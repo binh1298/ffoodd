@@ -13,7 +13,7 @@
     "start": "NODE_ENV=production node app/application.js",
     "dev": "nodemon --inspect app/application.js",
     "dev:chrome-debug": "nodemon --inspect-brk app/application.js",
-    "test": "NODE_ENV=test;DB_SERVERS=localhost:27017 mocha ./test/*test.js",
+    "test": "NODE_ENV=test;DB_SERVERS=localhost:27017 mocha ./test/**/*.test.js ./test/*.test.js",
     "raml": "raml2html services.raml > temp/api.html",
     "init:lint": "./node_modules/.bin/eslint --init",
     "inspect:lint": "eslint .",

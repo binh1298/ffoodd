@@ -4,13 +4,11 @@ require('dotenv').config();
 const { asValue } = require('awilix');
 
 const server = require('./server/server');
-const middlewares = require('./middlewares/');
 const config = require('../config/');
 
-const services = {
-  Account: {},
-  Meal: {}
-}
+const middlewares = require('./middlewares/');
+const controllers = require('./controllers/');
+const services = require('./services/');
 
 async function start() {
   const container = await config.initialize();
@@ -20,12 +18,13 @@ async function start() {
     process.on('uncaughtException', err => {  
       logger.error('Unhandled Exception', err);
     })
+
     process.on('uncaughtRejection', (err, promise) => {
       logger.error('Unhandled Rejection', err);
     })
 
-    // const services = await services.start();
-    container.register({ services: asValue(services) });
+    const resolvedServices = await services.initialize();
+    container.register({ services: asValue(resolvedServices) });
 
     const resolvedMiddlewares = await middlewares.initialize(container);
     container.register({ middlewares: asValue(resolvedMiddlewares) });

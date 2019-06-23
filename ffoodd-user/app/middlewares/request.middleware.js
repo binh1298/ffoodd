@@ -1,8 +1,6 @@
 const status = require('http-status');
 
-module.exports = container => {
-  const logger = container.resolve('logger');
-
+module.exports = ({ logger }) => {
   logger.info('Wiring request middlewares');
 
   const wirePreRequest = (req, res, next) => {

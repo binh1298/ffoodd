@@ -1,7 +1,7 @@
 'use strict';
 
 require('dotenv').config();
-const { asValue } = require('awilix');
+const { asValue, asFunction } = require('awilix');
 
 const server = require('./server/server');
 const config = require('../config/');
@@ -9,6 +9,7 @@ const config = require('../config/');
 const middlewares = require('./middlewares/');
 const controllers = require('./controllers/');
 const services = require('./services/');
+const routes = require('./routes/');
 
 async function start() {
   const container = await config.initialize();
@@ -23,18 +24,28 @@ async function start() {
       logger.error('Unhandled Rejection', err);
     })
 
-    const resolvedServices = await services.initialize();
-    container.register({ services: asValue(resolvedServices) });
+    const resolveds = await Promise.all([
+      middlewares.initialize(),
+      controllers.initialize(),
+      services.initialize(),
+      routes.initialize()
+    ]);
 
-    const resolvedMiddlewares = await middlewares.initialize(container);
-    container.register({ middlewares: asValue(resolvedMiddlewares) });
+    for (let resolved of resolveds) {
+      for (let key in resolved) {
+        logger.info(`DI register: ${key}`);
+        container.register({
+          [key]: asFunction(resolved[key])
+        });
+      }
+    }
 
-    const app = await server.start(container);
+    // const app = await server.start();
 
-    logger.info(`SERVER IS NOW LISTENING ON PORT ${app.address().port}`);
-    app.on('app.close', () => {
-      logger.info('App closed');
-    });
+    // logger.info(`SERVER IS NOW LISTENING ON PORT ${app.address().port}`);
+    // app.on('app.close', () => {
+    //   logger.info('App closed');
+    // });
   } catch(err) {
     logger.error(err.messages);
     logger.error(err.stack);

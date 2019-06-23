@@ -1,5 +1,6 @@
 module.exports = Object.create({
-  initialize: async () => {
-    return { Account: {}, Meal: {} };
-  }
+  initialize: async () => ({ 
+    accountService: () => {},
+    mealService: () => {}
+  })
 });

@@ -2,10 +2,7 @@ const jwt = require('jsonwebtoken');
 const status = require('http-status');
 const { to } = require('await-to-js');
 
-module.exports = container => {
-  const logger = container.resolve('logger');
-  const services = container.resolve('services');
-
+module.exports = ({ logger, accountService }) => {
   logger.info('Wiring authentication middlewares');
 
   const requireAuthEmail = async (req, res, next) => {
@@ -26,7 +23,7 @@ module.exports = container => {
         message: 'Token invalid',
       });
     
-    const [ err1, account ] = await to(services.Account.findById(decodedPayload.id));
+    const [ err1, account ] = await to(Account.findById(decodedPayload.id));
     if (err1) return next(err1);
 
     if (!account)
@@ -70,7 +67,7 @@ module.exports = container => {
   };
 
   const requireRole = roles => async (req, res, next) => {
-    const [ err, accountRoles ] = await to(services.Account.getRolesById(req.user.id));
+    const [ err, accountRoles ] = await to(Account.getRolesById(req.user.id));
     if (err) return next(err);
 
     if (roles.some(role => accountRoles.includes(role)))

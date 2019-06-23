@@ -5,9 +5,7 @@ const { to } = require('await-to-js');
 const jwt = require('jsonwebtoken');
 const status = require('http-status');
 
-module.exports = container => {
-  const { Account } = container.resolve('services');
-
+module.exports = ({ accountService: Account }) => {
   const postSignIn = async (req, res, next) => {
     const { username, password } = req.body;
   

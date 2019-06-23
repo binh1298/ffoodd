@@ -3,20 +3,15 @@
 const express = require('express');
 const router = express.Router();
 
-const accountRoute = require('./account.route');
-const authRoute = require('./auth.route');
-
-module.exports = container => {
-  const { authMiddleware: auth } = container.resolve('middlewares');
-
+module.exports = ({ authMiddleware: auth, accountRoute, authRoute }) => {
   router.get('/', (req, res) => res.send('<h1>USER</h1>'));
 
   router.use('/accounts',
     auth.requireAuth,
-    accountRoute(container)
+    accountRoute
   );
 
-  router.use('/auth', authRoute(container));
+  router.use('/auth', authRoute);
 
   return router;
 }

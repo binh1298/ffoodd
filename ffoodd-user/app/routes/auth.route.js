@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-module.exports = container => {
-  const controller = require('../controllers/auth.controller')(container);
-  const { authMiddleware: auth } = container.resolve('middlewares');
-
+module.exports = ({ authMiddleware: auth, authController: controller }) => {
   router.post('/signin', controller.postSignIn);
 
   router.post('/signup', controller.postSignUp);

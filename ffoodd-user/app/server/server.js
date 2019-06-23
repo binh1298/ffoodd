@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 
 let morganFormat = ':method :url :status :res[content-length] - :response-time ms';
 
-const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware }) => async () => {
+const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware, rootRoute }) => async () => {
   process.on('uncaughtException', err => {  
     logger.error('Unhandled Exception', err);
   });
@@ -37,7 +37,7 @@ const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware }) => a
 
   app.use(requestMiddleware.wirePreRequest);
   
-  // app.use('/user', rootRoute);
+  app.use('/user', rootRoute);
 
   app.use(requestMiddleware.wirePostRequest);
 

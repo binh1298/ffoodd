@@ -1,3 +1,5 @@
+'use strict';
+
 const spdy = require('spdy');
 const express = require('express');
 const helmet = require('helmet');
@@ -6,15 +8,17 @@ const appRoot = require('app-root-path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-const rootRoute = require('../routes');
-
 let morganFormat = ':method :url :status :res[content-length] - :response-time ms';
 
-const start = async container => {
-  const { port, ssl } = container.resolve('serverConfigs');
-  const logger = container.resolve('logger');
-  const { requestMiddleware } = container.resolve('middlewares');
-  
+const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware }) => async () => {
+  process.on('uncaughtException', err => {  
+    logger.error('Unhandled Exception', err);
+  });
+
+  process.on('uncaughtRejection', (err, promise) => {
+    logger.error('Unhandled Rejection', err);
+  });
+
   if (!port)
     reject(new Error('port is require'));
 
@@ -33,13 +37,16 @@ const start = async container => {
 
   app.use(requestMiddleware.wirePreRequest);
   
-  app.use('/user', rootRoute(container));
+  // app.use('/user', rootRoute);
 
   app.use(requestMiddleware.wirePostRequest);
 
   app.use(requestMiddleware.wireNotFoundMiddleware);
 
-  return await app.listen(port);
+  const server = await app.listen(port);
+  logger.info(`SERVER IS NOW LISTENING ON PORT ${server.address().port}`);
+
+  return server;
 }
 
 module.exports = Object.create({ start })

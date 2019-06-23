@@ -8,7 +8,7 @@ const status = require('http-status');
 module.exports = container => {
   const { Account } = container.resolve('services');
 
-  const signIn = async (req, res, next) => {
+  const postSignIn = async (req, res, next) => {
     const { username, password } = req.body;
   
     const [ err0, account ] = await to(Account.findByUsername(username));
@@ -25,7 +25,7 @@ module.exports = container => {
           token: null
         });
 
-    const [ err1, result ] = await bcrypt.compare(password, account.hashKey);
+    const [ err1, result ] = await bcrypt.compare(password, account.password);
     if (err1) return next(err1);
 
     if (!result)
@@ -48,11 +48,11 @@ module.exports = container => {
       });
   }
 
-  const signUp = async (req, res, next) => {
+  const postSignUp = async (req, res, next) => {
     const { username, password, email, firstname, lastname } = req.body;
     // if not taken
     const [ err, account ] = await to(Account.create({
-      username, password, email, firstname , lastname
+      username, password, email, firstname, lastname
     }));
     if (err) return next(err);
 
@@ -130,8 +130,8 @@ module.exports = container => {
   };
 
   return {
-    signIn,
-    signUp,
+    postSignIn,
+    postSignUp,
     getVerifyEmail,
     patchVerifyEmail,
     getResetPassword,

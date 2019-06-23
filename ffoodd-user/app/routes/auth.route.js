@@ -5,9 +5,9 @@ module.exports = container => {
   const controller = require('../controllers/auth.controller')(container);
   const { authMiddleware: auth } = container.resolve('middlewares');
 
-  router.post('/signin', controller.signIn);
+  router.post('/signin', controller.postSignIn);
 
-  router.post('/signup', controller.signUp);
+  router.post('/signup', controller.postSignUp);
 
   router.get('/verify/email',
     auth.requireAuth,

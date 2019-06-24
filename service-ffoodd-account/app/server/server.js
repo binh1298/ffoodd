@@ -12,7 +12,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true
 });
 
-const start = () => new Promise((resolve, reject) => {
+const start = async () => {
   const account_proto = grpc.loadPackageDefinition(packageDefinition).account;
 
   const server = new grpc.Server();
@@ -21,7 +21,7 @@ const start = () => new Promise((resolve, reject) => {
 
   server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
   server.start();
-  resolve(server);
+  return server;
 });
 
 module.exports = Object.create({ start });

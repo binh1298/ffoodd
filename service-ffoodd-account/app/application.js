@@ -16,15 +16,7 @@ const registerApplicationDependencies = async () => {
   container = await config.initialize();
   const logger = container.resolve('logger');
 
-  process.on('uncaughtException', err => {  
-    logger.error('Unhandled Exception', err);
-  })
-
-  process.on('uncaughtRejection', (err, promise) => {
-    logger.error('Unhandled Rejection', err);
-  })
-
-    const resolveds = await Promise.all([
+  const resolveds = await Promise.all([
     repositories.initialize(),
     controllers.initialize(),
     routes.initialize()

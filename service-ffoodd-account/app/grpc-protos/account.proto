@@ -17,7 +17,7 @@ service Account {
 message AccountModel {
   string id = 1;
   string username = 2;
-  string eamil = 3;
+  string email = 3;
   string lastname  = 4;
   string firstname = 5;
   bool isVerified = 6;

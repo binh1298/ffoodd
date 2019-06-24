@@ -17,8 +17,6 @@ const create = async (call, callback, next) => {
   const [ err ] = await to(Account.create(call.request));
   if (err) return next(err);
 
-  //sendEmail create account
-
   callback(null, { success: true, message: messages.CREATE_ACCOUNT });
 }
 
@@ -28,8 +26,6 @@ const newEmailVerifyKey = async (call, callback, next) => {
 
   if (!email)
     return callback(null, { success: false, message:  messages.EMAIL_NOT_PROVIDED });
-
-  // sendEmail newKey
 
   callback(null, { success:true, message: messages.EMAIL_VERIFY_KEY });
 }

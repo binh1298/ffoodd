@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package account;
+
+service Account {
+  rpc Create (CreateRequest) returns (DefaultReply) {}
+
+  rpc NewEmailVerifyKey (NewEmailVerifyKeyRequest) returns (DefaultReply) {}
+
+  rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
+
+  rpc FindByUsername (FindByUsernameRequest) returns (FindByUsernameReply) {}
+
+  rpc ResetPassword (ResetPasswordRequest) returns (DefaultReply) {}
+}
+
+message AccountModel {
+  string id = 1;
+  string username = 2;
+  string eamil = 3;
+  string lastname  = 4;
+  string firstname = 5;
+  bool isVerified = 6;
+  repeated string roles = 7;
+}
+
+message CreateRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  string lastname  = 4;
+  string firstname = 5;
+}
+
+message NewEmailVerifyKeyRequest {
+  string id = 1;
+  string username = 2;
+}
+
+message VerifyEmailRequest {
+  string id = 1;
+  string key = 2;
+}
+
+message FindByUsernameRequest {
+  string username = 1;
+}
+
+message FindByUsernameReply {
+  bool success = 1;
+  string message = 2;
+  AccountModel account = 3;
+}
+
+message ResetPasswordRequest {
+  string username = 1;
+  string password = 2;
+  string key = 3;
+}
+
+message UpdatePasswordRequest {
+  string id = 1;
+  string password = 2;
+}
+
+message DefaultReply {
+  bool success = 1;
+  string message = 2;
+}

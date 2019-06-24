@@ -1,10 +1,8 @@
-const controller = require('../controllers/account.controller');
-const createRoute = require('../libs/create-route');
-const auth = require('../middlewares/auth.middleware');
+'use strict';
 
 const router = {};
 
-module.exports = ({ accountController: controller }) => {
+module.exports = ({ accountController: controller, createRoute }) => {
   router.create = createRoute(controller.create);
 
   router.newEmailVerifyKey = createRoute(controller.newEmailVerifyKey);

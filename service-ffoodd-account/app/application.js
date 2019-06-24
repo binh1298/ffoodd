@@ -9,6 +9,8 @@ const { asFunction } = require('awilix');
 const repositories = require('./repositories/');
 const controllers = require('./controllers/');
 const routes = require('./routes/');
+const libs = require('./libs/');
+const middlewares = require('./middlewares/');
 
 let container;
 
@@ -19,7 +21,9 @@ const registerApplicationDependencies = async () => {
   const resolveds = await Promise.all([
     repositories.initialize(),
     controllers.initialize(),
-    routes.initialize()
+    routes.initialize(),
+    libs.initialize(),
+    middlewares.initialize()
   ]);
 
   for (let resolved of resolveds) {
@@ -35,6 +39,7 @@ const registerApplicationDependencies = async () => {
     startServer: asFunction(server.start)
   });
 }
+
 registerApplicationDependencies()
   .then(() => {
     const startServer = container.resolve('startServer');

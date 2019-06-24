@@ -64,7 +64,7 @@ module.exports = ({ accountRepository: Account }) => {
     callback(null, { success: true, message: messages.PASSWORD_UPDATED});
   }
 
-  module.exports = {
+  return {
     create,
     newEmailVerifyKey,
     verifyEmail,

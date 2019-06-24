@@ -102,7 +102,7 @@ module.exports = ({ db }) => {
     .map(() => Math.floor(Math.random() * 10))
     .join('');
 
-  module.exports = {
+  return {
     findById,
     create,
     newEmailVerifyKey,

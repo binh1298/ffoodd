@@ -8,6 +8,7 @@ const { asFunction } = require('awilix');
 
 const repositories = require('./repositories/');
 const controllers = require('./controllers/');
+const routes = require('./routes/');
 
 let container;
 
@@ -25,7 +26,8 @@ const registerApplicationDependencies = async () => {
 
     const resolveds = await Promise.all([
     repositories.initialize(),
-    controllers.initialize()
+    controllers.initialize(),
+    routes.initialize()
   ]);
 
   for (let resolved of resolveds) {

@@ -8,7 +8,7 @@ const initDI = ({ logger, database }) => async () => {
 
   container.register({
     logger: asValue(logger),
-    database: asValue(db)
+    db: asValue(db)
   });
 
   return container;

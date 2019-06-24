@@ -4,16 +4,18 @@ const auth = require('../middlewares/auth.middleware');
 
 const router = {};
 
-router.create = createRoute(controller.create);
+module.exports = ({ accountController: controller }) => {
+  router.create = createRoute(controller.create);
 
-router.newEmailVerifyKey = createRoute(controller.newEmailVerifyKey);
+  router.newEmailVerifyKey = createRoute(controller.newEmailVerifyKey);
 
-router.verifyEmail = createRoute(controller.verifyEmail);
+  router.verifyEmail = createRoute(controller.verifyEmail);
 
-router.findByUsername = createRoute(controller.findByUsername);
+  router.findByUsername = createRoute(controller.findByUsername);
 
-router.resetPassword = createRoute(controller.resetPassword);
+  router.resetPassword = createRoute(controller.resetPassword);
 
-router.updatePassword = createRoute(controller.updatePassword);
+  router.updatePassword = createRoute(controller.updatePassword);
 
-module.exports = router;
+  return router;
+}

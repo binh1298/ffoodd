@@ -3,13 +3,6 @@
 const bcrypt = require('bcrypt');
 const moment = require('moment');
 const { ObjectID } = require('mongodb');
-const { database } = require('../../config/');
-let collection;
-
-database.connect()
-  .then(db => {
-    collection = db.collection('accounts');
-  });
 
 const findById = async id => {
   return collection.findOne({ _id: ObjectId(id) });

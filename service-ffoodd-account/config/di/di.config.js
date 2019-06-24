@@ -1,6 +1,6 @@
 const { createContainer, asValue } = require('awilix');
 
-const initDI = ({ logger, serverConfigs, database }) => async () => {
+const initDI = ({ logger, database }) => async () => {
   const container = createContainer();
   const db = await database.connect();
 
@@ -8,7 +8,6 @@ const initDI = ({ logger, serverConfigs, database }) => async () => {
 
   container.register({
     logger: asValue(logger),
-    serverConfigs: asValue(serverConfigs),
     database: asValue(db)
   });
 

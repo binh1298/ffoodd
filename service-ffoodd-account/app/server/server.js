@@ -2,7 +2,6 @@ const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 
 const PROTO_PATH = __dirname + '/../grpc-protos/account.proto';
-const routeRoute = require('../routes/');
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
@@ -17,7 +16,7 @@ const start = ({ logger }) => () => new Promise((resolve, reject) => {
 
   const server = new grpc.Server();
   
-  server.addService(account_proto.Account.service, routeRoute);
+  // server.addService(account_proto.Account.service, routeRoute);
 
   server.bind(process.env.SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());
   server.start();

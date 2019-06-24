@@ -6,6 +6,9 @@ const server = require('./server/server');
 const config = require('../config');
 const { asFunction } = require('awilix');
 
+const repositories = require('./repositories/');
+const controllers = require('./controllers/');
+
 let container;
 
 const registerApplicationDependencies = async () => {
@@ -19,6 +22,20 @@ const registerApplicationDependencies = async () => {
   process.on('uncaughtRejection', (err, promise) => {
     logger.error('Unhandled Rejection', err);
   })
+
+    const resolveds = await Promise.all([
+    repositories.initialize(),
+    controllers.initialize()
+  ]);
+
+  for (let resolved of resolveds) {
+    for (let key in resolved) {
+      logger.info(`DI register: ${key}`);
+      container.register({
+        [key]: asFunction(resolved[key])
+      });
+    }
+  }
 
   container.register({
     startServer: asFunction(server.start)

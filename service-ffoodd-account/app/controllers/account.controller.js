@@ -13,61 +13,63 @@ const messages = {
   PASSWORD_UPDATED: 'PASSWORD_UPDATED'
 }
 
-const create = async (call, callback, next) => {
-  const [ err ] = await to(Account.create(call.request));
-  if (err) return next(err);
+module.exports = ({ accountRepository: Account }) => {
+  const create = async (call, callback, next) => {
+    const [ err ] = await to(Account.create(call.request));
+    if (err) return next(err);
 
-  //sendEmail create account
+    //sendEmail create account
 
-  callback(null, { success: true, message: messages.CREATE_ACCOUNT });
-}
+    callback(null, { success: true, message: messages.CREATE_ACCOUNT });
+  }
 
-const newEmailVerifyKey = async (call, callback, next) => {
-  const [ err, { email, verifyEmailKey } ] = await to(Account.newEmailVerifyKey(call.request));
-  if (err) return next(err);
+  const newEmailVerifyKey = async (call, callback, next) => {
+    const [ err, { email, verifyEmailKey } ] = await to(Account.newEmailVerifyKey(call.request));
+    if (err) return next(err);
 
-  if (!email)
-    return callback(null, { success: false, message:  messages.EMAIL_NOT_PROVIDED });
+    if (!email)
+      return callback(null, { success: false, message:  messages.EMAIL_NOT_PROVIDED });
 
-  // sendEmail newKey
+    // sendEmail newKey
 
-  callback(null, { success:true, message: messages.EMAIL_VERIFY_KEY });
-}
+    callback(null, { success:true, message: messages.EMAIL_VERIFY_KEY });
+  }
 
-const verifyEmail = async (call, callback, next) => {
+  const verifyEmail = async (call, callback, next) => {
 
-}
+  }
 
-const findByUsername = async (call, callback, next) => {
-  const [ err, account ] = await to(Account.findByUsername(call.request.username));
-  if (err) return next(err);
+  const findByUsername = async (call, callback, next) => {
+    const [ err, account ] = await to(Account.findByUsername(call.request.username));
+    if (err) return next(err);
 
-  callback(null, { success: true, message: messages.FIND_BY_USERNAME, account })
-}
+    callback(null, { success: true, message: messages.FIND_BY_USERNAME, account })
+  }
 
-const resetPassword = async (call, callback, next) => {
-  const { username, password, key } = call.request;
-  const [ err, result ] = await to(Account.resetPassword({ username, password, key }));
-  if (err) return next(err);
+  const resetPassword = async (call, callback, next) => {
+    const { username, password, key } = call.request;
+    const [ err, result ] = await to(Account.resetPassword({ username, password, key }));
+    if (err) return next(err);
 
-  if (!result)
-     return callback(null, { success: false, message: messages.RESET_PASSWORD_FAILED});
+    if (!result)
+       return callback(null, { success: false, message: messages.RESET_PASSWORD_FAILED});
 
-  callback(null, { success: true, message: messages.PASSWORD_RESETTED });
-}
+    callback(null, { success: true, message: messages.PASSWORD_RESETTED });
+  }
 
-const updatePassword = async (call, callback, next) => {
-  const password = call.request;
-  const [ err, result ] = Account.updatePasswordById({ id, password });
+  const updatePassword = async (call, callback, next) => {
+    const password = call.request;
+    const [ err, result ] = Account.updatePasswordById({ id, password });
 
-  callback(null, { success: true, message: messages.PASSWORD_UPDATED});
-}
+    callback(null, { success: true, message: messages.PASSWORD_UPDATED});
+  }
 
-module.exports = {
-  create,
-  newEmailVerifyKey,
-  verifyEmail,
-  findByUsername,
-  resetPassword,
-  updatePassword
+  module.exports = {
+    create,
+    newEmailVerifyKey,
+    verifyEmail,
+    findByUsername,
+    resetPassword,
+    updatePassword
+  }
 }

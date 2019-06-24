@@ -10,6 +10,7 @@ const repositories = require('./repositories/');
 const controllers = require('./controllers/');
 const routes = require('./routes/');
 const libs = require('./libs/');
+const pantries = require('./pantries/');
 
 let container;
 
@@ -21,7 +22,8 @@ const registerApplicationDependencies = async () => {
     repositories.initialize(),
     controllers.initialize(),
     routes.initialize(),
-    libs.initialize()
+    libs.initialize(),
+    pantries.initialize()
   ]);
 
   for (let resolved of resolveds) {

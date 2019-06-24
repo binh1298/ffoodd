@@ -1,6 +1,11 @@
 'use strict';
 
-const start = ({ logger }) => () => new Promise((resolve, reject) => {
+const start = ({
+  logger,
+  findAllCategoriesFromThemealdb,
+  findMealsByCAtegoryFromThemealdb,
+  findMealByIdFromThemealdb
+}) => async () => {
   process.on('uncaughtException', err => {  
     logger.error('Unhandled Exception', err);
   });
@@ -8,7 +13,10 @@ const start = ({ logger }) => () => new Promise((resolve, reject) => {
   process.on('uncaughtRejection', (err, promise) => {
     logger.error('Unhandled Rejection', err);
   });
-
-});
+  
+  findAllCategoriesFromThemealdb();
+  findMealsByCAtegoryFromThemealdb();
+  findMealByIdFromThemealdb();
+};
 
 module.exports = Object.create({ start });

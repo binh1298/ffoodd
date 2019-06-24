@@ -10,7 +10,9 @@ const messages = {
   FIND_BY_USERNAME: 'FIND_BY_USERNAME',
   RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED',
   PASSWORD_RESETTED: 'PASSWORD_RESETTED',
-  PASSWORD_UPDATED: 'PASSWORD_UPDATED'
+  PASSWORD_UPDATED: 'PASSWORD_UPDATED',
+  COULD_NOT_VERIFIED: 'COULD_NOT_VERIFIED',
+  VERIFIED: 'VERIFIED'
 }
 
 const create = async (call, callback, next) => {
@@ -31,6 +33,14 @@ const newEmailVerifyKey = async (call, callback, next) => {
 }
 
 const verifyEmail = async (call, callback, next) => {
+  const { id, email } = call.request;
+  const [ err, result ] = Account.verifyEmail({ id, email });
+  if(err) return next(err);
+
+  if (!result)
+     return callback({ success: false, message: messages.COULD_NOT_VERIFIED });
+
+  callback({ success: false, message: messages.VERIFIED });
 
 }
 
@@ -53,8 +63,9 @@ const resetPassword = async (call, callback, next) => {
 }
 
 const updatePassword = async (call, callback, next) => {
-  const password = call.request;
+  const { password } = call.request;
   const [ err, result ] = Account.updatePasswordById({ id, password });
+  if (err) return next(err);
 
   callback(null, { success: true, message: messages.PASSWORD_UPDATED});
 }

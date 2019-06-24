@@ -11,6 +11,7 @@ const controllers = require('./controllers/');
 const routes = require('./routes/');
 const libs = require('./libs/');
 const pantries = require('./pantries/');
+const middlewares = require('./middlewares/');
 
 let container;
 
@@ -23,6 +24,7 @@ const registerApplicationDependencies = async () => {
     controllers.initialize(),
     routes.initialize(),
     libs.initialize(),
+    middlewares.initialize(),
     pantries.initialize()
   ]);
 

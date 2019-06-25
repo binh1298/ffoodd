@@ -20,6 +20,6 @@ router.findByUsername = createRoute(controller.findByUsername);
 
 router.resetPassword = createRoute(controller.resetPassword);
 
-router.updatePassword = createRoute(controller.updatePassword);
+router.updatePasswordById = createRoute(controller.updatePasswordById);
 
 module.exports = router;

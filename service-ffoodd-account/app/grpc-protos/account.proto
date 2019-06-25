@@ -18,6 +18,8 @@ service Account {
   rpc FindByUsername (RequireIdRequest) returns (FindOneReply) {}
 
   rpc ResetPassword (ResetPasswordRequest) returns (DefaultReply) {}
+
+  rpc UpdatePassword (UpdatePasswordByIdRequest) returns (DefaultReply) {}
 }
 
 message AccountModel {
@@ -75,7 +77,7 @@ message ResetPasswordRequest {
   string key = 3;
 }
 
-message UpdatePasswordRequest {
+message UpdatePasswordByIdRequest {
   string id = 1;
   string password = 2;
 }

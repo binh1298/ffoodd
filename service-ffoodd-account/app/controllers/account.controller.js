@@ -86,9 +86,8 @@ const resetPassword = async (call, callback, next) => {
   callback(null, { success: true, message: messages.PASSWORD_RESETTED });
 }
 
-const updatePassword = async (call, callback, next) => {
-  const { password } = call.request;
-  const [ err, result ] = Account.updatePasswordById({ id, password });
+const updatePasswordById = async (call, callback, next) => {
+  const [ err, result ] = Account.updatePasswordById(call.request);
   if (err) return next(err);
 
   callback(null, { success: true, message: messages.PASSWORD_UPDATED});
@@ -103,5 +102,5 @@ module.exports = {
   verifyEmail,
   findByUsername,
   resetPassword,
-  updatePassword
+  updatePasswordById
 }

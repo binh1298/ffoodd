@@ -98,7 +98,9 @@ const resetPassword = async ({ username, key, password }) => {
 }
 
 const updatePasswordById = async ({ id, password }) => {
-  collection.updateOne({ _id: ObjectId(id) }, { $set: { password } });
+  const newPassword = await bcript.hash(password, 10);
+  
+  collection.updateOne({ _id: ObjectId(id) }, { $set: { password: newPassword } });
 }
 
 /**private */

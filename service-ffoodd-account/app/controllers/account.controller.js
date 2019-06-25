@@ -10,12 +10,13 @@ const messages = {
   REMOVE_ACCOUNT: 'REMOVE_ACCOUNT',
   EMAIL_NOT_PROVIDED: 'EMAIL_NOT_PROVIDED',
   EMAIL_VERIFY_KEY: 'EMAIL_VERIFY_KEY',
+  COULD_NOT_VERIFIED: 'COULD_NOT_VERIFIED',
+  VERIFIED: 'VERIFIED',
   FIND_BY_USERNAME: 'FIND_BY_USERNAME',
   RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED',
   PASSWORD_RESETTED: 'PASSWORD_RESETTED',
   PASSWORD_UPDATED: 'PASSWORD_UPDATED',
-  COULD_NOT_VERIFIED: 'COULD_NOT_VERIFIED',
-  VERIFIED: 'VERIFIED'
+  FIND_ROLES_BY_ID: 'FIND_ROLES_BY_ID'
 }
 
 const findById = async (call, callback, next) => {
@@ -91,6 +92,13 @@ const updatePasswordById = async (call, callback, next) => {
   if (err) return next(err);
 
   callback(null, { success: true, message: messages.PASSWORD_UPDATED});
+}
+
+const findRolesById = async (call, callback, next) => {
+  const [ err, roles ] = await Account.findRolesById(call.request.id);
+  if (err) return next(err);
+
+  callback(null, { success: true, message: messages.FIND_ROLES_BY_ID });
 }
 
 module.exports = {

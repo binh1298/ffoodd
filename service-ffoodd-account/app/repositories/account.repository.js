@@ -99,8 +99,14 @@ const resetPassword = async ({ username, key, password }) => {
 
 const updatePasswordById = async ({ id, password }) => {
   const newPassword = await bcript.hash(password, 10);
-  
+
   collection.updateOne({ _id: ObjectId(id) }, { $set: { password: newPassword } });
+}
+
+const findRolesById = async id => {
+  const account = await collection.findOne({ _id: ObjectId(id) });
+
+  return account.roles;
 }
 
 /**private */
@@ -126,6 +132,6 @@ module.exports = {
   findByUsername,
   isVerified,
   resetPassword,
-  // findRolesById,
-  updatePasswordById
+  updatePasswordById,
+  findRolesById
 }

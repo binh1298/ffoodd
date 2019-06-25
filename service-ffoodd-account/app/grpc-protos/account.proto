@@ -5,6 +5,8 @@ package account;
 service Account {
   rpc Create (CreateRequest) returns (DefaultReply) {}
 
+  rpc Update (UpdateRequest) returns (DefaultReply) {}
+
   rpc NewEmailVerifyKey (NewEmailVerifyKeyRequest) returns (DefaultReply) {}
 
   rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
@@ -30,6 +32,13 @@ message CreateRequest {
   string email = 3;
   string lastname  = 4;
   string firstname = 5;
+}
+
+message UpdateRequest {
+  string id = 1;
+  string lasname = 2;
+  string firstname = 3;
+  repeated string roles = 4;
 }
 
 message NewEmailVerifyKeyRequest {

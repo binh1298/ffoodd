@@ -23,6 +23,10 @@ const create = async ({ username, password, email, lastname, firstname }) => {
   });
 }
 
+const update = async ({ id, firstname, lastname, roles }) => {
+  return collection.updateOne({ _id: ObjectId(id) }, { $set: { fistname, firstname, roles } });
+}
+
 const newEmailVerifyKey = async ({ id, username }) => {
   const queryOptions = {};
 
@@ -109,6 +113,7 @@ const randomKey = length => Array.from({ length })
 module.exports = {
   findById,
   create,
+  update,
   newEmailVerifyKey,
   verifyEmail,
   findByUsername,

@@ -3,21 +3,50 @@
 require('dotenv').config();
 
 const server = require('./server/server');
-const { database, serverConfigs, logger } = require('../config');
+const config = require('../config');
+const { asFunction } = require('awilix');
 
-process.on('uncaughtException', err => {  
-  logger.error('Unhandled Exception', err);
-})
+const repositories = require('./repositories/');
+const controllers = require('./controllers/');
+const routes = require('./routes/');
+const libs = require('./libs/');
+const middlewares = require('./middlewares/');
 
-process.on('uncaughtRejection', (err, promise) => {
-  logger.error('Unhandled Rejection', err);
-})
+let container;
 
-server.start()
-  .then(app => {
-    logger.info(`gRPC IS READY`);
+const registerApplicationDependencies = async () => {
+  container = await config.initialize();
+  const logger = container.resolve('logger');
+
+  const resolveds = await Promise.all([
+    repositories.initialize(),
+    controllers.initialize(),
+    routes.initialize(),
+    libs.initialize(),
+    middlewares.initialize()
+  ]);
+
+  for (let resolved of resolveds) {
+    for (let key in resolved) {
+      logger.info(`DI register: ${key}`);
+      container.register({
+        [key]: asFunction(resolved[key])
+      });
+    }
+  }
+
+  container.register({
+    startServer: asFunction(server.start)
+  });
+}
+
+registerApplicationDependencies()
+  .then(() => {
+    const startServer = container.resolve('startServer');
+    return startServer();
   })
   .catch(err => {
+    const logger = container.resolve('logger');
     logger.error(err.message);
     logger.error(err.stack);
   });

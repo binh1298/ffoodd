@@ -19,7 +19,7 @@ service Account {
 
   rpc ResetPassword (ResetPasswordRequest) returns (DefaultReply) {}
 
-  rpc UpdatePassword (UpdatePasswordByIdRequest) returns (DefaultReply) {}
+  rpc UpdatePasswordById (UpdatePasswordByIdRequest) returns (DefaultReply) {}
 }
 
 message AccountModel {

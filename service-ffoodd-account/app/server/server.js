@@ -1,10 +1,10 @@
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
+const path = require('path');
 
-const PROTO_PATH = __dirname + '/../grpc-protos/account.proto';
-const routeRoute = require('../routes/');
+const ACCOUNT_PROTO_PATH = path.join(__dirname + '/../grpc-protos/account.proto');
 
-const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+const packageDefinition = protoLoader.loadSync(ACCOUNT_PROTO_PATH, {
   keepCase: true,
   longs: String,
   enums: String,
@@ -12,16 +12,25 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true
 });
 
-const start = async () => {
+const start = ({ logger, rootRoute }) => () => new Promise((resolve, reject) => {
+  process.on('uncaughtException', err => {  
+    logger.error('Unhandled Exception', err);
+  });
+
+  process.on('uncaughtRejection', (err, promise) => {
+    logger.error('Unhandled Rejection', err);
+  });
+
   const account_proto = grpc.loadPackageDefinition(packageDefinition).account;
 
   const server = new grpc.Server();
   
-  server.addService(account_proto.Account.service, routeRoute);
+  server.addService(account_proto.Account.service, rootRoute);
 
-  server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
+  server.bind(process.env.SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());
   server.start();
-  return server;
+  logger.info(`gRPC SERVER IS READY`);
+  resolve(server);
 });
 
 module.exports = Object.create({ start });

@@ -1,7 +1,9 @@
-const requireAuth = (call, callback, next) => {
-  next();
-}
+'use strict';
 
-module.exports = {
-  requireAuth
+module.exports = ({  }) => {
+  const requireAuth = (call, callback, next) => {
+    next();
+  }
+
+  return requireAuth
 }

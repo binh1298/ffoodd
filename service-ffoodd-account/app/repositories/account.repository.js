@@ -23,6 +23,14 @@ const create = async ({ username, password, email, lastname, firstname }) => {
   });
 }
 
+const update = async ({ id, firstname, lastname, roles }) => {
+  return collection.updateOne({ _id: ObjectId(id) }, { $set: { fistname, firstname, roles } });
+}
+
+const remove = async (id) => {
+  return collection.deleteOne({ _id: ObjectId(id) });
+}
+
 const newEmailVerifyKey = async ({ id, username }) => {
   const queryOptions = {};
 
@@ -90,7 +98,15 @@ const resetPassword = async ({ username, key, password }) => {
 }
 
 const updatePasswordById = async ({ id, password }) => {
-  collection.updateOne({ _id: ObjectId(id) }, { $set: { password } });
+  const newPassword = await bcript.hash(password, 10);
+
+  collection.updateOne({ _id: ObjectId(id) }, { $set: { password: newPassword } });
+}
+
+const findRolesById = async id => {
+  const account = await collection.findOne({ _id: ObjectId(id) });
+
+  return account.roles;
 }
 
 /**private */
@@ -109,11 +125,13 @@ const randomKey = length => Array.from({ length })
 module.exports = {
   findById,
   create,
+  update,
+  remove,
   newEmailVerifyKey,
   verifyEmail,
   findByUsername,
   isVerified,
   resetPassword,
-  // findRolesById,
-  updatePasswordById
+  updatePasswordById,
+  findRolesById
 }

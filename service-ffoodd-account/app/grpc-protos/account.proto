@@ -3,21 +3,29 @@ syntax = "proto3";
 package account;
 
 service Account {
+  rpc FindById (RequireIdRequest) returns (FindOneReply) {}
+
   rpc Create (CreateRequest) returns (DefaultReply) {}
+
+  rpc Update (UpdateRequest) returns (DefaultReply) {}
+
+  rpc Remove (RemoveRequest) returns (DefaultReply) {}
 
   rpc NewEmailVerifyKey (NewEmailVerifyKeyRequest) returns (DefaultReply) {}
 
   rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
 
-  rpc FindByUsername (FindByUsernameRequest) returns (FindByUsernameReply) {}
+  rpc FindByUsername (RequireIdRequest) returns (FindOneReply) {}
 
   rpc ResetPassword (ResetPasswordRequest) returns (DefaultReply) {}
+
+  rpc UpdatePassword (UpdatePasswordByIdRequest) returns (DefaultReply) {}
 }
 
 message AccountModel {
   string id = 1;
   string username = 2;
-  string eamil = 3;
+  string email = 3;
   string lastname  = 4;
   string firstname = 5;
   bool isVerified = 6;
@@ -32,6 +40,17 @@ message CreateRequest {
   string firstname = 5;
 }
 
+message UpdateRequest {
+  string id = 1;
+  string lasname = 2;
+  string firstname = 3;
+  repeated string roles = 4;
+}
+
+message RemoveRequest {
+  string id = 1;
+}
+
 message NewEmailVerifyKeyRequest {
   string id = 1;
   string username = 2;
@@ -42,11 +61,11 @@ message VerifyEmailRequest {
   string key = 2;
 }
 
-message FindByUsernameRequest {
+message RequireIdRequest {
   string username = 1;
 }
 
-message FindByUsernameReply {
+message FindOneReply {
   bool success = 1;
   string message = 2;
   AccountModel account = 3;
@@ -58,7 +77,7 @@ message ResetPasswordRequest {
   string key = 3;
 }
 
-message UpdatePasswordRequest {
+message UpdatePasswordByIdRequest {
   string id = 1;
   string password = 2;
 }

@@ -6,6 +6,7 @@ const Account = require('../repositories/account.repository');
 const messages = {
   CREATE_ACCOUNT: 'CREATE_ACCOUNT',
   UPDATE_ACCOUNT: 'UPDATE_ACCOUNT',
+  REMOVE_ACCOUNT: 'REMOVE_ACCOUNT',
   EMAIL_NOT_PROVIDED: 'EMAIL_NOT_PROVIDED',
   EMAIL_VERIFY_KEY: 'EMAIL_VERIFY_KEY',
   FIND_BY_USERNAME: 'FIND_BY_USERNAME',
@@ -28,6 +29,13 @@ const update = async (call, callback, next) => {
   if (err) return next(err);
 
   callback(null, { success: false, message: messages.UPDATE_ACCOUNT});
+}
+
+const remove = async (call, callback, next) => {
+  const [ err, account ] = Account.remove(call.request.id);
+  if (err) return next(err);
+
+  callback(null, { success: true, message: messages.REMOVE_ACCOUNT });
 }
 
 const newEmailVerifyKey = async (call, callback, next) => {
@@ -81,6 +89,7 @@ const updatePassword = async (call, callback, next) => {
 module.exports = {
   create,
   update,
+  remove,
   newEmailVerifyKey,
   verifyEmail,
   findByUsername,

@@ -6,6 +6,10 @@ const router = {};
 
 router.create = createRoute(controller.create);
 
+router.update = createRoute(controller.update);
+
+router.remove = createRoute(controller.remove);
+
 router.newEmailVerifyKey = createRoute(controller.newEmailVerifyKey);
 
 router.verifyEmail = createRoute(controller.verifyEmail);

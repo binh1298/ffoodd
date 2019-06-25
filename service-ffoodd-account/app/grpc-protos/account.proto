@@ -7,6 +7,8 @@ service Account {
 
   rpc Update (UpdateRequest) returns (DefaultReply) {}
 
+  rpc Remove (RemoveRequest) returns (DefaultReply) {}
+
   rpc NewEmailVerifyKey (NewEmailVerifyKeyRequest) returns (DefaultReply) {}
 
   rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
@@ -39,6 +41,10 @@ message UpdateRequest {
   string lasname = 2;
   string firstname = 3;
   repeated string roles = 4;
+}
+
+message RemoveRequest {
+  string id = 1;
 }
 
 message NewEmailVerifyKeyRequest {

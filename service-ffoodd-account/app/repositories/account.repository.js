@@ -27,6 +27,10 @@ const update = async ({ id, firstname, lastname, roles }) => {
   return collection.updateOne({ _id: ObjectId(id) }, { $set: { fistname, firstname, roles } });
 }
 
+const remove = async (id) => {
+  return collection.deleteOne({ _id: ObjectId(id) });
+}
+
 const newEmailVerifyKey = async ({ id, username }) => {
   const queryOptions = {};
 
@@ -114,6 +118,7 @@ module.exports = {
   findById,
   create,
   update,
+  remove,
   newEmailVerifyKey,
   verifyEmail,
   findByUsername,

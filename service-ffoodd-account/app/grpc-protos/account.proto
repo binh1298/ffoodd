@@ -3,6 +3,8 @@ syntax = "proto3";
 package account;
 
 service Account {
+  rpc FindById (RequireIdRequest) returns (FindOneReply) {}
+
   rpc Create (CreateRequest) returns (DefaultReply) {}
 
   rpc Update (UpdateRequest) returns (DefaultReply) {}
@@ -13,7 +15,7 @@ service Account {
 
   rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
 
-  rpc FindByUsername (FindByUsernameRequest) returns (FindByUsernameReply) {}
+  rpc FindByUsername (RequireIdRequest) returns (FindOneReply) {}
 
   rpc ResetPassword (ResetPasswordRequest) returns (DefaultReply) {}
 }
@@ -57,11 +59,11 @@ message VerifyEmailRequest {
   string key = 2;
 }
 
-message FindByUsernameRequest {
+message RequireIdRequest {
   string username = 1;
 }
 
-message FindByUsernameReply {
+message FindOneReply {
   bool success = 1;
   string message = 2;
   AccountModel account = 3;

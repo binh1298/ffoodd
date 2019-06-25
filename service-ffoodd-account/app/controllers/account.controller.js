@@ -4,6 +4,7 @@ const { to } = require('await-to-js')
 const Account = require('../repositories/account.repository');
 
 const messages = {
+  FIND_ACCOUNT_BY_ID: 'FIND_ACCOUNT_BY_ID',
   CREATE_ACCOUNT: 'CREATE_ACCOUNT',
   UPDATE_ACCOUNT: 'UPDATE_ACCOUNT',
   REMOVE_ACCOUNT: 'REMOVE_ACCOUNT',
@@ -15,6 +16,13 @@ const messages = {
   PASSWORD_UPDATED: 'PASSWORD_UPDATED',
   COULD_NOT_VERIFIED: 'COULD_NOT_VERIFIED',
   VERIFIED: 'VERIFIED'
+}
+
+const findById = async (call, callback, next) => {
+  const [ err, account ] = Account.findById(call.request.id);
+  if (err) return next(err);
+
+  callback(null, { success: true, message: messages.FIND_ACCOUNT_BY_ID });
 }
 
 const create = async (call, callback, next) => {
@@ -87,6 +95,7 @@ const updatePassword = async (call, callback, next) => {
 }
 
 module.exports = {
+  findById,
   create,
   update,
   remove,

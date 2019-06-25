@@ -4,6 +4,8 @@ const auth = require('../middlewares/auth.middleware');
 
 const router = {};
 
+router.findById = createRoute(controller.findById);
+
 router.create = createRoute(controller.create);
 
 router.update = createRoute(controller.update);

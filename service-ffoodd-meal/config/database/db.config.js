@@ -1,8 +1,8 @@
 module.exports = Object.create({
   connectionString: process.env.CONNECTION_STRING,
-  dbName: process.env.DB_NAME || 'dev_nodejs-microservices',
-  user: process.env.DB_USER || 'qpham',
-  password: process.env.DB_PASS || 'qpham',
+  dbName: process.env.DB_NAME || 'dev_ffoodd',
+  user: process.env.DB_USER || 'ffoodd',
+  password: process.env.DB_PASS || 'ffoodd',
   attributes: {
     useNewUrlParser: true,
     useCreateIndex: true,

@@ -4,11 +4,11 @@ module.exports = Object.create({
 
     return new Promise((resolve, reject) => {
       if (!connection) {
-          reject(new Error('connection is required'))
+        reject(new Error('connection is required'))
       }
 
       resolve({
-          Account: require('./account.repository')(container)
+        Account: require('./account.repository')(container)
       });
     })
   },

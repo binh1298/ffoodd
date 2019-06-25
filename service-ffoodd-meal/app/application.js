@@ -1,15 +1,16 @@
-'use strict';
+"use strict";
 
-require('dotenv').config();
+require("dotenv").config();
 
-const server = require('./server/server');
-const { database, serverConfigs, logger } = require('../config');
+const server = require("./server/server");
+const { database, serverConfigs, logger } = require("../config");
 
-database.connect()
+database
+  .connect()
   .then(() => {
     logger.info(`Connected to MongoDB`);
-  
-    return server.start(serverConfigs)
+
+    return server.start(serverConfigs);
   })
   .then(app => {
     logger.info(`gRPC IS READY`);

@@ -2,12 +2,21 @@ const status = require('http-status');
 const { to } = require('await-to-js');
 
 module.exports = container => {
-  const showProfile = async (req, res, next) => {
+  const { Account } = container.resolve('repos');
+
+  const getProfile = async (req, res, next) => {
+    const [ err, account ] = await to(Account.findById(req.user.id));
+    if (err) return next(err);
+
     res.status(status.OK)
-      .send({});
+      .send({
+        success: true,
+        message: 'Get profile',
+        profile: account
+      });
   }
 
   return Object.create({
-    showProfile
+    getProfile
   });
 }

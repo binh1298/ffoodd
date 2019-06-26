@@ -16,6 +16,18 @@ module.exports = container => {
       });
   }
 
+  const putProfile = async (req, res, next) => {
+    const { firstname, lastname } = req.body;
+    const [ err ] = await to(Account.update({ firstname, lastname }));
+    if (err) return next(err);
+
+    res.status(status.OK)
+      .send({
+        success: true,
+        message: 'Update profile'
+      });
+  }
+
   return Object.create({
     getProfile
   });

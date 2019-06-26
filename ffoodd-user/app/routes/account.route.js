@@ -9,5 +9,7 @@ module.exports = container => {
 
   router.get('/profile', controller.getProfile);
 
+  router.put('/profile', controller.putProfile);
+
   return router;
 }

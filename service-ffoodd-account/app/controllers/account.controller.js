@@ -16,7 +16,8 @@ const messages = {
   RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED',
   PASSWORD_RESETTED: 'PASSWORD_RESETTED',
   PASSWORD_UPDATED: 'PASSWORD_UPDATED',
-  FIND_ROLES_BY_ID: 'FIND_ROLES_BY_ID'
+  FIND_ROLES_BY_ID: 'FIND_ROLES_BY_ID',
+  UPDATE_EMAIL: 'UPDATE_EMAIL'
 }
 
 module.exports = ({ accountRepository: Account }) => {
@@ -97,6 +98,13 @@ module.exports = ({ accountRepository: Account }) => {
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.FIND_ROLES_BY_ID });
+  }
+
+  const updateEmailById = async (call, callback, next) => {
+    const [ err ] = await to(Account.updateEmailById(call.request));
+    if (err) return next(err);
+
+    callback(null, { success: true, message: messages.UPDATE_EMAIL });
   }
 
   return {

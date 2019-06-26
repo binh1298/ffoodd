@@ -20,6 +20,8 @@ service Account {
   rpc ResetPassword (ResetPasswordRequest) returns (DefaultReply) {}
 
   rpc UpdatePasswordById (UpdatePasswordByIdRequest) returns (DefaultReply) {}
+
+  rpc UpdateEmailById (UpdateEmailByIdRequest) returns {DefaultReply) {}
 }
 
 message AccountModel {
@@ -80,6 +82,11 @@ message ResetPasswordRequest {
 message UpdatePasswordByIdRequest {
   string id = 1;
   string password = 2;
+}
+
+message UpdateEmailByIdRequest {
+  string id = 1;
+  string email = 2;
 }
 
 message DefaultReply {

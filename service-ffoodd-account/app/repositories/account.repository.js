@@ -104,6 +104,10 @@ module.exports = ({ db }) => {
     return account.roles;
   }
 
+  const updateEmailById = async ({ id, email }) => {
+    return collection.updateOne({ id: ObjectId(id) }, { $set: { email } });
+  }
+
   /**private */
   const generateExpirationDate = () => {
       const date = (new Date).toJSON();

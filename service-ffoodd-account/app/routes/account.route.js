@@ -21,5 +21,7 @@ module.exports = ({ accountController: controller, createRoute }) => {
 
   router.updatePasswordById = createRoute(controller.updatePasswordById);
 
+  router.updateEmailById = createRoute(controller.updateEmailById);
+
   return router;
 }

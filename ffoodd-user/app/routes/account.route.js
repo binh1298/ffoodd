@@ -1,11 +1,9 @@
 'use strict';
 
 const express = require('express');
-const router = express.Router();
 
-
-module.exports = container => {
-  const controller = require('../controllers/account.controller')(container);
+module.exports = ({ accountController: controller }) => {
+  const router = express.Router();
 
   router.get('/', controller.getProfile);
 

@@ -1,45 +1,50 @@
 'use strict';
 
 require('dotenv').config();
-const { asValue } = require('awilix');
+const { asValue, asFunction } = require('awilix');
 
 const server = require('./server/server');
-const middlewares = require('./middlewares/');
 const config = require('../config/');
 
-const services = {
-  Account: {},
-  Meal: {}
-}
+const middlewares = require('./middlewares/');
+const controllers = require('./controllers/');
+const services = require('./services/');
+const routes = require('./routes/');
 
-async function start() {
-  const container = await config.initialize();
+let container;
+
+const registerApplicationDependences = async () => {
+  container = await config.initialize();
   const logger = container.resolve('logger');
 
-  try {
-    process.on('uncaughtException', err => {  
-      logger.error('Unhandled Exception', err);
-    })
-    process.on('uncaughtRejection', (err, promise) => {
-      logger.error('Unhandled Rejection', err);
-    })
+  const resolveds = await Promise.all([
+    middlewares.initialize(),
+    controllers.initialize(),
+    services.initialize(),
+    routes.initialize()
+  ]);
 
-    // const services = await services.start();
-    container.register({ services: asValue(services) });
-
-    const resolvedMiddlewares = await middlewares.initialize(container);
-    container.register({ middlewares: asValue(resolvedMiddlewares) });
-
-    const app = await server.start(container);
-
-    logger.info(`SERVER IS NOW LISTENING ON PORT ${app.address().port}`);
-    app.on('app.close', () => {
-      logger.info('App closed');
-    });
-  } catch(err) {
-    logger.error(err.messages);
-    logger.error(err.stack);
+  for (let resolved of resolveds) {
+    for (let key in resolved) {
+      logger.info(`DI register <---- ${key}`);
+      container.register({
+        [key]: asFunction(resolved[key])
+      });
+    }
   }
+
+  container.register({
+    startServer: asFunction(server.start)
+  });
 }
 
-start();
+registerApplicationDependences()
+  .then(() => {
+    const startServer = container.resolve('startServer');
+    startServer();
+  })
+  .catch(err => {
+    const logger = container.resolve('logger');
+    logger.error(err.message);
+    logger.error(err.stack);
+  });

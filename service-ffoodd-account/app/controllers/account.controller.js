@@ -4,19 +4,19 @@ const { to } = require('await-to-js');
 
 const messages = {
   FIND_ACCOUNT_BY_ID: 'FIND_ACCOUNT_BY_ID',
-  CREATE_ACCOUNT: 'CREATE_ACCOUNT',
-  UPDATE_ACCOUNT: 'UPDATE_ACCOUNT',
-  REMOVE_ACCOUNT: 'REMOVE_ACCOUNT',
+  ACCOUNT_CREATED: 'ACCOUNT_CREATED',
+  ACCOUNT_UPDATED: 'ACCOUNT_UPDATED',
+  ACCOUNT_REMOVED: 'ACCOUNT_REMOVED',
   EMAIL_NOT_PROVIDED: 'EMAIL_NOT_PROVIDED',
   EMAIL_VERIFY_KEY: 'EMAIL_VERIFY_KEY',
   COULD_NOT_VERIFIED: 'COULD_NOT_VERIFIED',
-  VERIFIED: 'VERIFIED',
+  ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
   FIND_BY_USERNAME: 'FIND_BY_USERNAME',
   RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED',
   PASSWORD_RESETTED: 'PASSWORD_RESETTED',
   PASSWORD_UPDATED: 'PASSWORD_UPDATED',
   FIND_ROLES_BY_ID: 'FIND_ROLES_BY_ID',
-  UPDATE_EMAIL: 'UPDATE_EMAIL'
+  EMAIL_UPDATED: 'EMAIL_UPDATED'
 }
 
 module.exports = ({ accountRepository: Account }) => {
@@ -31,21 +31,21 @@ module.exports = ({ accountRepository: Account }) => {
     const [ err ] = await to(Account.create(call.request));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.CREATE_ACCOUNT });
+    callback(null, { success: true, message: messages.ACCOUNT_CREATED });
   }
 
   const update = async (call, callback, next) => {
     const [ err ] = await to(Account.update(call.request));
     if (err) return next(err);
 
-    callback(null, { success: false, message: messages.UPDATE_ACCOUNT});
+    callback(null, { success: false, message: messages.ACCOUNT_UPDATED});
   }
 
   const remove = async (call, callback, next) => {
     const [ err ] = await to(Account.remove(call.request.id));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.REMOVE_ACCOUNT });
+    callback(null, { success: true, message: messages.ACCOUNT_REMOVED });
   }
 
   const newEmailVerifyKey = async (call, callback, next) => {
@@ -65,7 +65,7 @@ module.exports = ({ accountRepository: Account }) => {
     if (!result)
        return callback({ success: false, message: messages.COULD_NOT_VERIFIED });
 
-    callback({ success: false, message: messages.VERIFIED });
+    callback({ success: false, message: messages.ACCOUNT_VERIFIED });
   }
 
   const findByUsername = async (call, callback, next) => {
@@ -103,7 +103,7 @@ module.exports = ({ accountRepository: Account }) => {
     const [ err ] = await to(Account.updateEmailById(call.request));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.UPDATE_EMAIL });
+    callback(null, { success: true, message: messages.EMAIL_UPDATED });
   }
 
   return {

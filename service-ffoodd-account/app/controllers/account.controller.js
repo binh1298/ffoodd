@@ -1,7 +1,6 @@
 'use strict';
 
-const { to } = require('await-to-js')
-const Account = require('../repositories/account.repository');
+const { to } = require('await-to-js');
 
 const messages = {
   FIND_ACCOUNT_BY_ID: 'FIND_ACCOUNT_BY_ID',
@@ -22,7 +21,7 @@ const messages = {
 
 module.exports = ({ accountRepository: Account }) => {
   const findById = async (call, callback, next) => {
-    const [ err, account ] = Account.findById(call.request.id);
+    const [ err, account ] = await to(Account.findById(call.request.id));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.FIND_ACCOUNT_BY_ID });
@@ -36,14 +35,14 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const update = async (call, callback, next) => {
-    const [ err ] = Account.update(call.request);
+    const [ err ] = await to(Account.update(call.request));
     if (err) return next(err);
 
     callback(null, { success: false, message: messages.UPDATE_ACCOUNT});
   }
 
   const remove = async (call, callback, next) => {
-    const [ err ] = Account.remove(call.request.id);
+    const [ err ] = await to(Account.remove(call.request.id));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.REMOVE_ACCOUNT });
@@ -60,7 +59,7 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const verifyEmail = async (call, callback, next) => {
-    const [ err, result ] = Account.verifyEmail(call.request);
+    const [ err, result ] = await to(Account.verifyEmail(call.request));
     if(err) return next(err);
 
     if (!result)
@@ -87,14 +86,14 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const updatePasswordById = async (call, callback, next) => {
-    const [ err, result ] = Account.updatePasswordById(call.request);
+    const [ err, result ] = await to(Account.updatePasswordById(call.request));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.PASSWORD_UPDATED});
   }
 
   const findRolesById = async (call, callback, next) => {
-    const [ err, roles ] = await Account.findRolesById(call.request.id);
+    const [ err, roles ] = await to(Account.findRolesById(call.request.id));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.FIND_ROLES_BY_ID });

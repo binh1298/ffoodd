@@ -2,7 +2,7 @@ const status = require('http-status');
 const { to } = require('await-to-js');
 
 module.exports = container => {
-  const { Account } = container.resolve('repos');
+  const Account = {};
 
   const getProfile = async (req, res, next) => {
     const [ err, account ] = await to(Account.findById(req.user.id));
@@ -28,7 +28,7 @@ module.exports = container => {
       });
   }
 
-  const pathPassword = async (req, res, next) => {
+  const patchPassword = async (req, res, next) => {
     const { password } = req.body;
     const [ err ] = await to(Account.updatePassword({ password }));
     if (err) return next(err);

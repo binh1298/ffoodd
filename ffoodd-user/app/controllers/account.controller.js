@@ -28,6 +28,18 @@ module.exports = container => {
       });
   }
 
+  const pathPassword = async (req, res, next) => {
+    const { password } = req.body;
+    const [ err ] = await to(Account.updatePassword({ password }));
+    if (err) return next(err);
+
+    res.status(status.OK)
+      .send({
+        success: true,
+        message: 'Update password'
+      });
+  }
+
   return Object.create({
     getProfile
   });

@@ -11,5 +11,7 @@ module.exports = container => {
 
   router.put('/profile', controller.putProfile);
 
+  router.patch('/password', controller.patchPassword);
+
   return router;
 }

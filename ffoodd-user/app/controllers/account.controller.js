@@ -40,7 +40,22 @@ module.exports = container => {
       });
   }
 
+  const patchEmail = async (req, res, next) => {
+    const { email } = req.body;
+    const [ err ] = await to(Account.updateEmail({ email }));
+    if (err) return next(err);
+
+    res.status(status.OK)
+      .send({
+        success: true,
+        message: 'Update email'
+      });
+  }
+
   return Object.create({
-    getProfile
+    getProfile,
+    putProfile,
+    patchPassword,
+    patchEmail
   });
 }

@@ -13,9 +13,9 @@ module.exports = container => {
       res.send('<h1>USER</h1>');
     });
 
-    router.use('/accounts',
+    router.use('/profile',
       auth.requireAuth,
-      auth.requireRole([ 'admin' ]),
+      auth.requireRole([ 'user' ]),
       accountRoute(container)
     );
 

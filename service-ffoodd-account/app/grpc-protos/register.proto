@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package register;
+
+service Register {
+  rpc RegisterServiceProtos (EmptyRequest) returns (RegisterServiceProtosReply) {}
+}
+
+message ServiceProtoModel {
+  string name = 1;
+  string content = 2;
+}
+
+message EmptyRequest {}
+
+message RegisterServiceProtosReply {
+  repeated ServiceProtoModel protos = 1;
+}

@@ -8,12 +8,14 @@ describe('Meal gRPC-client', () => {
     mealClient.start().then(client => {
       const defaultMeal = {
         id: '5d0f910c4e543824c81f74f3',
-        name: 'Chicken Pam',
+        name: 'Chicken Pamesan',
         description: 'Made by Gordon Ramsey',
         origin: 'Tea party'
       };
-      client.updateMeal(defaultMeal, async (err, response) => {
-        assert(response.id, false);
+      client.update(defaultMeal, async (err, response) => {
+        assert(response.success, true);
+        assert(response.message, 'MEAL UPDATED!');
+        assert(response.meal.id, '5d0f910c4e543824c81f74f3');
         done();
       });
     });

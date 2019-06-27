@@ -7,7 +7,7 @@ describe('Meal gRPC-client', () => {
   it('should delete a meal object', done => {
     mealClient.start().then(client => {
       const existingMeal = { id: '5d0f90e91a36a9241bad1c3a' };
-      client.deleteMeal(existingMeal, async (err, response) => {
+      client.remove(existingMeal, async (err, response) => {
         assert(response.success, true);
         done();
       });

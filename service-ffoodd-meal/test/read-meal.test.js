@@ -6,9 +6,11 @@ require('should');
 describe('Meal gRPC-client', () => {
   it('should receive a meal object', done => {
     mealClient.start().then(client => {
-      const existingMeal = { id: '5d0f910c4e543824c81f74f3' };
-      client.read(existingMeal, async (err, response) => {
-        assert(response.id, '5d0f910c4e543824c81f74f3');
+      const requiredIdRequest = { id: '5d0f910c4e543824c81f74f3' };
+      client.read(requiredIdRequest, async (err, response) => {
+        assert(response.success, true);
+        assert(response.message, 'MEAL FOUNDED!');
+        assert(response.meal.id, '5d0f910c4e543824c81f74f3');
         done();
       });
     });

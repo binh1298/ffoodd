@@ -5,16 +5,16 @@ const Meal = require('../repositories/meal.repository');
 
 const messages = {
   CREATED_MEAL: 'MEAL CREATED!',
+  FOUNDED_MEAL: 'MEAL FOUNDED!',
   DELETED_MEAL: 'MEAL DELETED!',
   UPDATED_MEAL: 'MEAL UPDATED!',
   NOT_FOUND: 'MEAL NOT FOUND!',
   INVALID_FIELD: 'This field can not be updated!',
   MISSING_ID: 'Please provide meal ID'
 };
-// TODO Validate
 
-const create = async ({ request }, callback, next) => {
-  const [err, account] = await to(Meal.create(request));
+const create = async ({ request: { meal } }, callback, next) => {
+  const [err, newMeal] = await to(Meal.create(meal));
   if (err) return next(err);
 
   callback(null, {
@@ -22,17 +22,23 @@ const create = async ({ request }, callback, next) => {
     message: messages.CREATED_MEAL
   });
 };
-const read = async ({ request }, callback, next) => {
-  const [err, meal] = await to(Meal.findById(request.id));
+
+const read = async ({ request: meal }, callback, next) => {
+  const [err, foundMeal] = await to(Meal.findById(meal));
   if (err) return next(err);
 
-  callback(null, meal);
+  callback(null, {
+    success: true,
+    message: messages.FOUNDED_MEAL,
+    meal: foundMeal
+  });
 };
-const remove = async ({ request }, callback, next) => {
-  const [err, meal] = await to(Meal.findByIdAndDelete(request.id));
+
+const remove = async ({ request: meal }, callback, next) => {
+  const [err, removedMeal] = await to(Meal.remove(meal));
   if (err) return next(err);
 
-  if (meal)
+  if (removedMeal)
     return callback(null, {
       success: true,
       message: messages.DELETED_MEAL
@@ -43,20 +49,15 @@ const remove = async ({ request }, callback, next) => {
     message: messages.NOT_FOUND
   });
 };
-const update = async ({ request }, callback, next) => {
-  const id = request.id;
-  const [err, editedMeal] = await to(Meal.update(id, request));
-  if (err) return next(err);
 
-  callback(null, editedMeal);
-};
-const search = async ({ request }, callback, next) => {
-  const [err, meals] = await to(Meal.search(request));
+const update = async ({ request: meal }, callback, next) => {
+  const [err, editedMeal] = await to(Meal.update(meal));
   if (err) return next(err);
 
   callback(null, {
     success: true,
-    meals
+    message: messages.FOUNDED_MEAL,
+    meal: editedMeal
   });
 };
 
@@ -64,6 +65,5 @@ module.exports = {
   create,
   read,
   remove,
-  update,
-  search
+  update
 };

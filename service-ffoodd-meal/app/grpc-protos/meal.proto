@@ -3,7 +3,7 @@ syntax = "proto3";
 package meal;
 
 service Meal {
-  rpc Create (DefaultMeal) returns (DefaultReply) {}
+  rpc Create (DefaultMealRequest) returns (DefaultReply) {}
 
   rpc Read (RequiredIdRequest) returns (DefaultMealReply) {}
 
@@ -18,6 +18,10 @@ service Meal {
 }
 
 // Requests
+message DefaultMealRequest {
+  MealModel meal = 1;
+}
+
 message RequiredIdRequest {
   required string id = 1;
 }
@@ -31,10 +35,6 @@ message UpdateMealRequest {
   // string category_id = 6;
   Review reviews = 7;
   Recipe recipe = 8;
-}
-
-message DefaultMealRequest {
-  MealModel meal = 1;
 }
 
 // Replies

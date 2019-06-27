@@ -12,7 +12,7 @@ const packageDefinition = protoLoader.loadSync(ACCOUNT_PROTO_PATH, {
   oneofs: true
 });
 
-const start = ({ logger, rootRoute }) => () => new Promise((resolve, reject) => {
+const start = ({ logger, rootRoute }) => async () => {
   process.on('uncaughtException', err => {  
     logger.error('Unhandled Exception', err);
   });
@@ -27,10 +27,10 @@ const start = ({ logger, rootRoute }) => () => new Promise((resolve, reject) => 
   
   server.addService(account_proto.Account.service, rootRoute);
 
-  server.bind(process.env.SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());
+  server.bind(process.env.SERVICE_FFOODD_ACCOUNT_SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());
   server.start();
   logger.info(`gRPC SERVER IS READY`);
-  resolve(server);
-});
+  return server;
+};
 
 module.exports = Object.create({ start });

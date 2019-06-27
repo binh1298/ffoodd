@@ -1,3 +1,7 @@
+'use strict';
+
+require('dotenv').config();
+
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 
@@ -11,12 +15,15 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true
 });
 
-const start = () => new Promise((resolve, reject) => {
+const start = async () => {
   const account_proto = grpc.loadPackageDefinition(packageDefinition).account;
 
-  const client = new account_proto.Account('localhost:50051', grpc.credentials.createInsecure());
+  const client = new account_proto.Account(
+    process.env.SERVICE_FFOODD_ACCOUNT_SERVER_ADDRESS,
+    grpc.credentials.createInsecure()
+  );
 
-  resolve(client);
-});
+  return client;
+};
 
 module.exports = Object.create({ start });

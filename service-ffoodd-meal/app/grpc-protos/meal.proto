@@ -5,11 +5,11 @@ package meal;
 service Meal {
   rpc Create (DefaultMeal) returns (DefaultReply) {}
 
-  rpc Read (ExistingMeal) returns (DefaultMeal) {}
+  rpc Read (RequiredIdRequest) returns (DefaultMealReply) {}
 
-  rpc DeleteMeal (ExistingMeal) returns (DefaultReply) {}
+  rpc Remove (RequiredIdRequest) returns (DefaultReply) {}
 
-  rpc UpdateMeal (UpdatableMeal) returns (DefaultMeal) {}
+  rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
 
   // rpc SearchMeal(SearchCategories) returns (stream DefaultMeal) {}
   
@@ -17,7 +17,40 @@ service Meal {
 
 }
 
-message DefaultMeal {
+// Requests
+message RequiredIdRequest {
+  required string id = 1;
+}
+
+message UpdateMealRequest {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string origin = 4;
+  string image = 5;
+  // string category_id = 6;
+  Review reviews = 7;
+  Recipe recipe = 8;
+}
+
+message DefaultMealRequest {
+  MealModel meal = 1;
+}
+
+// Replies
+message DefaultReply {
+  bool success = 1;
+  string message = 2;
+}
+
+message DefaultMealReply {
+  bool success = 1;
+  string message = 2;
+  MealModel meal = 3;
+}
+
+//Models
+message MealModel {
   string id = 1;
   string name = 2;
   string description = 3;
@@ -29,30 +62,11 @@ message DefaultMeal {
   Recipe recipe = 9;
 }
 
-message UpdatableMeal {
-  string id = 1;
-  string name = 2;
-  string description = 3;
-  string origin = 4;
-  string image = 5;
-  // string category_id = 6;
-  Review reviews = 7;
-  Recipe recipe = 8;
-}
-message ExistingMeal {
-  string id = 1;
-}
-
-// Users can only search by name and category
-message SearchCategories {
-  string name = 1;
-  string category = 2;
-}
-
 message Ingredient {
   string name = 1;
   string measure = 2;
 }
+
 message Recipe {
   string instruction = 1;
   repeated Ingredient ingredient = 2;
@@ -65,7 +79,9 @@ message Review {
   string content = 4;
 }
 
-message DefaultReply {
-  bool success = 1;
-  string message = 2;
-}
+
+// // Users can only search by name and category
+// message SearchCategories {
+//   string name = 1;
+//   string category = 2;
+// }

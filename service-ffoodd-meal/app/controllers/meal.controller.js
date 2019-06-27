@@ -15,8 +15,8 @@ const messages = {
 
 const create = async ({ request }, callback, next) => {
   const [err, account] = await to(Meal.create(request));
-
   if (err) return next(err);
+
   callback(null, {
     success: true,
     message: messages.CREATED_MEAL
@@ -25,33 +25,35 @@ const create = async ({ request }, callback, next) => {
 const read = async ({ request }, callback, next) => {
   const [err, meal] = await to(Meal.findById(request.id));
   if (err) return next(err);
+
   callback(null, meal);
 };
-const deleteMeal = async ({ request }, callback, next) => {
+const remove = async ({ request }, callback, next) => {
   const [err, meal] = await to(Meal.findByIdAndDelete(request.id));
   if (err) return next(err);
+
   if (meal)
-    callback(null, {
+    return callback(null, {
       success: true,
       message: messages.DELETED_MEAL
     });
-  else {
-    callback(null, {
-      success: true,
-      message: messages.NOT_FOUND
-    });
-  }
+
+  callback(null, {
+    success: true,
+    message: messages.NOT_FOUND
+  });
 };
-const updateMeal = async ({ request }, callback, next) => {
+const update = async ({ request }, callback, next) => {
   const id = request.id;
   const [err, editedMeal] = await to(Meal.update(id, request));
   if (err) return next(err);
+
   callback(null, editedMeal);
 };
 const search = async ({ request }, callback, next) => {
   const [err, meals] = await to(Meal.search(request));
-  console.log(err, meals);
   if (err) return next(err);
+
   callback(null, {
     success: true,
     meals
@@ -61,7 +63,7 @@ const search = async ({ request }, callback, next) => {
 module.exports = {
   create,
   read,
-  deleteMeal,
-  updateMeal,
+  remove,
+  update,
   search
 };

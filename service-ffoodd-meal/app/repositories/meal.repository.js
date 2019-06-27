@@ -9,9 +9,10 @@ const create = async meal => {
 const findById = async id => {
   return await MealModel.findById(id);
 };
-const findByIdAndDelete = async id => {
+const remove = async id => {
   return await MealModel.findByIdAndDelete(id);
 };
+// Use Destructuring
 const update = async (id, request) => {
   delete request.id;
   const updatingFields = Object.keys(request);
@@ -33,7 +34,7 @@ const update = async (id, request) => {
   updatingFields.forEach(field => {
     editedMeal[field] = request[field];
   });
-  await editedMeal.save();
+  editedMeal.save();
   return editedMeal;
 };
 const search = async request => {

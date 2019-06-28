@@ -6,7 +6,7 @@ service Register {
   rpc RegisterServiceProtos (EmptyRequest) returns (RegisterServiceProtosReply) {}
 }
 
-message ServiceProtoModel {
+message ProtoFileModel {
   string name = 1;
   string content = 2;
 }
@@ -14,5 +14,5 @@ message ServiceProtoModel {
 message EmptyRequest {}
 
 message RegisterServiceProtosReply {
-  repeated ServiceProtoModel protos = 1;
+  repeated ProtoFileModel protoFiles = 1;
 }

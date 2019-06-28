@@ -17,6 +17,15 @@ const packageDefinitionOptions =  {
 const accountPackageDefinition = protoLoader.loadSync(ACCOUNT_PROTO_PATH, packageDefinitionOptions);
 const registerPackageDefinition = protoLoader.loadSync(REGISTER_PROTO_PATH, packageDefinitionOptions);
 
+const registerServiceProtos = async (call, callback) => {
+  const accountProtoFile = {
+    name: 'account',
+    content: fs.readFileSync(ACCOUNT_PROTO_PATH, { encoding: 'utf-8' })
+  };
+
+  callback(null, { protoFiles: [ accountProtoFile ] });
+}
+
 const start = ({ logger, rootRoute }) => async () => {
   process.on('uncaughtException', err => {  
     logger.error('Unhandled Exception', err);
@@ -32,16 +41,7 @@ const start = ({ logger, rootRoute }) => async () => {
   const server = new grpc.Server();
   
   server.addService(AccountProto.Account.service, rootRoute);
-  server.addService(RegisterProto.Register.service, {
-    registerServiceProtos: (call, callback) => {
-      callback(null, { protos: [
-        {
-          name: 'account',
-          content: fs.readFileSync(ACCOUNT_PROTO_PATH, { encoding: 'utf-8' })
-        }
-      ]})
-    }
-  });
+  server.addService(RegisterProto.Register.service, { registerServiceProtos });
 
   server.bind(process.env.SERVICE_FFOODD_ACCOUNT_SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());
   server.start();

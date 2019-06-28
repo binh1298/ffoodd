@@ -23,8 +23,8 @@ message RecipeModel {
 }
 
 message ReviewModel {
-  string mealId = 1;
-  string accountId = 2;
+  string meal_id = 1;
+  string account_id = 2;
   float rating = 3;
   string content = 4;
 }
@@ -35,9 +35,9 @@ message MealModel {
   string description = 3;
   string origin = 4;
   string image = 5;
-  string themealdbId = 6;
-  string ownerId = 7;
-  string categoryId = 8;
+  string themealdb_id = 6;
+  string owner_id = 7;
+  string category_id = 8;
   RecipeModel recipe = 9;
 }
 
@@ -55,6 +55,7 @@ message UpdateMealRequest {
   string description = 3;
   string origin = 4;
   string image = 5;
+  string category_id = 6;
   ReviewModel reviews = 7;
   RecipeModel recipe = 8;
 }

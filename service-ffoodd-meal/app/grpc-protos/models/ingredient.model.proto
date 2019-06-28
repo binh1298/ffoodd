@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package models;
+
+message IngredientModel {
+  string name = 1;
+  string measure = 2;
+}

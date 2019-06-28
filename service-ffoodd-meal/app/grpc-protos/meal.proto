@@ -2,6 +2,11 @@ syntax = "proto3";
 
 package meal;
 
+import "models/ingredient.model.proto";
+import "models/meal.model.proto";
+import "models/recipe.model.proto";
+import "models/review.model.proto";
+
 service Meal {
   rpc Create (DefaultMealRequest) returns (DefaultReply) {}
 
@@ -10,35 +15,6 @@ service Meal {
   rpc Remove (RequiredIdRequest) returns (DefaultReply) {}
 
   rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
-}
-
-message IngredientModel {
-  string name = 1;
-  string measure = 2;
-}
-
-message RecipeModel {
-  string instruction = 1;
-  repeated IngredientModel ingredients = 2;
-}
-
-message ReviewModel {
-  string meal_id = 1;
-  string account_id = 2;
-  float rating = 3;
-  string content = 4;
-}
-
-message MealModel {
-  string id = 1;
-  string name = 2;
-  string description = 3;
-  string origin = 4;
-  string image = 5;
-  string themealdb_id = 6;
-  string owner_id = 7;
-  string category_id = 8;
-  RecipeModel recipe = 9;
 }
 
 message DefaultMealRequest {
@@ -56,7 +32,7 @@ message UpdateMealRequest {
   string origin = 4;
   string image = 5;
   string category_id = 6;
-  ReviewModel reviews = 7;
+  repeated ReviewModel reviews = 7;
   RecipeModel recipe = 8;
 }
 

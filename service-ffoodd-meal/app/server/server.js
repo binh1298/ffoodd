@@ -19,7 +19,7 @@ const start = () =>
 
     server.addService(meal_proto.Meal.service, routes);
 
-    server.bind('0.0.0.0:50051', grpc.ServerCredentials.createInsecure());
+    server.bind(process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());
     server.start();
     resolve(server);
   });

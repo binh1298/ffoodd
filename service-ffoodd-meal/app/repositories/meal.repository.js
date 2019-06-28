@@ -1,40 +1,36 @@
 'use strict';
 
 const MealModel = require('../models/meal.model');
+const ObjectId = require('mongoose').Schema.ObjectId;
 
 const create = async meal => {
   const newMeal = new MealModel(meal);
-  await newMeal.save();
+  newMeal.save();
 };
+
 const findById = async ({ id }) => {
-  return await MealModel.findById(id);
+  return MealModel.findById(id);
 };
+
 const remove = async ({ id }) => {
-  return await MealModel.findByIdAndDelete(id);
+  return MealModel.deleteOne({ _id: ObjectId(id) });
 };
-// Use Destructuring
-const update = async ({
-  id,
-  name,
-  description,
-  origin,
-  category_id,
-  image,
-  recipes
-}) => {
+
+const update = async meal => {
+  const { id, name, description, origin, category_id, image, recipes } = meal;
+
   let editedMeal = await MealModel.findById(id);
+
   editedMeal.name = name;
   editedMeal.description = description;
   editedMeal.origin = origin;
   editedMeal.category_id = category_id;
   editedMeal.image = image;
-  editedMeal.recipes = recipes;
+  editedMeal.recipe = recipe;
+  editedMeal.reviews = reviews;
+
   editedMeal.save();
   return editedMeal;
-};
-
-const search = async request => {
-  return await MealModel.find(request);
 };
 
 module.exports = {

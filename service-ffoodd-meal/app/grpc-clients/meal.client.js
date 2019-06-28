@@ -16,9 +16,9 @@ const start = () =>
     const meal_proto = grpc.loadPackageDefinition(packageDefinition).meal;
 
     const client = new meal_proto.Meal(
-      'localhost:50051',
+      process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS,
       grpc.credentials.createInsecure()
-    );
+     );
 
     resolve(client);
   });

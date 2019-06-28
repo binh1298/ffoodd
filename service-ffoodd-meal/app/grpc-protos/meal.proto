@@ -12,6 +12,23 @@ service Meal {
   rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
 }
 
+message IngredientModel {
+  string name = 1;
+  string measure = 2;
+}
+
+message RecipeModel {
+  string instruction = 1;
+  repeated IngredientModel ingredients = 2;
+}
+
+message ReviewModel {
+  string mealId = 1;
+  string accountId = 2;
+  float rating = 3;
+  string content = 4;
+}
+
 message MealModel {
   string id = 1;
   string name = 2;
@@ -21,7 +38,7 @@ message MealModel {
   string themealdbId = 6;
   string ownerId = 7;
   string categoryId = 8;
-  Recipe recipe = 9;
+  RecipeModel recipe = 9;
 }
 
 message DefaultMealRequest {
@@ -38,8 +55,8 @@ message UpdateMealRequest {
   string description = 3;
   string origin = 4;
   string image = 5;
-  Review reviews = 7;
-  Recipe recipe = 8;
+  ReviewModel reviews = 7;
+  RecipeModel recipe = 8;
 }
 
 message DefaultReply {
@@ -51,22 +68,4 @@ message DefaultMealReply {
   bool success = 1;
   string message = 2;
   MealModel meal = 3;
-}
-
-/*Models*/
-message Ingredient {
-  string name = 1;
-  string measure = 2;
-}
-
-message Recipe {
-  string instruction = 1;
-  repeated Ingredient ingredient = 2;
-}
-
-message Review {
-  string mealId = 1;
-  string accountId = 2;
-  float rating = 3;
-  string content = 4;
 }

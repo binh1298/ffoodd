@@ -21,7 +21,7 @@ service Account {
 
   rpc UpdatePasswordById (UpdatePasswordByIdRequest) returns (DefaultReply) {}
 
-  rpc UpdateEmailById (UpdateEmailByIdRequest) returns {DefaultReply) {}
+  rpc UpdateEmailById (UpdateEmailByIdRequest) returns (DefaultReply) {}
 }
 
 message AccountModel {

@@ -115,6 +115,7 @@ module.exports = ({ accountRepository: Account }) => {
     verifyEmail,
     findByUsername,
     resetPassword,
-    updatePasswordById
+    updatePasswordById,
+    updateEmailById
   }
 }

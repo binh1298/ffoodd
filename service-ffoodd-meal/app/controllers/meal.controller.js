@@ -4,49 +4,50 @@ const { to } = require('await-to-js');
 const Meal = require('../repositories/meal.repository');
 
 const messages = {
-  CREATED_MEAL: 'MEAL CREATED!',
-  FOUNDED_MEAL: 'MEAL FOUNDED!',
-  DELETED_MEAL: 'MEAL DELETED!',
-  UPDATED_MEAL: 'MEAL UPDATED!',
-  NOT_FOUND: 'MEAL NOT FOUND!',
-  INVALID_FIELD: 'This field can not be updated!',
-  MISSING_ID: 'Please provide meal ID'
+  MEAL_CREATED: 'MEAL_CREATED',
+  MEAL_FOUND: 'MEAL_FOUND',
+  MEAL_DETELETED: 'MEAL_DELETED',
+  MEAL_UPDATED: 'MEAL_UPDATED',
+  MEAL_NOT_FOUND: 'MEAL_NOT_FOUND',
 };
 
-const create = async ({ request: { meal } }, callback, next) => {
+const create = async (call, callback, next) => {
+  const { meal } = call.request;
   const [err, newMeal] = await to(Meal.create(meal));
   if (err) return next(err);
 
   callback(null, {
     success: true,
-    message: messages.CREATED_MEAL
+    message: messages.MEAL_CREATED
   });
 };
 
-const findById = async ({ request: meal }, callback, next) => {
-  const [err, foundMeal] = await to(Meal.findById(meal));
+const findById = async (call, callback, next) => {
+  const { id } = call.request;
+  const [err, meal] = await to(Meal.findById({ id }));
   if (err) return next(err);
 
   callback(null, {
     success: true,
-    message: messages.FOUNDED_MEAL,
-    meal: foundMeal
+    message: messages.MEAL_FOUND,
+    meal
   });
 };
 
-const remove = async ({ request: meal }, callback, next) => {
-  const [err, removedMeal] = await to(Meal.remove(meal));
+const remove = async (call, callback, next) => {
+  const { id } = call.request;
+  const [err, result] = await to(Meal.remove({ id }));
   if (err) return next(err);
 
-  if (removedMeal)
+  if (result)
     return callback(null, {
-      success: true,
-      message: messages.DELETED_MEAL
+      success: false,
+      message: messages.MEAL_NOT_FOUND
     });
 
   callback(null, {
     success: true,
-    message: messages.NOT_FOUND
+    message: messages.MEAL_DETELETED
   });
 };
 
@@ -56,7 +57,7 @@ const update = async ({ request: meal }, callback, next) => {
 
   callback(null, {
     success: true,
-    message: messages.FOUNDED_MEAL,
+    message: messages.MEAL_UPDATED,
     meal: editedMeal
   });
 };

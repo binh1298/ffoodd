@@ -23,7 +23,7 @@ const create = async ({ request: { meal } }, callback, next) => {
   });
 };
 
-const read = async ({ request: meal }, callback, next) => {
+const findById = async ({ request: meal }, callback, next) => {
   const [err, foundMeal] = await to(Meal.findById(meal));
   if (err) return next(err);
 
@@ -63,7 +63,7 @@ const update = async ({ request: meal }, callback, next) => {
 
 module.exports = {
   create,
-  read,
+  findById,
   remove,
   update
 };

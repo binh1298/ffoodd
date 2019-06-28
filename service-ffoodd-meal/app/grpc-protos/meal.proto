@@ -5,19 +5,25 @@ package meal;
 service Meal {
   rpc Create (DefaultMealRequest) returns (DefaultReply) {}
 
-  rpc Read (RequiredIdRequest) returns (DefaultMealReply) {}
+  rpc FindById (RequiredIdRequest) returns (DefaultMealReply) {}
 
   rpc Remove (RequiredIdRequest) returns (DefaultReply) {}
 
   rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
-
-  // rpc SearchMeal(SearchCategories) returns (stream DefaultMeal) {}
-  
-  // rpc AddReview (Review) returns (DefaultReply) {}
-
 }
 
-// Requests
+message MealModel {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string origin = 4;
+  string image = 5;
+  string themealdbId = 6;
+  string ownerId = 7;
+  string categoryId = 8;
+  Recipe recipe = 9;
+}
+
 message DefaultMealRequest {
   MealModel meal = 1;
 }
@@ -32,12 +38,10 @@ message UpdateMealRequest {
   string description = 3;
   string origin = 4;
   string image = 5;
-  // string category_id = 6;
   Review reviews = 7;
   Recipe recipe = 8;
 }
 
-// Replies
 message DefaultReply {
   bool success = 1;
   string message = 2;
@@ -49,19 +53,7 @@ message DefaultMealReply {
   MealModel meal = 3;
 }
 
-//Models
-message MealModel {
-  string id = 1;
-  string name = 2;
-  string description = 3;
-  string origin = 4;
-  string image = 5;
-  string themealdbId = 6;
-  string ownerId = 7;
-  string categoryId = 8;
-  Recipe recipe = 9;
-}
-
+/*Models*/
 message Ingredient {
   string name = 1;
   string measure = 2;
@@ -78,10 +70,3 @@ message Review {
   float rating = 3;
   string content = 4;
 }
-
-
-// // Users can only search by name and category
-// message SearchCategories {
-//   string name = 1;
-//   string category = 2;
-// }

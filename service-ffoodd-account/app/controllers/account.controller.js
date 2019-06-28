@@ -3,20 +3,20 @@
 const { to } = require('await-to-js');
 
 const messages = {
-  FIND_ACCOUNT_BY_ID: 'FIND_ACCOUNT_BY_ID',
+  ACCOUNT_FIND_BY_ID: 'ACCOUNT_FIND_BY_ID',
   ACCOUNT_CREATED: 'ACCOUNT_CREATED',
   ACCOUNT_UPDATED: 'ACCOUNT_UPDATED',
   ACCOUNT_REMOVED: 'ACCOUNT_REMOVED',
-  EMAIL_NOT_PROVIDED: 'EMAIL_NOT_PROVIDED',
-  EMAIL_VERIFY_KEY: 'EMAIL_VERIFY_KEY',
-  COULD_NOT_VERIFIED: 'COULD_NOT_VERIFIED',
+  ACCOUNT_EMAIL_NOT_PROVIDED: 'ACCOUNT_EMAIL_NOT_PROVIDED',
+  ACCOUNT_EMAIL_VERIFY_KEY: 'ACCOUNT_EMAIL_VERIFY_KEY',
+  ACCOUNT_COULD_NOT_VERIFIED: 'ACCOUNT_COULD_NOT_VERIFIED',
   ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
-  FIND_BY_USERNAME: 'FIND_BY_USERNAME',
-  RESET_PASSWORD_FAILED: 'RESET_PASSWORD_FAILED',
-  PASSWORD_RESETTED: 'PASSWORD_RESETTED',
-  PASSWORD_UPDATED: 'PASSWORD_UPDATED',
-  FIND_ROLES_BY_ID: 'FIND_ROLES_BY_ID',
-  EMAIL_UPDATED: 'EMAIL_UPDATED'
+  ACCOUNT_FIND_BY_USERNAME: 'ACCOUNT_FIND_BY_USERNAME',
+  ACCOUNT_RESET_PASSWORD_FAILED: 'ACCOUNT_RESET_PASSWORD_FAILED',
+  ACCOUNT_PASSWORD_RESETTED: 'ACCOUNT_PASSWORD_RESETTED',
+  ACCOUNT_PASSWORD_UPDATED: 'ACCOUNT_PASSWORD_UPDATED',
+  ACCOUNT_FIND_ROLES_BY_ID: 'ACCOUNT_FIND_ROLES_BY_ID',
+  ACCOUNT_EMAIL_UPDATED: 'ACCOUNT_EMAIL_UPDATED'
 }
 
 module.exports = ({ accountRepository: Account }) => {
@@ -24,7 +24,7 @@ module.exports = ({ accountRepository: Account }) => {
     const [ err, account ] = await to(Account.findById(call.request.id));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.FIND_ACCOUNT_BY_ID });
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_ID });
   }
 
   const create = async (call, callback, next) => {
@@ -53,9 +53,9 @@ module.exports = ({ accountRepository: Account }) => {
     if (err) return next(err);
 
     if (!email)
-      return callback(null, { success: false, message:  messages.EMAIL_NOT_PROVIDED });
+      return callback(null, { success: false, message:  messages.ACCOUNT_EMAIL_NOT_PROVIDED });
 
-    callback(null, { success:true, message: messages.EMAIL_VERIFY_KEY });
+    callback(null, { success:true, message: messages.ACCOUNT_EMAIL_VERIFY_KEY });
   }
 
   const verifyEmail = async (call, callback, next) => {
@@ -63,7 +63,7 @@ module.exports = ({ accountRepository: Account }) => {
     if(err) return next(err);
 
     if (!result)
-       return callback({ success: false, message: messages.COULD_NOT_VERIFIED });
+       return callback({ success: false, message: messages.ACCOUNT_COULD_NOT_VERIFIED });
 
     callback({ success: false, message: messages.ACCOUNT_VERIFIED });
   }
@@ -72,7 +72,7 @@ module.exports = ({ accountRepository: Account }) => {
     const [ err, account ] = await to(Account.findByUsername(call.request.username));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.FIND_BY_USERNAME, account })
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_USERNAME, account })
   }
 
   const resetPassword = async (call, callback, next) => {
@@ -80,30 +80,30 @@ module.exports = ({ accountRepository: Account }) => {
     if (err) return next(err);
 
     if (!result)
-       return callback(null, { success: false, message: messages.RESET_PASSWORD_FAILED});
+       return callback(null, { success: false, message: messages.ACCOUNT_RESET_PASSWORD_FAILED});
 
-    callback(null, { success: true, message: messages.PASSWORD_RESETTED });
+    callback(null, { success: true, message: messages.ACCOUNT_PASSWORD_RESETTED });
   }
 
   const updatePasswordById = async (call, callback, next) => {
     const [ err, result ] = await to(Account.updatePasswordById(call.request));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.PASSWORD_UPDATED});
+    callback(null, { success: true, message: messages.ACCOUNT_PASSWORD_UPDATED});
   }
 
   const findRolesById = async (call, callback, next) => {
     const [ err, roles ] = await to(Account.findRolesById(call.request.id));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.FIND_ROLES_BY_ID });
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_ROLES_BY_ID });
   }
 
   const updateEmailById = async (call, callback, next) => {
     const [ err ] = await to(Account.updateEmailById(call.request));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.EMAIL_UPDATED });
+    callback(null, { success: true, message: messages.ACCOUNT_EMAIL_UPDATED });
   }
 
   return {

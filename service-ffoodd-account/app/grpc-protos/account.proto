@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package account;
 
+import "models/account.model.proto";
+
 service Account {
   rpc FindById (RequireIdRequest) returns (FindOneReply) {}
 
@@ -22,16 +24,6 @@ service Account {
   rpc UpdatePasswordById (UpdatePasswordByIdRequest) returns (DefaultReply) {}
 
   rpc UpdateEmailById (UpdateEmailByIdRequest) returns (DefaultReply) {}
-}
-
-message AccountModel {
-  string id = 1;
-  string username = 2;
-  string email = 3;
-  string lastname  = 4;
-  string firstname = 5;
-  bool isVerified = 6;
-  repeated string roles = 7;
 }
 
 message CreateRequest {

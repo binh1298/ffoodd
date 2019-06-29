@@ -7,6 +7,7 @@ const messages = {
   ACCOUNT_CREATED: 'ACCOUNT_CREATED',
   ACCOUNT_UPDATED: 'ACCOUNT_UPDATED',
   ACCOUNT_REMOVED: 'ACCOUNT_REMOVED',
+  ACCOUNT_REMOVED_MANY: 'ACCOUNT_REMOVED_MANY',
   ACCOUNT_EMAIL_NOT_PROVIDED: 'ACCOUNT_EMAIL_NOT_PROVIDED',
   ACCOUNT_EMAIL_VERIFY_KEY: 'ACCOUNT_EMAIL_VERIFY_KEY',
   ACCOUNT_COULD_NOT_VERIFIED: 'ACCOUNT_COULD_NOT_VERIFIED',
@@ -46,6 +47,14 @@ module.exports = ({ accountRepository: Account }) => {
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_REMOVED });
+  }
+
+  const removeMany = async (call, callback, next) => {
+    const { ids } = call.request;
+    const [ err ] = await to(Account.removeMany({ ids }));
+    if (err) return next(err);
+
+    callback(null, { success: false, message: messages.ACCOUNT_REMOVED_MANY });
   }
 
   const newEmailVerifyKey = async (call, callback, next) => {
@@ -111,6 +120,7 @@ module.exports = ({ accountRepository: Account }) => {
     create,
     update,
     remove,
+    removeMany,
     newEmailVerifyKey,
     verifyEmail,
     findByUsername,

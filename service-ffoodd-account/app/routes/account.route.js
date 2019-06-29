@@ -11,6 +11,8 @@ module.exports = ({ accountController: controller, createRoute }) => {
 
   router.remove = createRoute(controller.remove);
 
+  router.removeMany = createRoute(controller.removeMany);
+
   router.newEmailVerifyKey = createRoute(controller.newEmailVerifyKey);
 
   router.verifyEmail = createRoute(controller.verifyEmail);

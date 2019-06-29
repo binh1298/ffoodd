@@ -11,7 +11,9 @@ service Account {
 
   rpc Update (UpdateRequest) returns (DefaultReply) {}
 
-  rpc Remove (RemoveRequest) returns (DefaultReply) {}
+  rpc Remove (RequireIdRequest) returns (DefaultReply) {}
+
+  rpc RemoveMany (RemoveManyRequest) returns (DefaultReply) {}
 
   rpc NewEmailVerifyKey (NewEmailVerifyKeyRequest) returns (DefaultReply) {}
 
@@ -41,8 +43,8 @@ message UpdateRequest {
   repeated string roles = 4;
 }
 
-message RemoveRequest {
-  string id = 1;
+message RemoveManyRequest {
+  repeated string ids = 1;
 }
 
 message NewEmailVerifyKeyRequest {

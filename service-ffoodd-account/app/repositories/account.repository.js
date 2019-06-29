@@ -27,6 +27,10 @@ module.exports = ({ db }) => {
     return collection.deleteOne({ _id: ObjectId(id) });
   }
 
+  const removeMany = async ({ ids }) => {
+    return collection.deleteMany({ _id: { $in: ids } });
+  }
+
   const newEmailVerifyKey = async ({ id, username }) => {
     const queryOptions = {};
     if (id) queryOptions._id =  ObjectId(id);
@@ -126,6 +130,7 @@ module.exports = ({ db }) => {
     create,
     update,
     remove,
+    removeMany,
     newEmailVerifyKey,
     verifyEmail,
     findByUsername,

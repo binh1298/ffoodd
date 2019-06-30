@@ -1,0 +1,58 @@
+{
+  "name": "FFOODD-USER",
+  "version": "1.0.0",
+  "description": "Microservices module user",
+  "main": "index.js",
+  "author": "Quang Dat Pham <quangdat2000.pham@gmail.com>",
+  "repository": "quangdatpham/nodejs-microservices",
+  "license": "ISC",
+  "engines": {
+    "node": ">= 10.15.3"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node app/application.js",
+    "dev": "nodemon --inspect app/application.js",
+    "dev:chrome-debug": "nodemon --inspect-brk app/application.js",
+    "test": "NODE_ENV=test;DB_SERVERS=localhost:27017 mocha ./test/**/*.test.js ./test/*.test.js",
+    "raml": "raml2html services.raml > temp/api.html",
+    "init:lint": "./node_modules/.bin/eslint --init",
+    "inspect:lint": "eslint .",
+    "inspect:vulnerabilities": "npm audit",
+    "inspect:license": "license-checker --failOn GPLv2",
+    "inspect:complexity": "plato ."
+  },
+  "keywords": [
+    "user",
+    "microservices",
+    "nodejs",
+    "express",
+    "mongodb"
+  ],
+  "dependencies": {
+    "app-root-path": "^2.2.1",
+    "await-to-js": "^2.1.1",
+    "awilix": "^4.2.2",
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.0",
+    "express-handlebars": "^3.1.0",
+    "helmet": "^3.18.0",
+    "http-status": "^1.3.2",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "mongodb": "^3.2.6",
+    "morgan": "^1.9.1",
+    "spdy": "^4.0.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "console.table": "^0.10.0",
+    "eslint": "^5.16.0",
+    "mocha": "^6.1.4",
+    "raml2html": "^7.3.0",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
+  }
+}

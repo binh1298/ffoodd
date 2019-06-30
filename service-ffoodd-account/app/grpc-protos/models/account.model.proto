@@ -5,9 +5,10 @@ package models;
 message AccountModel {
   string id = 1;
   string username = 2;
-  string email = 3;
-  string lastname  = 4;
-  string firstname = 5;
-  bool isVerified = 6;
-  repeated string roles = 7;
+  string password = 3;
+  string email = 4;
+  string lastname = 5;
+  string firstname = 6;
+  bool isVerified = 7;
+  repeated string roles = 8;
 }

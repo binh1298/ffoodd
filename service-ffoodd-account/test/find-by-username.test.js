@@ -7,7 +7,7 @@ describe('Find by username', () => {
       .then(client => {
         client.findByUsername({ username: 'dat' }, (err, response) => {
           assert.equal(err, null);
-          assert.equal(response.message, 'FIND_BY_USERNAME');
+          assert.equal(response.message, 'ACCOUNT_FIND_BY_USERNAME');
           assert.equal(response.account.username, 'dat');
           done();
         });

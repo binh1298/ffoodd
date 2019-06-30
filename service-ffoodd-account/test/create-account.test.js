@@ -16,10 +16,10 @@ describe('Account gRPC-client', () => {
           email: 'quangdat2000.pham@gmail.com'
         };
 
-        client.create(account, async (err, response) => {
+        client.create({ account }, async (err, response) => {
           assert(response.success, true)
           assert.equal(err, null);
-          assert.equal(response.message, 'CREATE_ACCOUNT');
+          assert.equal(response.message, 'ACCOUNT_CREATED');
           done();
         });
       });

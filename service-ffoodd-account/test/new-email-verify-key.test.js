@@ -7,7 +7,7 @@ describe('New email verify key', () => {
       .then(client => {
         client.newEmailVerifyKey({ username: 'dat' }, (err, response) => {
           assert.equal(err, null);
-          assert.equal(response.message, 'EMAIL_VERIFY_KEY');
+          assert.equal(response.message, 'ACCOUNT_EMAIL_VERIFY_KEY');
           done();
         });
     });

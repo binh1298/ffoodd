@@ -8,7 +8,7 @@ describe('Reset password', () => {
         client.resetPassword({ username: 'dat', password: 'new', key: 123456 }, (err, response) => {
           assert.equal(err, null);
           assert.equal(response.success, true);
-          assert.equal(response.message, 'PASSWORD_RESETTED');
+          assert.equal(response.message, 'ACCOUNT_PASSWORD_RESETTED');
           done();
         });
     });

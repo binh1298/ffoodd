@@ -29,7 +29,7 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const create = async (call, callback, next) => {
-    const [ err ] = await to(Account.create(call.request));
+    const [ err ] = await to(Account.create(call.request.account));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_CREATED });

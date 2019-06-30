@@ -4,10 +4,11 @@ require('dotenv').config();
 
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
+const path = require('path');
 
-const PROTO_PATH = __dirname + '/../grpc-protos/account.proto';
+const REGISTER_PROTO_PATH = path.join(__dirname, '/../grpc-protos/register.proto');
 
-const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+const packageDefinition = protoLoader.loadSync(REGISTER_PROTO_PATH, {
   keepCase: true,
   longs: String,
   enums: String,
@@ -16,14 +17,14 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 
 const start = async () => {
-  const account_proto = grpc.loadPackageDefinition(packageDefinition).account;
+  const registerProto = grpc.loadPackageDefinition(packageDefinition).register;
 
-  const client = new account_proto.Account(
+  const registerClient = new registerProto.Register(
     process.env.SERVICE_FFOODD_ACCOUNT_SERVER_ADDRESS,
     grpc.credentials.createInsecure()
   );
 
-  return client;
+  return registerClient;
 };
 
 module.exports = Object.create({ start });

@@ -53,6 +53,22 @@ const connect = ({ logger }) => () => {
       resolve();
     })
   })
+
+  const makeAsyncWithProxyObject = client => {
+    return new Proxy({}, {
+      get(target, key) {
+        logger.info(`Calling to service <---- ${key}`);
+        
+        return options => new Promise((resolve, reject) => {
+          client[key](options, (err, response) => {
+            if (err) return reject(err);
+
+            resolve(response);
+          })
+        });
+      }
+    });
+  }
   
   return new Promise((resolve, reject) => {
     registerClientService.start()
@@ -82,7 +98,8 @@ const connect = ({ logger }) => () => {
             const [ err1, client ] = await to(startGRPCClient({ name }));
             if (err1) return reject(err1);
 
-            clients[name + 'Service'] = () => client;
+            const asyncClient = makeAsyncWithProxyObject(client);
+            clients[name + 'Service'] = () => asyncClient;
           }
 
           resolve(clients);

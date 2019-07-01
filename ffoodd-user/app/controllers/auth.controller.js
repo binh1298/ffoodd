@@ -8,8 +8,8 @@ const status = require('http-status');
 module.exports = ({ accountService: Account }) => {
   const postSignIn = async (req, res, next) => {
     const { username, password } = req.body;
-  
-    const [ err0, account ] = await to(Account.findByUsername(username));
+
+    const [ err0, { account } ] = await to(Account.findByUsername({ username }));
     if (err0) return next(err);
 
     if (!account)
@@ -23,7 +23,7 @@ module.exports = ({ accountService: Account }) => {
           token: null
         });
 
-    const [ err1, result ] = await bcrypt.compare(password, account.password);
+    const [ err1, result ] = await to(bcrypt.compare(password, account.password));
     if (err1) return next(err1);
 
     if (!result)
@@ -48,10 +48,9 @@ module.exports = ({ accountService: Account }) => {
 
   const postSignUp = async (req, res, next) => {
     const { username, password, email, firstname, lastname } = req.body;
+    const newAccount = { username, password, email, firstname, lastname };
     // if not taken
-    const [ err, account ] = await to(Account.create({
-      username, password, email, firstname, lastname
-    }));
+    const [ err, account ] = await to(Account.create({ account: newAccount }));
     if (err) return next(err);
 
     // sendEmail

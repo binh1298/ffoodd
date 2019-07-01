@@ -20,7 +20,6 @@ const registerApplicationDependences = async () => {
   const resolveds = await Promise.all([
     middlewares.initialize(),
     controllers.initialize(),
-    services.initialize(),
     routes.initialize()
   ]);
 
@@ -34,14 +33,29 @@ const registerApplicationDependences = async () => {
   }
 
   container.register({
-    startServer: asFunction(server.start)
+    startServer: asFunction(server.start),
+    connectToServices: asFunction(services.connect)
   });
 }
 
 registerApplicationDependences()
   .then(() => {
+    const connectToServices = container.resolve('connectToServices');
+    return connectToServices();
+  })
+  .then(services => {
+    const logger = container.resolve('logger');
+
+    for (let service in services) {
+      logger.info(`SERVICE - DI register <---- ${service}`);
+      container.register({
+        [service]: asFunction(services[service])
+      });
+    }
+  })
+  .then(() => {
     const startServer = container.resolve('startServer');
-    startServer();
+    return startServer();
   })
   .catch(err => {
     const logger = container.resolve('logger');

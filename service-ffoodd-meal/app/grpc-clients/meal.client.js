@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 
@@ -18,7 +20,7 @@ const start = () =>
     const client = new meal_proto.Meal(
       process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS,
       grpc.credentials.createInsecure()
-     );
+    );
 
     resolve(client);
   });

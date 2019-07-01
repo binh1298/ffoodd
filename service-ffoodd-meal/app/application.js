@@ -16,24 +16,23 @@ let container;
 
 const registerApplicationDependencies = async () => {
   container = await config.initializeDIContainer();
-  // Get the logger
   const logger = container.resolve('logger');
 
-  // Get the functions that returns objects that will later be
-  // used as dependencies
-  const resolveds = await Promise.all([
-    repositories.initialize(),
-    controllers.initialize(),
-    routes.initialize(),
-    libs.initialize()
-  ]);
+  // Get the functions that returns objects that will later be used as dependencies
+  const dependencies = [
+    repositories.gatherDependencies(),
+    controllers.gatherDependencies(),
+    routes.gatherDependencies(),
+    libs.gatherDependencies()
+  ];
 
   // Register all the dependencies to the container
-  for (let resolved of resolveds) {
-    for (let key in resolved) {
+  for (let dependency of dependencies) {
+    for (let object in dependency) {
       container.register({
-        [key]: asFunction(resolved[key])
+        [object]: asFunction(dependency[object])
       });
+      logger.info(`DI Register: ${object}`);
     }
   }
 

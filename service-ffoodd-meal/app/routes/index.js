@@ -1,3 +1,8 @@
+const mealRoute = require('./meal.route');
+const serviceRoute = require('./service.route');
 module.exports = {
-  ...require('./meal.routes')
+  gatherDependencies: () => ({
+    mealRoute,
+    serviceRoute
+  })
 };

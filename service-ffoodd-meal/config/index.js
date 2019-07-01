@@ -1,7 +1,7 @@
 const logger = require('./logger');
-const database = require('./database/mongo.config')
+const database = require('./database/mongoose.config');
+const di = require('./di/');
 
 module.exports = {
-  logger,
-  database
-}
+  initializeDIContainer: di.initialize({ logger, database })
+};

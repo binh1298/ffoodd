@@ -10,7 +10,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true
 });
 
-const start = ({ logger, serviceRoute }) => () =>
+const start = ({ logger, mealRoute }) => () =>
   new Promise((resolve, reject) => {
     // Override default error behaviors
     process.on('uncaughtException', err => {
@@ -25,8 +25,7 @@ const start = ({ logger, serviceRoute }) => () =>
     const meal_proto = grpc.loadPackageDefinition(packageDefinition).meal;
 
     const server = new grpc.Server();
-
-    server.addService(meal_proto.Meal.service, serviceRoute);
+    server.addService(meal_proto.Meal.service, mealRoute);
 
     server.bind(
       process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS,

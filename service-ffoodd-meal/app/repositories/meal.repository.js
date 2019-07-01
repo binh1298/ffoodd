@@ -1,7 +1,7 @@
 'use strict';
 
 const MealModel = require('../models/meal.model');
-const ObjectId = require('mongoose').Schema.ObjectId;
+const ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = () => {
   const create = async meal => {
@@ -14,21 +14,19 @@ module.exports = () => {
   };
 
   const remove = async ({ id }) => {
-    return MealModel.deleteOne({ _id: ObjectId(id) });
+    return MealModel.findByIdAndRemove(id);
   };
 
   const update = async meal => {
-    const { id, name, description, origin, category_id, image, recipes } = meal;
-
+    const { id, name, description, origin, category_id, image, recipe } = meal;
     let editedMeal = await MealModel.findById(id);
-
+    if (!editedMeal) return;
     editedMeal.name = name;
     editedMeal.description = description;
     editedMeal.origin = origin;
     editedMeal.category_id = category_id;
     editedMeal.image = image;
     editedMeal.recipe = recipe;
-    editedMeal.reviews = reviews;
 
     editedMeal.save();
     return editedMeal;

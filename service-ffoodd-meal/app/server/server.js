@@ -11,15 +11,28 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true
 });
 
-const start = () =>
+const start = ({ logger, rootRoute }) => () =>
   new Promise((resolve, reject) => {
+    // Override default error behaviors
+    process.on('uncaughtException', err => {
+      logger.error('Unhandled Exception', err);
+    });
+
+    process.on('unhandledRejection', err => {
+      logger.error('Unhandled Rejection', err);
+    });
+
+    // Init grpc
     const meal_proto = grpc.loadPackageDefinition(packageDefinition).meal;
 
     const server = new grpc.Server();
 
     server.addService(meal_proto.Meal.service, routes);
 
-    server.bind(process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());
+    server.bind(
+      process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS,
+      grpc.ServerCredentials.createInsecure()
+    );
     server.start();
     resolve(server);
   });

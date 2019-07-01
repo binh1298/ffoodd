@@ -15,4 +15,5 @@ message EmptyRequest {}
 
 message RegisterServiceProtosReply {
   repeated ProtoFileModel protoFiles = 1;
+  repeated ProtoFileModel protoModelFiles = 2;
 }

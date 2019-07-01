@@ -34,7 +34,15 @@ const start = ({ logger, rootRoute }) => async () => {
       content: fs.readFileSync(ACCOUNT_PROTO_PATH, { encoding: 'utf-8' })
     };
 
-    callback(null, { protoFiles: [ accountProtoFile ] });
+    const accountModelFile = {
+      name: 'account',
+      content: fs.readFileSync(path.join(__dirname, '/../grpc-protos/models/account.model.proto'))
+    }
+
+    callback(null, {
+      protoFiles: [ accountProtoFile ],
+      protoModelFiles: [ accountModelFile ]
+    });
   }
 
 

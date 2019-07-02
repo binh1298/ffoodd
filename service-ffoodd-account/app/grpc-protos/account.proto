@@ -19,7 +19,7 @@ service Account {
 
   rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
 
-  rpc FindByUsername (RequireIdRequest) returns (FindOneReply) {}
+  rpc FindByUsername (RequireUsernameRequest) returns (FindOneReply) {}
 
   rpc ResetPassword (ResetPasswordRequest) returns (DefaultReply) {}
 
@@ -54,6 +54,10 @@ message VerifyEmailRequest {
 }
 
 message RequireIdRequest {
+  string id = 1;
+}
+
+message RequireUsernameRequest {
   string username = 1;
 }
 

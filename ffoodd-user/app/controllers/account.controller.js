@@ -1,17 +1,17 @@
 const status = require('http-status');
 const { to } = require('await-to-js');
 
-module.exports = ({ accountService: Account }) => {
+module.exports = ({ accountService: Account, logger }) => {
   
   const getProfile = async (req, res, next) => {
-    const [ err, account ] = await to(Account.findById(req.user.id));
+    const [ err, response ] = await to(Account.findById({ id: req.user._id }));
     if (err) return next(err);
 
     res.status(status.OK)
       .send({
         success: true,
         message: 'Get profile',
-        profile: account
+        profile: response.account
       });
   }
 

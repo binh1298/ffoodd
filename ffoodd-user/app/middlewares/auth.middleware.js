@@ -15,33 +15,32 @@ module.exports = ({ logger, accountService }) => {
       });
     }
 
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decodedPayload) => {
+      if (err0)
+        return res.status(status.UNAUTHORIZED).send({
+          success: false,
+          message: 'Token invalid',
+        });
+      
+      const [ err1, account ] = await to(Account.findById({ id: decodedPayload._id }));
+      if (err1) return next(err1);
 
-    const [ err0, decodedPayload ] = await to(jwt.verify(token, process.env.JWT_SECRET));
-    if (err0)
-      return res.status(status.UNAUTHORIZED).send({
-        success: false,
-        message: 'Token invalid',
-      });
-    
-    const [ err1, account ] = await to(Account.findById(decodedPayload.id));
-    if (err1) return next(err1);
+      if (!account)
+        return res.status(status.OK).send({
+          success: false,
+          message: 'Account does not exit'
+        });
 
-    if (!account)
-      return res.status(status.OK).send({
-        success: false,
-        message: 'Account does not exit'
-      });
-
-    if (!account.isVerified)
-      return res.status(status.UNAUTHORIZED).send({
-        success: false,
-        isVerified: false,
-        message: 'Account has not been verified'
-      });
-    
-    req.user = decodedPayload;
-    next();
-
+      if (!account.isVerified)
+        return res.status(status.UNAUTHORIZED).send({
+          success: false,
+          isVerified: false,
+          message: 'Account has not been verified'
+        });
+      
+      req.user = decodedPayload;
+      next();
+    })
   };
 
   const requireAuth = async (req, res, next) => {
@@ -54,16 +53,16 @@ module.exports = ({ logger, accountService }) => {
       });
     }
 
-
-    const [ err, decodedPayload ] = await to(jwt.verify(token, process.env.JWT_SECRET));
-    if (err)
-      return res.status(status.UNAUTHORIZED).send({
-        success: false,
-        message: 'Token invalid',
-      });
-    
-    req.user = decodedPayload;
-    next();
+    jwt.verify(token, process.env.JWT_SECRET, (err, decodedPayload) => {
+      if (err)
+        return res.status(status.UNAUTHORIZED).send({
+          success: false,
+          message: 'Token invalid',
+        });
+      
+      req.user = decodedPayload;
+      next();
+    });
   };
 
   const requireRole = roles => async (req, res, next) => {

@@ -58,8 +58,11 @@ const connect = ({ logger }) => () => {
     return new Proxy({}, {
       get(target, key) {
         logger.info(`Calling to service <---- ${key}`);
-        
+
         return options => new Promise((resolve, reject) => {
+          if (!(key in client))
+            return reject(new Error('Method not found in services'));
+
           client[key](options, (err, response) => {
             if (err) return reject(err);
 

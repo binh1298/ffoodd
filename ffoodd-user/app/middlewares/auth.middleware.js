@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const status = require('http-status');
 const { to } = require('await-to-js');
 
-module.exports = ({ logger, accountService }) => {
+module.exports = ({ logger, accountService: Account }) => {
   logger.info('Wiring authentication middlewares');
 
   const requireAuthEmail = async (req, res, next) => {
@@ -15,7 +15,7 @@ module.exports = ({ logger, accountService }) => {
       });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decodedPayload) => {
+    jwt.verify(token, process.env.JWT_SECRET, async (err0, decodedPayload) => {
       if (err0)
         return res.status(status.UNAUTHORIZED).send({
           success: false,
@@ -66,7 +66,7 @@ module.exports = ({ logger, accountService }) => {
   };
 
   const requireRole = roles => async (req, res, next) => {
-    const [ err, accountRoles ] = await to(Account.getRolesById(req.user.id));
+    const [ err, accountRoles ] = await to(Account.findRolesById(req.user._id));
     if (err) return next(err);
 
     if (roles.some(role => accountRoles.includes(role)))

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package models;
+
+message MealModel {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string origin = 4;
+  string image = 5;
+  string themealdb_id = 6;
+  string owner_id = 7;
+  string category_id = 8;
+  RecipeModel recipe = 9;
+}

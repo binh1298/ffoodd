@@ -19,12 +19,12 @@ const registerApplicationDependencies = async () => {
   const logger = container.resolve('logger');
 
   // Get the functions that returns objects that will later be used as dependencies
-  const dependencies = [
+  const dependencies = await Promise.all([
     repositories.gatherDependencies(),
     controllers.gatherDependencies(),
     routes.gatherDependencies(),
     libs.gatherDependencies()
-  ];
+  ]);
 
   // Register all the dependencies to the container
   for (let dependency of dependencies) {

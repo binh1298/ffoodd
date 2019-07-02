@@ -4,10 +4,10 @@ const MealSchema = new mongoose.Schema({
   themealdb_id: {
     type: String
   },
-  owner_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Account'
-  },
+  // owner_id: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Account'
+  // },
   name: {
     type: String,
     trim: true,
@@ -22,10 +22,10 @@ const MealSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
-  category_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category'
-  },
+  // category_id: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Category'
+  // },
   image: {
     type: String
   },

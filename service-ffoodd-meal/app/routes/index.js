@@ -1,3 +1,6 @@
+const mealRoute = require('./meal.route');
 module.exports = {
-  ...require('./meal.routes')
+  gatherDependencies: async () => ({
+    mealRoute
+  })
 };

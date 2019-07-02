@@ -3,7 +3,7 @@ const assert = require('assert');
 
 require('should');
 
-describe('Meal gRPC-client', () => {
+describe('Meal gRPC-client-Happy Case: Create a new meal', () => {
   it('should create a new meal', done => {
     mealClient.start().then(client => {
       const defaultMealRequest = {

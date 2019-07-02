@@ -1,7 +1,6 @@
 const PROTO_PATH = __dirname + '/../grpc-protos/meal.proto';
 const protoLoader = require('@grpc/proto-loader');
 const grpc = require('grpc');
-const routes = require('../routes/');
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
@@ -11,16 +10,30 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true
 });
 
-const start = () =>
+const start = ({ logger, mealRoute }) => () =>
   new Promise((resolve, reject) => {
+    // Override default error behaviors
+    process.on('uncaughtException', err => {
+      logger.error('Unhandled Exception', err);
+    });
+
+    process.on('unhandledRejection', err => {
+      logger.error('Unhandled Rejection', err);
+    });
+
+    // Init grpc
     const meal_proto = grpc.loadPackageDefinition(packageDefinition).meal;
 
     const server = new grpc.Server();
+    server.addService(meal_proto.Meal.service, mealRoute);
 
-    server.addService(meal_proto.Meal.service, routes);
-
-    server.bind(process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());
+    server.bind(
+      process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS,
+      grpc.ServerCredentials.createInsecure()
+    );
     server.start();
+
+    logger.info('gRPC Server is ready!');
     resolve(server);
   });
 

@@ -25,7 +25,7 @@ module.exports = ({ accountRepository: Account }) => {
     const [ err, account ] = await to(Account.findById(call.request.id));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_ID });
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_ID, account });
   }
 
   const create = async (call, callback, next) => {

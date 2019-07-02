@@ -24,8 +24,8 @@ const createRoute = ({ logger }) => (...handlers) => {
   };
 
   const handleError = (call, callback) => {
-    logger.error(`Something when wrong :{} ${routeState.error.stack}`);
-    callback({ message: 'Something when wrong :{}' }, null);
+    logger.error(`SERVICE_FFOODD_ACCOUNT Something when wrong :{} ${routeState.error.stack}`);
+    callback({ message: 'SERVICE_FFOODD_ACCOUNT Something when wrong :{}' }, null);
   }
 
   return async (call, callback) => {

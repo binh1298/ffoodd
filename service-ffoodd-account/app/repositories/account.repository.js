@@ -2,7 +2,7 @@
 
 const bcrypt = require('bcrypt');
 const moment = require('moment');
-const { ObjectID } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 module.exports = ({ db }) => {
   const collection = db.collection('accounts')

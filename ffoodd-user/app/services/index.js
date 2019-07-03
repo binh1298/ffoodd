@@ -1,3 +1,5 @@
+'use strict';
+
 const grpc = require('grpc');
 const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
@@ -80,16 +82,19 @@ const connect = ({ logger }) => async () => {
 
         registerClient.registerServiceProtos({}, async (err, res) => {
           if (err) {
-            logger.info(`${SERVER_NAME}: Can not connect to gRPC-server`);
-            resolve({ accountService: () => {} });
-            return;
+            logger.warn(`${SERVER_NAME}: Can not connect to gRPC-server`);
+            return resolve(new Proxy({}, {
+              get() {
+                return new Proxy({}, {
+                  get: () => async () => { throw new Error(`${SERVER_NAME}: gRPC-server have not been connected`) }
+                });
+              }
+            }));
           }
 
           const { protoFiles, protoModelFiles } = res;
         
           logger.info(`${SERVER_NAME}: register-service-protos connected`);
-
-          if (err) return reject(err);
 
           for (let { name: filename, content } of protoModelFiles) {
             const [ err ] = await to(writeProtoModelFile({ filename, content }));

@@ -5,12 +5,16 @@ const { to } = require('await-to-js');
 const jwt = require('jsonwebtoken');
 const status = require('http-status');
 
-module.exports = ({ accountService: Account }) => {
+module.exports = ({ accountGRPCClientService }) => {
+  const Account = accountGRPCClientService.account;
+
   const postSignIn = async (req, res, next) => {
     const { username, password } = req.body;
 
-    const [ err0, { account } ] = await to(Account.findByUsername({ username }));
-    if (err0) return next(err);
+    const [ err0, response ] = await to(Account.findByUsername({ username }));
+    if (err0) return next(err0);
+
+    const account = response ? response.account : {};
 
     if (!account)
       return res.status(status.OK)

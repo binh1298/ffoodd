@@ -1,7 +1,8 @@
 const status = require('http-status');
 const { to } = require('await-to-js');
 
-module.exports = ({ accountService: Account, logger }) => {
+module.exports = ({ accountGRPCClientService, logger }) => {
+  const Account = accountGRPCClientService.account;
   
   const getProfile = async (req, res, next) => {
     const [ err, response ] = await to(Account.findById({ id: req.user._id }));

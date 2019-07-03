@@ -2,7 +2,9 @@ const jwt = require('jsonwebtoken');
 const status = require('http-status');
 const { to } = require('await-to-js');
 
-module.exports = ({ logger, accountService: Account }) => {
+module.exports = ({ logger, accountGRPCClientService }) => {
+  const Account = accountGRPCClientService.account;
+  
   logger.info('Wiring authentication middlewares');
 
   const requireAuthEmail = async (req, res, next) => {

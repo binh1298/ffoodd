@@ -43,13 +43,13 @@ registerApplicationDependences()
     const connectToServices = container.resolve('connectToServices');
     return connectToServices();
   })
-  .then(services => {
+  .then(gRPCClientServices => {
     const logger = container.resolve('logger');
 
-    for (let service in services) {
+    for (let service in gRPCClientServices) {
       logger.info(`SERVICE - DI register <---- ${service}`);
       container.register({
-        [service]: asFunction(services[service])
+        [service]: asValue(gRPCClientServices[service])
       });
     }
   })

@@ -16,11 +16,11 @@ const packageDefinition = protoLoader.loadSync(REGISTER_PROTO_PATH, {
   oneofs: true
 });
 
-const start = async () => {
+const start = async SERVER_ADDRESS => {
   const registerProto = grpc.loadPackageDefinition(packageDefinition).register;
 
   const registerClient = new registerProto.Register(
-    process.env.SERVICE_FFOODD_ACCOUNT_SERVER_ADDRESS,
+    SERVER_ADDRESS,
     grpc.credentials.createInsecure()
   );
 

@@ -6,7 +6,7 @@ const { to } = require('await-to-js');
 
 const registerClientService = require('./grpc-clients/register.client');
 
-const connect = ({ logger }) => () => {
+const connect = ({ logger }) => async () => {
   const startGRPCClient = async ({ name: CLIENT_NAME }) => {
     const PROTO_PATH = path.join(__dirname, `grpc-protos/temp/${ CLIENT_NAME }.proto`);
     const SERVICE_SERVER_ADDRESS_ENV = `SERVICE_FFOODD_${ CLIENT_NAME.toUpperCase() }_SERVER_ADDRESS`;
@@ -26,8 +26,6 @@ const connect = ({ logger }) => () => {
       process.env[SERVICE_SERVER_ADDRESS_ENV],
       grpc.credentials.createInsecure()
     );
-
-    logger.info(`ACCOUNT_GRPC_SERVER: ${CLIENT_NAME} service connected`);
 
     return client;
   };
@@ -73,17 +71,23 @@ const connect = ({ logger }) => () => {
     });
   }
   
-  return new Promise((resolve, reject) => {
-    registerClientService.start()
+  const connectToGRPCServer = (SERVER_NAME, SERVER_ADDRESS) => new Promise((resolve, reject) => {
+    registerClientService.start(SERVER_ADDRESS)
       .then(registerClient => {
-        const clients = {  };
+        const gRPCClientService = {};
 
-        logger.info('ACCOUNT_GRPC_SERVER: retriving proto files');
+        logger.info(`${SERVER_NAME}: retriving proto files`);
 
         registerClient.registerServiceProtos({}, async (err, res) => {
+          if (err) {
+            logger.info(`${SERVER_NAME}: Can not connect to gRPC-server`);
+            resolve({ accountService: () => {} });
+            return;
+          }
+
           const { protoFiles, protoModelFiles } = res;
         
-          logger.info('ACCOUNT_GRPC_SERVER: register-service-protos connected');
+          logger.info(`${SERVER_NAME}: register-service-protos connected`);
 
           if (err) return reject(err);
 
@@ -101,14 +105,20 @@ const connect = ({ logger }) => () => {
             const [ err1, client ] = await to(startGRPCClient({ name }));
             if (err1) return reject(err1);
 
-            const asyncClient = makeAsyncWithProxyObject(client);
-            clients[name + 'Service'] = () => asyncClient;
+            logger.info(`${SERVER_NAME}: services connected`);
+
+            gRPCClientService[name] = makeAsyncWithProxyObject(client);
           }
 
-          resolve(clients);
+          resolve(gRPCClientService);
         });
       });
   })
+
+  return {
+    accountGRPCClientService: await connectToGRPCServer('ACCOUNT_GRPC_SERVER', process.env.SERVICE_FFOODD_ACCOUNT_SERVER_ADDRESS),
+    mealGRPCClientService: await connectToGRPCServer('MEAL_GRPC_SERVER', process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS)
+  };
 };
 
 

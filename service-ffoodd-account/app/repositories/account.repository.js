@@ -20,7 +20,7 @@ module.exports = ({ db }) => {
   }
 
   const update = async ({ id, firstname, lastname, roles }) => {
-    return collection.updateOne({ _id: ObjectId(id) }, { $set: { fistname, firstname, roles } });
+    return collection.updateOne({ _id: ObjectId(id) }, { $set: { firstname, roles } });
   }
 
   const remove = async (id) => {
@@ -89,7 +89,7 @@ module.exports = ({ db }) => {
       return false;
     }
 
-    const newPassword = await bcript.hash(password, 10);
+    const newPassword = await bcrypt.hash(password, 10);
 
     collection.updateOne(account, { $set: { passsword: newPassword } });
 
@@ -97,7 +97,7 @@ module.exports = ({ db }) => {
   }
 
   const updatePasswordById = async ({ id, password }) => {
-    const newPassword = await bcript.hash(password, 10);
+    const newPassword = await bcrypt.hash(password, 10);
 
     collection.updateOne({ _id: ObjectId(id) }, { $set: { password: newPassword } });
   }
@@ -109,7 +109,7 @@ module.exports = ({ db }) => {
   }
 
   const updateEmailById = async ({ id, email }) => {
-    return collection.updateOne({ id: ObjectId(id) }, { $set: { email } });
+    return collection.updateOne({ _id: ObjectId(id) }, { $set: { email } });
   }
 
   /**private */
@@ -137,6 +137,7 @@ module.exports = ({ db }) => {
     isVerified,
     resetPassword,
     updatePasswordById,
-    findRolesById
+    findRolesById,
+    updateEmailById
   }
 }

@@ -1,11 +1,17 @@
 const axios = require('axios');
 const { to } = require('await-to-js');
 
-const THEMEALDB_API = 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772';
+const THEMEALDB_API = 'https://www.themealdb.com/api/json/v1/1/lookup.php';
 
-module.exports = ({ logger }) => async () => {
-  const [ err, meals ] = await to(axios.get(THEMEALDB_API));
+module.exports = ({ logger }) => async ({ id }) => {
+  const [ err, res ] = await to(axios.get(THEMEALDB_API, {
+    params: {
+      i: id
+    }
+  }));
   if (err) throw err;
+
+  const { meals } = res.data;
   if (!meals) return null;
 
   const meal = meals[0];
@@ -42,6 +48,8 @@ module.exports = ({ logger }) => async () => {
       ingredients: ingredients
     }
   };
+
+  logger.info(`Creating new ffoodd meal: ${ffooddMeal.name}`);
 
   return meal;
 }

@@ -4,8 +4,10 @@ const { to } = require('await-to-js');
 const THEMEALDB_API = 'https://www.themealdb.com/api/json/v1/1/categories.php';
 
 module.exports = ({ logger }) => async () => {
-  const [ err, categories ] = await to(axios.get(THEMEALDB_API));
+  const [ err, res ] = await to(axios.get(THEMEALDB_API));
   if (err) throw err;
+
+  const { categories } = res.data;
   if (!categories) return null; 
 
   for (category of categories) {

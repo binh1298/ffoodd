@@ -22,7 +22,7 @@ module.exports = ({ db }) => {
   }
 
   const update = async ({ _id, firstname, lastname, roles }) => {
-    return collection.updateOne({ _id: ObjectId(_id) }, { $set: { firstname, roles } });
+    return collection.updateOne({ _id: ObjectId(_id) }, { $set: { firstname, lastname, roles } });
   }
 
   const remove = async _id => {

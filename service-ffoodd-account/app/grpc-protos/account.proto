@@ -34,7 +34,7 @@ message CreateRequest {
 
 message UpdateRequest {
   string _id = 1;
-  string lasname = 2;
+  string lastname = 2;
   string firstname = 3;
   repeated string roles = 4;
 }

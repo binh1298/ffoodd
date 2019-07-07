@@ -5,9 +5,8 @@ const request = require('supertest');
 const SERVER_ADDRESS = '127.0.0.1:3002';
 const agent = request.agent(SERVER_ADDRESS);
 
-describe('Auth signin', () => {
+describe('Authorization', () => {
   const account = {
-    id: 12,
     username: 'quangdatpham',
     password: 'dat',
     email: 'quangdat2000.pham@gmail.com'

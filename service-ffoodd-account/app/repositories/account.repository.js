@@ -7,33 +7,35 @@ const { ObjectId } = require('mongodb');
 module.exports = ({ db }) => {
   const collection = db.collection('accounts')
   
-  const findById = async id => {
-    return collection.findOne({ _id: ObjectId(id) });
+  const findById = async _id => {
+    return collection.findOne({ _id: ObjectId(_id) });
   }
 
   const create = async ({ username, password, email, lastname, firstname }) => {
     const hashPassword = await bcrypt.hash(password, 10);
 
-    return collection.insertOne({
+    const created = await collection.insertOne({
       username, password: hashPassword, email, lastname, firstname
     });
+
+    return created.ops[0];
   }
 
-  const update = async ({ id, firstname, lastname, roles }) => {
-    return collection.updateOne({ _id: ObjectId(id) }, { $set: { firstname, roles } });
+  const update = async ({ _id, firstname, lastname, roles }) => {
+    return collection.updateOne({ _id: ObjectId(_id) }, { $set: { firstname, roles } });
   }
 
-  const remove = async (id) => {
-    return collection.deleteOne({ _id: ObjectId(id) });
+  const remove = async _id => {
+    return collection.deleteOne({ _id: ObjectId(_id) });
   }
 
-  const removeMany = async ({ ids }) => {
-    return collection.deleteMany({ _id: { $in: ids } });
+  const removeMany = async ({ _ids }) => {
+    return collection.deleteMany({ _id: { $in: _ids } });
   }
 
-  const newEmailVerifyKey = async ({ id, username }) => {
+  const newEmailVerifyKey = async ({ _id, username }) => {
     const queryOptions = {};
-    if (id) queryOptions._id =  ObjectId(id);
+    if (_id) queryOptions._id =  ObjectId(_id);
     if (username) queryOptions.username =  username;
 
     const verifyEmailKey = randomKey(6);
@@ -45,8 +47,8 @@ module.exports = ({ db }) => {
     return { email: account.email, verifyEmailKey };
   }
 
-  const verifyEmail = async ({ id, email }) => {
-    const account = await collection.findOne({ _id: ObjectId(id) });
+  const verifyEmail = async ({ _id, email }) => {
+    const account = await collection.findOne({ _id: ObjectId(_id) });
 
     if (account.verifyEmailKey != key)
       return false;
@@ -67,8 +69,8 @@ module.exports = ({ db }) => {
     return await collection.findOne({ username });
   }
 
-  const isVerified = async id => {
-    const account = await collection.findOne({ _id: OjbectId(id) });
+  const isVerified = async _id => {
+    const account = await collection.findOne({ _id: OjbectId(_id) });
 
     return account.isVerified;
   }
@@ -96,20 +98,20 @@ module.exports = ({ db }) => {
     return true;
   }
 
-  const updatePasswordById = async ({ id, password }) => {
+  const updatePasswordById = async ({ _id, password }) => {
     const newPassword = await bcrypt.hash(password, 10);
 
-    collection.updateOne({ _id: ObjectId(id) }, { $set: { password: newPassword } });
+    collection.updateOne({ _id: ObjectId(_id) }, { $set: { password: newPassword } });
   }
 
-  const findRolesById = async id => {
-    const account = await collection.findOne({ _id: ObjectId(id) });
+  const findRolesById = async _id => {
+    const account = await collection.findOne({ _id: ObjectId(_id) });
 
     return account.roles;
   }
 
-  const updateEmailById = async ({ id, email }) => {
-    return collection.updateOne({ _id: ObjectId(id) }, { $set: { email } });
+  const updateEmailById = async ({ _id, email }) => {
+    return collection.updateOne({ _id: ObjectId(_id) }, { $set: { email } });
   }
 
   /**private */

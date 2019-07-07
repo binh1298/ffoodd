@@ -24,7 +24,7 @@ module.exports = ({ logger, accountGRPCClientService }) => {
           message: 'Token invalid',
         });
       
-      const [ err1, account ] = await to(Account.findById({ id: decodedPayload._id }));
+      const [ err1, account ] = await to(Account.findById({ _id: decodedPayload._id }));
       if (err1) return next(err1);
 
       if (!account)
@@ -68,7 +68,7 @@ module.exports = ({ logger, accountGRPCClientService }) => {
   };
 
   const requireRole = roles => async (req, res, next) => {
-    const [ err, accountRoles ] = await to(Account.findRolesById(req.user._id));
+    const [ err, accountRoles ] = await to(Account.findRolesById({ _id: req.user._id }));
     if (err) return next(err);
 
     if (roles.some(role => accountRoles.includes(role)))

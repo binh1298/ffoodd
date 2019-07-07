@@ -5,7 +5,7 @@ module.exports = ({ accountGRPCClientService, logger }) => {
   const Account = accountGRPCClientService.account;
   
   const getProfile = async (req, res, next) => {
-    const [ err, response ] = await to(Account.findById({ id: req.user._id }));
+    const [ err, response ] = await to(Account.findById({ _id: req.user._id }));
     if (err) return next(err);
 
     res.status(status.OK)
@@ -18,7 +18,7 @@ module.exports = ({ accountGRPCClientService, logger }) => {
 
   const putProfile = async (req, res, next) => {
     const { firstname, lastname } = req.body;
-    const [ err ] = await to(Account.update({ id: req.user._id, firstname, lastname }));
+    const [ err ] = await to(Account.update({ _id: req.user._id, firstname, lastname }));
     if (err) return next(err);
 
     res.status(status.OK)
@@ -30,7 +30,7 @@ module.exports = ({ accountGRPCClientService, logger }) => {
 
   const patchPassword = async (req, res, next) => {
     const { password } = req.body;
-    const [ err ] = await to(Account.updatePasswordById({ id: req.user._id, password }));
+    const [ err ] = await to(Account.updatePasswordById({ _id: req.user._id, password }));
     if (err) return next(err);
 
     res.status(status.OK)
@@ -42,7 +42,7 @@ module.exports = ({ accountGRPCClientService, logger }) => {
 
   const patchEmail = async (req, res, next) => {
     const { email } = req.body;
-    const [ err ] = await to(Account.updateEmailById({ id: req.user._id, email }));
+    const [ err ] = await to(Account.updateEmailById({ _id: req.user._id, email }));
     if (err) return next(err);
 
     res.status(status.OK)

@@ -54,7 +54,7 @@ module.exports = ({ accountGRPCClientService }) => {
     const { username, password, email, firstname, lastname } = req.body;
     const newAccount = { username, password, email, firstname, lastname };
     // if not taken
-    const [ err, account ] = await to(Account.create({ account: newAccount }));
+    const [ err, response ] = await to(Account.create({ account: newAccount }));
     if (err) return next(err);
 
     // sendEmail
@@ -62,12 +62,12 @@ module.exports = ({ accountGRPCClientService }) => {
     res.status(200).send({
       success: true,
       message: "Registered",
-      token: generateJWT(account)
+      token: generateJWT(response.account)
     });
   }
 
   const getVerifyEmail = async (req, res, next) => {
-    const [ err, { email, verifyEmailKey } ] = await to(Account.newEmailVerifyKey({ id: req.user._id }));
+    const [ err, { email, verifyEmailKey } ] = await to(Account.newEmailVerifyKey({ _id: req.user._id }));
     if (err) return next(err);
 
     // sendEmail
@@ -81,7 +81,7 @@ module.exports = ({ accountGRPCClientService }) => {
   const patchVerifyEmail = async (req, res, next) => {
     const { key } = req.body;
 
-    const [ err, result ] = await to(Account.verifyEmail({ id: req.user._id, key }));
+    const [ err, result ] = await to(Account.verifyEmail({ _id: req.user._id, key }));
     if (err) return next(err);
 
     // sendEmail

@@ -22,17 +22,17 @@ const messages = {
 
 module.exports = ({ accountRepository: Account }) => {
   const findById = async (call, callback, next) => {
-    const [ err, account ] = await to(Account.findById(call.request.id));
+    const [ err, account ] = await to(Account.findById(call.request._id));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_ID, account });
   }
 
   const create = async (call, callback, next) => {
-    const [ err ] = await to(Account.create(call.request.account));
+    const [ err, account ] = await to(Account.create(call.request.account));
     if (err) return next(err);
-
-    callback(null, { success: true, message: messages.ACCOUNT_CREATED });
+    
+    callback(null, { success: true, message: messages.ACCOUNT_CREATED, account });
   }
 
   const update = async (call, callback, next) => {
@@ -43,7 +43,7 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const remove = async (call, callback, next) => {
-    const [ err ] = await to(Account.remove(call.request.id));
+    const [ err ] = await to(Account.remove(call.request._id));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_REMOVED });
@@ -102,7 +102,7 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const findRolesById = async (call, callback, next) => {
-    const [ err, roles ] = await to(Account.findRolesById(call.request.id));
+    const [ err, roles ] = await to(Account.findRolesById(call.request._id));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_FIND_ROLES_BY_ID });

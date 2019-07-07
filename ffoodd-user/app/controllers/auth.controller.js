@@ -22,7 +22,7 @@ module.exports = ({ accountGRPCClientService }) => {
           success: false,
           message: 'Login failed',
           errors: {
-              account: 'Account doesn\'t exist!'
+            account: 'Account doesn\'t exist!'
           },
           token: null
         });
@@ -45,7 +45,7 @@ module.exports = ({ accountGRPCClientService }) => {
       .send({
         success: true,
         message: 'Login successfully',
-        error: null,
+        errors: null,
         token: generateJWT(account)
       });
   }

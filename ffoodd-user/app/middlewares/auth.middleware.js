@@ -8,7 +8,7 @@ module.exports = ({ logger, accountGRPCClientService }) => {
   logger.info('Wiring authentication middlewares');
 
   const requireAuthEmail = async (req, res, next) => {
-    const token = req.headers['authorization'];
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
     
     if (!token) {
       return res.status(status.UNAUTHORIZED).send({
@@ -16,6 +16,9 @@ module.exports = ({ logger, accountGRPCClientService }) => {
         message: 'This site require authorization'
       });
     }
+
+    if (token.startsWith('Bearer '))
+      token = token.slice(7);
 
     jwt.verify(token, process.env.JWT_SECRET, async (err0, decodedPayload) => {
       if (err0)
@@ -46,14 +49,17 @@ module.exports = ({ logger, accountGRPCClientService }) => {
   };
 
   const requireAuth = async (req, res, next) => {
-    const token = req.headers['authorization'];
-    
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+
     if (!token) {
       return res.status(status.UNAUTHORIZED).send({
         success: false,
         message: 'This site require authorization'
       });
     }
+
+    if (token.startsWith('Bearer '))
+      token = token.slice(7);
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decodedPayload) => {
       if (err)

@@ -5,11 +5,20 @@ const { to } = require('await-to-js');
 const jwt = require('jsonwebtoken');
 const status = require('http-status');
 
-module.exports = ({ accountGRPCClientService }) => {
+module.exports = ({ accountGRPCClientService, loginValidator }) => {
   const Account = accountGRPCClientService.account;
 
   const postSignIn = async (req, res, next) => {
     const { username, password } = req.body;
+    const { error, value } = loginValidator.validate({ username, password });
+    if (error)
+      return res.status(status.OK)
+        .send({
+          success: false,
+          message: 'ValidationError',
+          error,
+          token: null
+        });
 
     const [ err0, response ] = await to(Account.findByUsername({ username }));
     if (err0) return next(err0);
@@ -21,8 +30,8 @@ module.exports = ({ accountGRPCClientService }) => {
         .send({
           success: false,
           message: 'Login failed',
-          errors: {
-              account: 'Account doesn\'t exist!'
+          error: {
+            message: 'Account doesn\'t exist!'
           },
           token: null
         });
@@ -35,8 +44,8 @@ module.exports = ({ accountGRPCClientService }) => {
         .send({
           success: false,
           message: 'Login failed',
-          errors: {
-            password: 'password incorrect'
+          error: {
+            message: 'password incorrect'
           },
           token: null
         });

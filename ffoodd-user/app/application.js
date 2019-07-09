@@ -10,6 +10,7 @@ const middlewares = require('./middlewares/');
 const controllers = require('./controllers/');
 const services = require('./services/');
 const routes = require('./routes/');
+const validators = require('./validators');
 
 let container;
 
@@ -20,7 +21,8 @@ const registerApplicationDependences = async () => {
   const resolveds = await Promise.all([
     middlewares.initialize(),
     controllers.initialize(),
-    routes.initialize()
+    routes.initialize(),
+    validators.initialize()
   ]);
 
   for (let resolved of resolveds) {

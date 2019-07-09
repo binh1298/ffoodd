@@ -76,6 +76,7 @@ describe('Authorization', () => {
       .end((err, res) => {
         assert.equal(err, null);
         assert.equal(res.body.success, false);
+        assert.equal(res.body.message, 'ValidationError');
         assert.equal(res.body.token, null);
         done();
       });

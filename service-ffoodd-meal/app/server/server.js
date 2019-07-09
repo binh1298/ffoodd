@@ -1,16 +1,23 @@
-const PROTO_PATH = __dirname + '/../grpc-protos/meal.proto';
-const protoLoader = require('@grpc/proto-loader');
 const grpc = require('grpc');
+const protoLoader = require('@grpc/proto-loader');
 
-const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+const path = require('path');
+
+const MEAL_PROTO_PATH = path.join(__dirname, '/../grpc-protos/meal.proto');
+const CATEGORY_PROTO_PATH = path.join(__dirname, '/../grpc-protos/category.proto');
+
+const packageDefinitionOptions = {
   keepCase: true,
   longs: String,
   enums: String,
   defaults: true,
   oneofs: true
-});
+};
 
-const start = ({ logger, mealRoute }) => () =>
+const mealPackageDefinition = protoLoader.loadSync(MEAL_PROTO_PATH, packageDefinitionOptions);
+const categoryPackageDefinition = protoLoader.loadSync(CATEGORY_PROTO_PATH, packageDefinitionOptions);
+
+const start = ({ logger, mealRoute, categoryRoute }) => () =>
   new Promise((resolve, reject) => {
     // Override default error behaviors
     process.on('uncaughtException', err => {
@@ -22,15 +29,15 @@ const start = ({ logger, mealRoute }) => () =>
     });
 
     // Init grpc
-    const meal_proto = grpc.loadPackageDefinition(packageDefinition).meal;
+    const MealProto = grpc.loadPackageDefinition(mealPackageDefinition).meal;
+    const CategoryProto = grpc.loadPackageDefinition(categoryPackageDefinition).category;
 
     const server = new grpc.Server();
-    server.addService(meal_proto.Meal.service, mealRoute);
 
-    server.bind(
-      process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS,
-      grpc.ServerCredentials.createInsecure()
-    );
+    server.addService(MealProto.Meal.service, mealRoute);
+    server.addService(CategoryProto.Category.service, categoryRoute);
+
+    server.bind(process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());
     server.start();
 
     logger.info('gRPC Server is ready!');

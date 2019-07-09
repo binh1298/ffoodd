@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package category;
+
+import "models/category.model.proto";
+
+service Category {
+  rpc Create (DefaultCategoryRequest) returns (DefaultReply) {}
+  
+  rpc FindById (RequiredIdRequest) returns (DefaultReply) {}
+
+  rpc Remove  (RequiredIdRequest) returns (DefaultReply) {}
+
+  rpc Update (DefaultCategoryRequest) returns (DefaultReply) {}
+
+}
+
+message DefaultCategoryRequest {
+  CategoryModel category = 1;
+}
+
+message RequiredIdRequest {
+  required string id = 1;
+}
+
+message DefaultReply {
+  bool success = 1;
+  string message = 2;
+}

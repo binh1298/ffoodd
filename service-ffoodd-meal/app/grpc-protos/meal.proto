@@ -15,6 +15,7 @@ service Meal {
   rpc Remove (RequiredIdRequest) returns (DefaultReply) {}
 
   rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
+
 }
 
 message DefaultMealRequest {

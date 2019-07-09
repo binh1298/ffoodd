@@ -7,11 +7,11 @@ import "models/category.model.proto";
 service Category {
   rpc Create (DefaultCategoryRequest) returns (DefaultReply) {}
   
-  rpc FindById (RequiredIdRequest) returns (DefaultReply) {}
+  rpc FindById (RequiredIdRequest) returns (DefaultCategoryReply) {}
 
   rpc Remove  (RequiredIdRequest) returns (DefaultReply) {}
 
-  rpc Update (DefaultCategoryRequest) returns (DefaultReply) {}
+  rpc Update (DefaultCategoryRequest) returns (DefaultCategoryReply) {}
 
 }
 
@@ -26,4 +26,10 @@ message RequiredIdRequest {
 message DefaultReply {
   bool success = 1;
   string message = 2;
+}
+
+message DefaultCategoryReply {
+  bool success = 1;
+  string message = 2;
+  CategoryModel category = 3;
 }

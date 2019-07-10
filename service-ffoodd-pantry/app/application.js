@@ -7,6 +7,7 @@ const server = require('./server/server');
 const config = require('../config/');
 
 const controllers = require('./controllers/');
+const services = require('./services/');
 const routes = require('./routes/');
 const libs = require('./libs/');
 const pantries = require('./pantries/');
@@ -36,11 +37,26 @@ const registerApplicationDependences = async () => {
   }
 
   container.register({
-    startServer: asFunction(server.start)
+    startServer: asFunction(server.start),
+    connectToServices: asFunction(services.connect)
   });
 }
 
 registerApplicationDependences()
+  .then(() => {
+    const connectToServices = container.resolve('connectToServices');
+    return connectToServices();
+  })
+  .then(gRPCClientServices => {
+    const logger = container.resolve('logger');
+
+    for (let service in gRPCClientServices) {
+      logger.info(`SERVICE - DI register <---- ${service}`);
+      container.register({
+        [service]: asValue(gRPCClientServices[service])
+      });
+    }
+  })
   .then(() => {
     const startServer = container.resolve('startServer');
     return startServer();

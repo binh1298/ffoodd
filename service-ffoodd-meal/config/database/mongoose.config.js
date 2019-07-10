@@ -11,9 +11,7 @@ const connect = () =>
         resolve(client.connection);
       })
       .catch(err => {
-        reject(
-          new Error(`Error while connecting to MongoDB, err: ${err.stack}`)
-        );
+        reject(new Error(`Error while connecting to MongoDB, err: ${err.stack}`));
       });
   });
 

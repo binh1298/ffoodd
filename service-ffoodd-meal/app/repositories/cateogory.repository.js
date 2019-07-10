@@ -3,8 +3,8 @@
 const CategoryModel = require('../models/category.model');
 
 module.exports = () => {
-  const create = async meal => {
-    const newCategory = new MealModel(meal);
+  const create = async category => {
+    const newCategory = new CategoryModel(category);
     newCategory.save();
   };
 

@@ -33,7 +33,7 @@ const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware, rootRo
   app.use(bodyParser.json());
 
   app.engine('json', expressJsonViews({ helpers }));
-  app.set('views', path.join(__dirname, 'views'));
+  app.set('views', path.join(__dirname, '../views'));
   app.set('view engine', 'json');
 
   app.use(helmet());

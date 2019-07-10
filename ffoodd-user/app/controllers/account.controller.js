@@ -8,12 +8,11 @@ module.exports = ({ accountGRPCClientService, logger }) => {
     const [ err, response ] = await to(Account.findById({ _id: req.user._id }));
     if (err) return next(err);
 
-    res.status(status.OK)
-      .send({
-        success: true,
-        message: 'Get profile',
-        profile: response.account
-      });
+    res.status(status.OK).render('profile', { data: {
+      success: true,
+      message: 'Get profile',
+      profile: response.account
+    }});
   }
 
   const putProfile = async (req, res, next) => {

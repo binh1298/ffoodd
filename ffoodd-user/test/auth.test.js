@@ -10,7 +10,7 @@ describe('Authorization', () => {
   const account = {
     username: 'quangdatpham',
     password: 'dat',
-    email: 'quangdatstatus.OK0.pham@gmail.com'
+    email: 'quangdat2000.pham@gmail.com'
   };
 
   it('Should signup successfully', done => {

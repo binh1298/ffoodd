@@ -11,6 +11,7 @@ const controllers = require('./controllers/');
 const services = require('./services/');
 const routes = require('./routes/');
 const validators = require('./validators');
+const helpers = require('./helpers/');
 
 let container;
 
@@ -36,7 +37,8 @@ const registerApplicationDependences = async () => {
 
   container.register({
     startServer: asFunction(server.start),
-    connectToServices: asFunction(services.connect)
+    connectToServices: asFunction(services.connect),
+    helpers: asValue(helpers)
   });
 }
 

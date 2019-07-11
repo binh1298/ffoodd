@@ -6,44 +6,42 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports = ({ logger }) => {
 
   const send = async options => {
-    const { recipients, sender, subject, text, html, cc, bcc, replyTo } = options;
+    const msg = {
+      to: options.recipients,
+      cc: options.cc,
+      bcc: options.bcc,
+      from: options.from,
+      replyTo: options.replyTo,
+      subject: options.subject,
+      text: options.text,
+      html: options.html,
+      templateId: options.templateId,
+      substitutionWrappers: ['{{', '}}'],
+      substitutions: options.substitutions,
+      attachments: options.attachments,
+      categories: options.categories,
+      sendAt: options.sendAt,
+      headers: {
+        'X-CustomHeader': options.customHeader,
+      },
+      sections: {},
+      customArgs: options.customArgs,
+      batchId: options.batchId,
+      asm: {
+        groupId: 1
+      },
+      ipPoolName: options.ipPoolName,
+      mailSettings: {},
+      trackingSettings: {},
+    };
 
-    const [ err ] = await to(sgMail.send({
-      to: recipients,
-      cc,
-      bcc,
-      from: sender,
-      replyTo,
-      subject,
-      text,
-      html
-    }));
+    const [ err ] = await to(sgMail.send(smg));
     if (err) throw err;
 
     logger.info(`Email with subject *${subject}* has been sent to`, recipients);
   }
 
-  const sendWithTemplate = async options => {
-    const { recipients, sender, subject, text, html, cc, bcc, replyTo, templateId, dynamicTemplateData } = options;
-    
-    const [ err ] = await to(sgMail.send({
-      to: recipients,
-      cc,
-      bcc,
-      from: sender,
-      replyTo,
-      subject,
-      text,
-      html,
-      templateId,
-      dynamic_template_data: dynamicTemplateData
-    }));
-
-    logger.info(`Email with subject *${subject}* has been sent to`, recipients);
-  }
-
   return {
-    send,
-    sendWithTemplate
+    send
   };
 }

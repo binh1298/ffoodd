@@ -7,7 +7,7 @@ module.exports = ({ logger }) => {
 
   const send = async options => {
     const msg = {
-      to: options.recipients,
+      to: options.to,
       cc: options.cc,
       bcc: options.bcc,
       from: options.from,
@@ -27,18 +27,15 @@ module.exports = ({ logger }) => {
       sections: {},
       customArgs: options.customArgs,
       batchId: options.batchId,
-      asm: {
-        groupId: 1
-      },
       ipPoolName: options.ipPoolName,
       mailSettings: {},
       trackingSettings: {},
     };
 
-    const [ err ] = await to(sgMail.send(smg));
+    const [ err ] = await to(sgMail.send(msg));
     if (err) throw err;
 
-    logger.info(`Email with subject *${subject}* has been sent to`, recipients);
+    logger.info(`Email with subject *${options.subject}* has been sent to`, { to: options.recipients });
   }
 
   return {

@@ -48,5 +48,5 @@ registerApplicationDependencies()
   .catch(err => {
     const logger = container.resolve('logger');
     logger.error(err.message);
-    logger.error(err.stack);
+    logger.error(err.stack, err);
   });

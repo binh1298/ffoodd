@@ -17,8 +17,7 @@ module.exports = () => {
     return MealModel.findByIdAndRemove(id);
   };
 
-  const update = async meal => {
-    const { id, name, description, origin, category_id, image, recipe } = meal;
+  const update = async ({ id, name, description, origin, category_id, image, recipe }) => {
     let editedMeal = await MealModel.findById(id);
     if (!editedMeal) return;
     editedMeal.name = name;

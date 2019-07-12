@@ -39,7 +39,7 @@ module.exports = ({ mealRepository: Meal }) => {
     const [err, result] = await to(Meal.remove({ id }));
     if (err) return next(err);
 
-    if (result)
+    if (!result)
       return callback(null, {
         success: false,
         message: messages.MEAL_NOT_FOUND

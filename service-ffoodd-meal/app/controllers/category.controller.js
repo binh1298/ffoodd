@@ -39,7 +39,7 @@ module.exports = ({ categoryRepository: Category }) => {
     const [err, result] = await to(Category.remove({ id }));
     if (err) return next(err);
 
-    if (result)
+    if (!result)
       return callback(null, {
         success: false,
         message: messages.CATEGORY_NOT_FOUND

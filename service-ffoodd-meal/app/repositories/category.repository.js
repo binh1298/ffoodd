@@ -15,10 +15,14 @@ module.exports = () => {
     return CategoryModel.findByIdAndRemove(id);
   };
 
-  const update = async category => {
-    if (!(await CategoryModel.findById(category.id))) return;
-    category.save();
-    return category;
+  const update = async ({ id, name, description, imageUrl }) => {
+    let editedCategory = await CategoryModel.findById(id);
+    if (!editedCategory) return;
+    editedCategory.name = name;
+    editedCategory.description = description;
+    editedCategory.imageUrl = imageUrl;
+    editedCategory.save();
+    return editedCategory;
   };
   return {
     create,

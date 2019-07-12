@@ -11,16 +11,11 @@ module.exports = ({ logger }) => {
       cc: options.cc,
       bcc: options.bcc,
       from: options.from,
-      replyTo: options.replyTo,
       subject: options.subject,
-      text: options.text,
-      html: options.html,
-      templateId: options.templateId,
       substitutionWrappers: ['{{', '}}'],
       substitutions: options.substitutions,
       attachments: options.attachments,
       categories: options.categories,
-      sendAt: options.sendAt,
       headers: {
         'X-CustomHeader': options.customHeader,
       },
@@ -29,13 +24,35 @@ module.exports = ({ logger }) => {
       batchId: options.batchId,
       ipPoolName: options.ipPoolName,
       mailSettings: {},
-      trackingSettings: {},
+      trackingSettings: {}
     };
+
+    if (options.text)
+      msg.text = options.text;
+
+    if (options.html)
+      msg.html = options.html;
+
+    if (options.sendAt)
+      msg.sendAt = parseInt(options.sendAt);
+
+    if (options.replyTo)
+      msg.replyTo = options.replyTo;
+
+    if (options.templateId)
+      msg.templateId = options.templateId;
+
+    if (
+      options.attachments
+      && options.attachments.constructor === Array
+      && options.attachments.length !== 0
+    )
+      msg.attachments = options.attachments;
 
     const [ err ] = await to(sgMail.send(msg));
     if (err) throw err;
 
-    logger.info(`Email with subject *${options.subject}* has been sent to`, { to: options.recipients });
+    logger.info(`Email with subject *${options.subject}* has been sent to`, { to: options.to });
   }
 
   return {

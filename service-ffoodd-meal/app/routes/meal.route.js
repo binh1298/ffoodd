@@ -5,6 +5,7 @@ module.exports = ({ mealController: controller, createRoute }) => {
   router.findById = createRoute(controller.findById);
   router.remove = createRoute(controller.remove);
   router.update = createRoute(controller.update);
+  router.review = createRoute(controller.review);
 
   return router;
 };

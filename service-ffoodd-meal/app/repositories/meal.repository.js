@@ -1,7 +1,6 @@
 'use strict';
 
 const MealModel = require('../models/meal.model');
-const ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = () => {
   const create = async meal => {
@@ -10,7 +9,7 @@ module.exports = () => {
   };
 
   const findById = async ({ id }) => {
-    return MealModel.findById(id);
+    return await MealModel.findById(id);
   };
 
   const remove = async ({ id }) => {
@@ -30,10 +29,17 @@ module.exports = () => {
     editedMeal.save();
     return editedMeal;
   };
+
+  const addReview = async (meal, review_id) => {
+    meal.reviews.push(review_id);
+    await meal.save();
+    return meal;
+  };
   return {
     create,
     findById,
     remove,
-    update
+    update,
+    addReview
   };
 };

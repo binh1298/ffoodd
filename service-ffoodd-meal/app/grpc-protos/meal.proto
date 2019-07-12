@@ -16,7 +16,7 @@ service Meal {
 
   rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
 
-  rpc Review(ReviewMealRequest) returns (DefaultMealReply) {}
+  rpc Review(ReviewMealRequest) returns (DefaultReply) {}
 
   rpc getReviewsById(RequiredIdRequest) returns (DefaultReviewsReply) {}
 

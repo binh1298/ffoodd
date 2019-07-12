@@ -3,8 +3,9 @@ syntax = "proto3";
 package models;
 
 message ReviewModel {
-  string account_id = 1;
-  float rating = 2;
-  string content = 3;
+  string id = 1;
+  string account_id = 2;
+  float rating = 3;
+  string content = 4;
 }
 

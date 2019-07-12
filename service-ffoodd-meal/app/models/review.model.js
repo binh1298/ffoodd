@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const ReviewSchema = new mongoose.Schema({
-  account_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Account'
-  },
+  // account_id: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Account'
+  // },
   rating: {
     type: Number,
     min: 0,

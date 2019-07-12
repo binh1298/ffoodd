@@ -31,19 +31,8 @@ const MealSchema = new mongoose.Schema({
   },
   reviews: [
     {
-      account_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Account'
-      },
-      rating: {
-        type: Number,
-        min: 0,
-        max: 4
-      },
-      content: {
-        type: String,
-        required: true
-      }
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Review'
     }
   ],
   recipe: {

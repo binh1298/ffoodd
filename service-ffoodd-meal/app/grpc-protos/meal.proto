@@ -16,6 +16,13 @@ service Meal {
 
   rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
 
+  rpc Review(ReviewMealRequest) returns (DefaultMealReply) {}
+
+  rpc getReviewsById(RequiredIdRequest) returns (DefaultReviewsReply) {}
+
+  rpc UpdateReview(ReviewMealRequest) returns (DefaultMealReply) {}
+
+  rpc RemoveReview(ReviewMealRequest) returns (DefaultMealReply) {}
 }
 
 message DefaultMealRequest {
@@ -33,10 +40,12 @@ message UpdateMealRequest {
   string origin = 4;
   string image = 5;
   string category_id = 6;
-  repeated ReviewModel reviews = 7;
-  RecipeModel recipe = 8;
+  RecipeModel recipe = 7;
 }
-
+message ReviewMealRequest {
+  required string meal_id = 1;
+  required ReviewModel review = 2;
+}
 message DefaultReply {
   bool success = 1;
   string message = 2;
@@ -46,4 +55,10 @@ message DefaultMealReply {
   bool success = 1;
   string message = 2;
   MealModel meal = 3;
+}
+
+message DefaultReviewsReply {
+  bool success = 1;
+  string message = 2;
+  repeated ReviewModel review = 3;
 }

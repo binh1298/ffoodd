@@ -7,10 +7,12 @@ const morgan = require('morgan');
 const appRoot = require('app-root-path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const expressJsonViews= require('express-json-views');
+const path = require('path');
 
 let morganFormat = ':method :url :status :res[content-length] - :response-time ms';
 
-const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware, rootRoute }) => async () => {
+const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware, rootRoute, helpers }) => async () => {
   process.on('uncaughtException', err => {  
     logger.error('Unhandled Exception', err);
   });
@@ -30,8 +32,12 @@ const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware, rootRo
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
 
+  app.engine('json', expressJsonViews({ helpers }));
+  app.set('views', path.join(__dirname, '../views'));
+  app.set('view engine', 'json');
+
   app.use(helmet());
-  app.use(morgan(morganFormat, { stream: logger.stream}));
+  app.use(morgan(morganFormat, { stream: logger.stream }));
 
   app.use(cookieParser());
 

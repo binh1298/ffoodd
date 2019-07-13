@@ -50,3 +50,4 @@ registerApplicationDependencies()
     logger.error(err.message);
     logger.error(err.stack);
   });
+

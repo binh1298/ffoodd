@@ -31,20 +31,20 @@ const messages = {
 
 module.exports = ({ accountRepository: Account }) => {
   const findById = async (call, callback, next) => {
-    const [ err, account ] = await to(Account.findById(call.request.id));
+    const [ err, account ] = await to(Account.findById(call.request._id));
     if (err) return next(err);
 
     if (!account)
       return callback(null, { success: true, message: messages.ACCOUNT_NOT_FOUND, account: null });
 
-    callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_ID });
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_ID, account });
   }
 
   const create = async (call, callback, next) => {
-    const [ err ] = await to(Account.create(call.request.account));
+    const [ err, account ] = await to(Account.create(call.request.account));
     if (err) return next(err);
-
-    callback(null, { success: true, message: messages.ACCOUNT_CREATED });
+    
+    callback(null, { success: true, message: messages.ACCOUNT_CREATED, account });
   }
 
   const update = async (call, callback, next) => {
@@ -55,7 +55,7 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const remove = async (call, callback, next) => {
-    const [ err ] = await to(Account.remove(call.request.id));
+    const [ err ] = await to(Account.remove(call.request._id));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_REMOVED });
@@ -84,7 +84,7 @@ module.exports = ({ accountRepository: Account }) => {
     if(err) return next(err);
 
     if (!result)
-       return callback({ success: false, message: messages.ACCOUNT_COULD_NOT_VERIFIED });
+      return callback({ success: false, message: messages.ACCOUNT_COULD_NOT_VERIFIED });
 
     callback({ success: false, message: messages.ACCOUNT_VERIFIED });
   }
@@ -104,7 +104,7 @@ module.exports = ({ accountRepository: Account }) => {
     if (err) return next(err);
 
     if (!result)
-       return callback(null, { success: false, message: messages.ACCOUNT_RESET_PASSWORD_FAILED});
+      return callback(null, { success: false, message: messages.ACCOUNT_RESET_PASSWORD_FAILED});
 
     callback(null, { success: true, message: messages.ACCOUNT_PASSWORD_RESETTED });
   }
@@ -117,7 +117,7 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const findRolesById = async (call, callback, next) => {
-    const [ err, roles ] = await to(Account.findRolesById(call.request.id));
+    const [ err, roles ] = await to(Account.findRolesById(call.request._id));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_FIND_ROLES_BY_ID });

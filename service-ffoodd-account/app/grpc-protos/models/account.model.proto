@@ -3,7 +3,7 @@ syntax = "proto3";
 package models;
 
 message AccountModel {
-  string id = 1;
+  string _id = 1;
   string username = 2;
   string password = 3;
   string email = 4;

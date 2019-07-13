@@ -2,11 +2,13 @@ const jwt = require('jsonwebtoken');
 const status = require('http-status');
 const { to } = require('await-to-js');
 
-module.exports = ({ logger, accountService }) => {
+module.exports = ({ logger, accountGRPCClientService }) => {
+  const Account = accountGRPCClientService.account;
+  
   logger.info('Wiring authentication middlewares');
 
   const requireAuthEmail = async (req, res, next) => {
-    const token = req.headers['authorization'];
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
     
     if (!token) {
       return res.status(status.UNAUTHORIZED).send({
@@ -15,38 +17,40 @@ module.exports = ({ logger, accountService }) => {
       });
     }
 
+    if (token.startsWith('Bearer '))
+      token = token.slice(7);
 
-    const [ err0, decodedPayload ] = await to(jwt.verify(token, process.env.JWT_SECRET));
-    if (err0)
-      return res.status(status.UNAUTHORIZED).send({
-        success: false,
-        message: 'Token invalid',
-      });
-    
-    const [ err1, account ] = await to(Account.findById(decodedPayload.id));
-    if (err1) return next(err1);
+    jwt.verify(token, process.env.JWT_SECRET, async (err0, decodedPayload) => {
+      if (err0)
+        return res.status(status.UNAUTHORIZED).send({
+          success: false,
+          message: 'Token invalid',
+        });
+      
+      const [ err1, account ] = await to(Account.findById({ _id: decodedPayload._id }));
+      if (err1) return next(err1);
 
-    if (!account)
-      return res.status(status.OK).send({
-        success: false,
-        message: 'Account does not exit'
-      });
+      if (!account)
+        return res.status(status.OK).send({
+          success: false,
+          message: 'Account does not exit'
+        });
 
-    if (!account.isVerified)
-      return res.status(status.UNAUTHORIZED).send({
-        success: false,
-        isVerified: false,
-        message: 'Account has not been verified'
-      });
-    
-    req.user = decodedPayload;
-    next();
-
+      if (!account.isVerified)
+        return res.status(status.UNAUTHORIZED).send({
+          success: false,
+          isVerified: false,
+          message: 'Account has not been verified'
+        });
+      
+      req.user = decodedPayload;
+      next();
+    })
   };
 
   const requireAuth = async (req, res, next) => {
-    const token = req.headers['authorization'];
-    
+    let token = req.headers['x-access-token'] || req.headers['authorization'];
+
     if (!token) {
       return res.status(status.UNAUTHORIZED).send({
         success: false,
@@ -54,20 +58,23 @@ module.exports = ({ logger, accountService }) => {
       });
     }
 
+    if (token.startsWith('Bearer '))
+      token = token.slice(7);
 
-    const [ err, decodedPayload ] = await to(jwt.verify(token, process.env.JWT_SECRET));
-    if (err)
-      return res.status(status.UNAUTHORIZED).send({
-        success: false,
-        message: 'Token invalid',
-      });
-    
-    req.user = decodedPayload;
-    next();
+    jwt.verify(token, process.env.JWT_SECRET, (err, decodedPayload) => {
+      if (err)
+        return res.status(status.UNAUTHORIZED).send({
+          success: false,
+          message: 'Token invalid',
+        });
+      
+      req.user = decodedPayload;
+      next();
+    });
   };
 
   const requireRole = roles => async (req, res, next) => {
-    const [ err, accountRoles ] = await to(Account.getRolesById(req.user.id));
+    const [ err, accountRoles ] = await to(Account.findRolesById({ _id: req.user._id }));
     if (err) return next(err);
 
     if (roles.some(role => accountRoles.includes(role)))

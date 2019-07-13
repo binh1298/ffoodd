@@ -30,6 +30,8 @@ service Account {
   rpc SendFriendRequest (SendFriendRequestRequest) returns (DefaultReply) {}
 
   rpc FindFriendRequests (RequireIdRequest) returns (FindFriendRequestsReply) {}
+
+  rpc FindSentFriendRequests (RequireIdRequest) returns (FindSentFriendRequestsReply) {}
 }
 
 message CreateRequest {
@@ -97,4 +99,10 @@ message FindFriendRequestsReply {
   bool success = 1;
   string message = 2;
   repeated AccountModel_1 friendRequests = 3;
+}
+
+message FindSentFriendRequestsReply {
+  bool success = 1;
+  string message = 2;
+  repeated AccountModel_1 sentFriendRequests = 3;
 }

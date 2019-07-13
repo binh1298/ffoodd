@@ -112,13 +112,13 @@ module.exports = ({ db }) => {
     return collection.updateOne({ id: ObjectId(id) }, { $set: { email } });
   }
 
-  const sendFriendRequest = async ({ self_id, target_id }) => {
-    collection.findOne({ _id: ObjectId(self_id) }, { $push: {
+  const sendFriendRequest = async ({ sender_id, target_id }) => {
+    collection.findOne({ _id: ObjectId(sender_id) }, { $push: {
       sentFriendRequests: target_id
     }});
     
     collection.findOne({ _id: ObjectId(target_id) }, { $push: {
-      friendRequests: _id
+      friendRequests: sender_id
     }});
   }
 
@@ -156,31 +156,31 @@ module.exports = ({ db }) => {
     return friendRequest;
   }
 
-  const acceptFriendRequest = async ({ self_id, target_id }) => {
-    const selfUpdateOptons = {
+  const acceptFriendRequest = async ({ sender_id, target_id }) => {
+    const senderUpdateOptons = {
       $push: { friends: target_id },
       $pull: { sentFriendRequests: target_id }
     };
 
     const targetUpdateOptons = {
-      $push: { friends: self_id },
-      $pull: { friendRequests: self_id }
+      $push: { friends: sender_id },
+      $pull: { friendRequests: sender_id }
     };
 
-    collection.updateOne({ _id: ObjectId(self_id) }, selfUpdateOptons);
+    collection.updateOne({ _id: ObjectId(sender_id) }, senderUpdateOptons);
     collection.updateOne({ _id: ObjectId(target_id) }, targetUpdateOptons);
   }
 
-  const declineFriendRequest = async ({ self_id, target_id }) => {
-    const selfUpdateOptons = {
+  const declineFriendRequest = async ({ sender_id, target_id }) => {
+    const senderUpdateOptons = {
       $pull: { sentFriendRequests: target_id }
     };
 
     const targetUpdateOptons = {
-      $pull: { friendRequests: self_id }
+      $pull: { friendRequests: sender_id }
     };
 
-    collection.updateOne({ _id: ObjectId(self_id) }, selfUpdateOptons);
+    collection.updateOne({ _id: ObjectId(sender_id) }, senderUpdateOptons);
     collection.updateOne({ _id: ObjectId(target_id) }, targetUpdateOptons);
   }
 

@@ -121,8 +121,8 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const sendFriendRequest = async (call, callback, next) => {
-    const { self_id, target_id } = call.request;
-    const [ err ] = await to(Account.sendFriendRequest({ self_id, target_id }));
+    const { sender_id, target_id } = call.request;
+    const [ err ] = await to(Account.sendFriendRequest({ sender_id, target_id }));
 
     callback(null, { success: true, message: messages.ACCOUNT_SENT_FRIEND_REQUEST });
   }
@@ -142,16 +142,16 @@ module.exports = ({ accountRepository: Account }) => {
   }
 
   const acceptFriendRequest = async (call, callback, next) => {
-    const { self_id, target_id } = call.request;
-    const [ err ] = await to(Account.acceptFriendRequest({ self_id, target_id }));
+    const { sender_id, target_id } = call.request;
+    const [ err ] = await to(Account.acceptFriendRequest({ sender_id, target_id }));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_ACCEPT_FRIEND_REQUEST });
   }
 
   const declineFriendRequest = async (call, callback, next) => {
-    const { self_id, target_id } = call.request;
-    const [ err ] = await to(Account.declineFriendRequest({ self_id, target_id }));
+    const { sender_id, target_id } = call.request;
+    const [ err ] = await to(Account.declineFriendRequest({ sender_id, target_id }));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_DECLINE_FRIEND_REQUEST }); 

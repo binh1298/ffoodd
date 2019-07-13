@@ -90,7 +90,7 @@ message UpdateEmailByIdRequest {
 }
 
 message FriendRequestRequest {
-  string self_id = 1;
+  string sender_id = 1;
   string target_id = 2;
 }
 

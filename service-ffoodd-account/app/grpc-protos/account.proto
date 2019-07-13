@@ -34,6 +34,8 @@ service Account {
   rpc FindSentFriendRequests (RequireIdRequest) returns (FindSentFriendRequestsReply) {}
 
   rpc AcceptFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
+
+  rpc DeclineFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
 }
 
 message CreateRequest {

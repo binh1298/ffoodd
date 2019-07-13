@@ -21,7 +21,8 @@ const messages = {
   ACCOUNT_SENT_FRIEND_REQUEST: 'ACCOUNT_SENT_FRIEND_REQUEST',
   ACCOUNT_FIND_FRIEND_REQUESTS: 'ACCOUNT_FIND_FRIEND_REQUESTS',
   ACCOUNT_FIND_SENT_FRIEND_REQUESTS: 'ACCOUNT_FIND_SENT_FRIEND_REQUESTS',
-  ACCOUNT_ACCEPT_FRIEND_REQUEST: 'ACCOUNT_ACCEPT_FRIEND_REQUEST'
+  ACCOUNT_ACCEPT_FRIEND_REQUEST: 'ACCOUNT_ACCEPT_FRIEND_REQUEST',
+  ACCOUNT_DECLINE_FRIEND_REQUEST: 'ACCOUNT_DECLINE_FRIEND_REQUEST'
 }
 
 module.exports = ({ accountRepository: Account }) => {
@@ -147,6 +148,15 @@ module.exports = ({ accountRepository: Account }) => {
 
     callback(null, { success: true, message: messages.ACCOUNT_ACCEPT_FRIEND_REQUEST });
   }
+
+  const declineFriendRequest = async (call, callback, next) => {
+    const { self_id, target_id } = call.request;
+    const [ err ] = await to(Account.declineFriendRequest({ self_id, target_id }));
+    if (err) return next(err);
+
+    callback(null, { success: true, message: messages.ACCOUNT_DECLINE_FRIEND_REQUEST }); 
+  }
+
   return {
     findById,
     create,
@@ -162,6 +172,7 @@ module.exports = ({ accountRepository: Account }) => {
     sendFriendRequest,
     findFriendRequests,
     findSentFriendRequests,
-    acceptFriendRequest
+    acceptFriendRequest,
+    declineFriendRequest
   }
 }

@@ -32,5 +32,8 @@ module.exports = ({ accountController: controller, createRoute }) => {
   router.findSentFriendRequests = createRoute(controller.findSentFriendRequests);
 
   router.acceptFriendRequest = createRoute(controller.acceptFriendRequest);
+
+  router.declineFriendRequest = createRoute(controller.declineFriendRequest);
+  
   return router;
 }

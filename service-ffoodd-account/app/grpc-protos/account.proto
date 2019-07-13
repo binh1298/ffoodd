@@ -36,6 +36,8 @@ service Account {
   rpc AcceptFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
 
   rpc RemoveFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
+
+  rpc AddOwnMeal (AddOwnMealRequest) returns (DefaultReply) {}
 }
 
 message CreateRequest {
@@ -92,6 +94,11 @@ message UpdateEmailByIdRequest {
 message FriendRequestRequest {
   string sender_id = 1;
   string target_id = 2;
+}
+
+message AddOwnMealRequest {
+  string _id = 1;
+  string meal_id = 2;
 }
 
 message DefaultReply {

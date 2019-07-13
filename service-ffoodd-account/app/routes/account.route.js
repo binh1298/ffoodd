@@ -35,5 +35,7 @@ module.exports = ({ accountController: controller, createRoute }) => {
 
   router.removeFriendRequest = createRoute(controller.removeFriendRequest);
 
+  router.addOwnMeal = createRoute(controller.addOwnMeal);
+
   return router;
 }

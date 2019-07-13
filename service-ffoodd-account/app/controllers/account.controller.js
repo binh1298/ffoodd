@@ -22,7 +22,8 @@ const messages = {
   ACCOUNT_FIND_FRIEND_REQUESTS: 'ACCOUNT_FIND_FRIEND_REQUESTS',
   ACCOUNT_FIND_SENT_FRIEND_REQUESTS: 'ACCOUNT_FIND_SENT_FRIEND_REQUESTS',
   ACCOUNT_ACCEPT_FRIEND_REQUEST: 'ACCOUNT_ACCEPT_FRIEND_REQUEST',
-  ACCOUNT_REMOVE_FRIEND_REQUEST: 'ACCOUNT_REMOVE_FRIEND_REQUEST'
+  ACCOUNT_REMOVE_FRIEND_REQUEST: 'ACCOUNT_REMOVE_FRIEND_REQUEST',
+  ACCOUNT_ADD_OWN_MEAL: 'ACCOUNT_ADD_OWN_MEAL'
 }
 
 module.exports = ({ accountRepository: Account }) => {
@@ -157,6 +158,14 @@ module.exports = ({ accountRepository: Account }) => {
     callback(null, { success: true, message: messages.ACCOUNT_REMOVE_FRIEND_REQUEST }); 
   }
 
+  const addOwnMeal = async (call, callback, next) => {
+    const { _id, meal_id } = call.request;
+    const [ err ] = await to(Account.addOwnMeal({ _id, meal_id }));
+    if (err) return next(err);
+
+    callback(null, { success:true, message: messages.ACCOUNT_ADD_OWN_MEAL });
+  }
+
   return {
     findById,
     create,
@@ -173,6 +182,7 @@ module.exports = ({ accountRepository: Account }) => {
     findFriendRequests,
     findSentFriendRequests,
     acceptFriendRequest,
-    removeFriendRequest
+    removeFriendRequest,
+    addOwnMeal
   }
 }

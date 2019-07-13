@@ -184,6 +184,12 @@ module.exports = ({ db }) => {
     collection.updateOne({ _id: ObjectId(target_id) }, targetUpdateOptons);
   }
 
+  const addOwnMeal = async ({ _id, meal_id }) => {
+    collection.updateOne({ _id: ObjectId(_id) }, { $push: {
+      ownMeals: meal_id
+    }});
+  }
+
   /**private */
   const generateExpirationDate = () => {
       const date = (new Date).toJSON();
@@ -214,6 +220,7 @@ module.exports = ({ db }) => {
     findFriendRequests,
     findSentFriendRequests,
     acceptFriendRequest,
-    removeFriendRequest
+    removeFriendRequest,
+    addOwnMeal
   }
 }

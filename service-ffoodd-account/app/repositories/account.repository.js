@@ -190,6 +190,12 @@ module.exports = ({ db }) => {
     }});
   }
 
+  const removeOwnMeal = async ({ _id, meal_id }) => {
+    collection.updateOne({ _id: ObjectId(_id) }, { $pull: {
+      ownMeal: meal_id
+    }});
+  }
+
   /**private */
   const generateExpirationDate = () => {
       const date = (new Date).toJSON();
@@ -221,6 +227,7 @@ module.exports = ({ db }) => {
     findSentFriendRequests,
     acceptFriendRequest,
     removeFriendRequest,
-    addOwnMeal
+    addOwnMeal,
+    removeOwnMeal
   }
 }

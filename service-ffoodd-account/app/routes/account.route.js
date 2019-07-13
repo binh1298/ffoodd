@@ -37,5 +37,7 @@ module.exports = ({ accountController: controller, createRoute }) => {
 
   router.addOwnMeal = createRoute(controller.addOwnMeal);
 
+  router.removeOwnMeal = createRoute(controller.removeOwnMeal);
+
   return router;
 }

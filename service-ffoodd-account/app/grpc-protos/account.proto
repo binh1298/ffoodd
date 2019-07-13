@@ -37,7 +37,9 @@ service Account {
 
   rpc RemoveFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
 
-  rpc AddOwnMeal (AddOwnMealRequest) returns (DefaultReply) {}
+  rpc AddOwnMeal (OwnMealRequest) returns (DefaultReply) {}
+
+  rpc RemoveOwnMeal (OwnMealRequest) returns (DefaultReply) {}
 }
 
 message CreateRequest {
@@ -96,7 +98,7 @@ message FriendRequestRequest {
   string target_id = 2;
 }
 
-message AddOwnMealRequest {
+message OwnMealRequest {
   string _id = 1;
   string meal_id = 2;
 }

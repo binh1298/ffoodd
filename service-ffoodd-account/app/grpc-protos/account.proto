@@ -5,9 +5,9 @@ package account;
 import "models/account.model.proto";
 
 service Account {
-  rpc FindById (RequireIdRequest) returns (FindOneReply) {}
+  rpc FindById (RequireIdRequest) returns (RequireAccountReply) {}
 
-  rpc Create (CreateRequest) returns (DefaultReply) {}
+  rpc Create (CreateRequest) returns (RequireAccountReply) {}
 
   rpc Update (UpdateRequest) returns (DefaultReply) {}
 
@@ -19,7 +19,7 @@ service Account {
 
   rpc VerifyEmail (VerifyEmailRequest) returns (DefaultReply) {}
 
-  rpc FindByUsername (RequireIdRequest) returns (FindOneReply) {}
+  rpc FindByUsername (RequireUsernameRequest) returns (RequireAccountReply) {}
 
   rpc ResetPassword (ResetPasswordRequest) returns (DefaultReply) {}
 
@@ -33,31 +33,35 @@ message CreateRequest {
 }
 
 message UpdateRequest {
-  string id = 1;
-  string lasname = 2;
+  string _id = 1;
+  string lastname = 2;
   string firstname = 3;
   repeated string roles = 4;
 }
 
 message RemoveManyRequest {
-  repeated string ids = 1;
+  repeated string _ids = 1;
 }
 
 message NewEmailVerifyKeyRequest {
-  string id = 1;
+  string _id = 1;
   string username = 2;
 }
 
 message VerifyEmailRequest {
-  string id = 1;
+  string _id = 1;
   string key = 2;
 }
 
 message RequireIdRequest {
+  string _id = 1;
+}
+
+message RequireUsernameRequest {
   string username = 1;
 }
 
-message FindOneReply {
+message RequireAccountReply {
   bool success = 1;
   string message = 2;
   AccountModel account = 3;
@@ -70,12 +74,12 @@ message ResetPasswordRequest {
 }
 
 message UpdatePasswordByIdRequest {
-  string id = 1;
+  string _id = 1;
   string password = 2;
 }
 
 message UpdateEmailByIdRequest {
-  string id = 1;
+  string _id = 1;
   string email = 2;
 }
 

@@ -1,23 +1,23 @@
 const status = require('http-status');
 const { to } = require('await-to-js');
 
-module.exports = ({ accountService: Account }) => {
+module.exports = ({ accountGRPCClientService, logger }) => {
+  const Account = accountGRPCClientService.account;
   
   const getProfile = async (req, res, next) => {
-    const [ err, account ] = await to(Account.findById(req.user.id));
+    const [ err, response ] = await to(Account.findById({ _id: req.user._id }));
     if (err) return next(err);
 
-    res.status(status.OK)
-      .send({
-        success: true,
-        message: 'Get profile',
-        profile: account
-      });
+    res.status(status.OK).render('profile', { data: {
+      success: true,
+      message: 'Get profile',
+      profile: response.account
+    }});
   }
 
   const putProfile = async (req, res, next) => {
     const { firstname, lastname } = req.body;
-    const [ err ] = await to(Account.update({ firstname, lastname }));
+    const [ err ] = await to(Account.update({ _id: req.user._id, firstname, lastname }));
     if (err) return next(err);
 
     res.status(status.OK)
@@ -29,7 +29,7 @@ module.exports = ({ accountService: Account }) => {
 
   const patchPassword = async (req, res, next) => {
     const { password } = req.body;
-    const [ err ] = await to(Account.updatePassword({ password }));
+    const [ err ] = await to(Account.updatePasswordById({ _id: req.user._id, password }));
     if (err) return next(err);
 
     res.status(status.OK)
@@ -41,7 +41,7 @@ module.exports = ({ accountService: Account }) => {
 
   const patchEmail = async (req, res, next) => {
     const { email } = req.body;
-    const [ err ] = await to(Account.updateEmail({ email }));
+    const [ err ] = await to(Account.updateEmailById({ _id: req.user._id, email }));
     if (err) return next(err);
 
     res.status(status.OK)

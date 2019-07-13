@@ -5,25 +5,38 @@ const { to } = require('await-to-js');
 const jwt = require('jsonwebtoken');
 const status = require('http-status');
 
-module.exports = ({ accountService: Account }) => {
+module.exports = ({ accountGRPCClientService, loginValidator }) => {
+  const Account = accountGRPCClientService.account;
+
   const postSignIn = async (req, res, next) => {
     const { username, password } = req.body;
-  
-    const [ err0, account ] = await to(Account.findByUsername(username));
-    if (err0) return next(err);
+    const { error, value } = loginValidator.validate({ username, password });
+    if (error)
+      return res.status(status.OK)
+        .send({
+          success: false,
+          message: 'ValidationError',
+          error,
+          token: null
+        });
+
+    const [ err0, response ] = await to(Account.findByUsername({ username }));
+    if (err0) return next(err0);
+
+    const account = response ? response.account : {};
 
     if (!account)
       return res.status(status.OK)
         .send({
           success: false,
           message: 'Login failed',
-          errors: {
-              account: 'Account doesn\'t exist!'
+          error: {
+            message: 'Account doesn\'t exist!'
           },
           token: null
         });
 
-    const [ err1, result ] = await bcrypt.compare(password, account.password);
+    const [ err1, result ] = await to(bcrypt.compare(password, account.password));
     if (err1) return next(err1);
 
     if (!result)
@@ -31,8 +44,8 @@ module.exports = ({ accountService: Account }) => {
         .send({
           success: false,
           message: 'Login failed',
-          errors: {
-            password: 'password incorrect'
+          error: {
+            message: 'password incorrect'
           },
           token: null
         });
@@ -48,10 +61,9 @@ module.exports = ({ accountService: Account }) => {
 
   const postSignUp = async (req, res, next) => {
     const { username, password, email, firstname, lastname } = req.body;
+    const newAccount = { username, password, email, firstname, lastname };
     // if not taken
-    const [ err, account ] = await to(Account.create({
-      username, password, email, firstname, lastname
-    }));
+    const [ err, response ] = await to(Account.create({ account: newAccount }));
     if (err) return next(err);
 
     // sendEmail
@@ -59,12 +71,12 @@ module.exports = ({ accountService: Account }) => {
     res.status(200).send({
       success: true,
       message: "Registered",
-      token: generateJWT(account)
+      token: generateJWT(response.account)
     });
   }
 
   const getVerifyEmail = async (req, res, next) => {
-    const [ err, { email, verifyEmailKey } ] = await to(Account.newEmailVerifyKey({ id: req.user._id }));
+    const [ err, { email, verifyEmailKey } ] = await to(Account.newEmailVerifyKey({ _id: req.user._id }));
     if (err) return next(err);
 
     // sendEmail
@@ -78,7 +90,7 @@ module.exports = ({ accountService: Account }) => {
   const patchVerifyEmail = async (req, res, next) => {
     const { key } = req.body;
 
-    const [ err, result ] = await to(Account.verifyEmail({ id: req.user._id, key }));
+    const [ err, result ] = await to(Account.verifyEmail({ _id: req.user._id, key }));
     if (err) return next(err);
 
     // sendEmail

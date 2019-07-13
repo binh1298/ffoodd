@@ -17,7 +17,8 @@ const messages = {
   ACCOUNT_PASSWORD_RESETTED: 'ACCOUNT_PASSWORD_RESETTED',
   ACCOUNT_PASSWORD_UPDATED: 'ACCOUNT_PASSWORD_UPDATED',
   ACCOUNT_FIND_ROLES_BY_ID: 'ACCOUNT_FIND_ROLES_BY_ID',
-  ACCOUNT_EMAIL_UPDATED: 'ACCOUNT_EMAIL_UPDATED'
+  ACCOUNT_EMAIL_UPDATED: 'ACCOUNT_EMAIL_UPDATED',
+  ACCOUNT_SENT_FRIEND_REQUEST: 'ACCOUNT_SENT_FRIEND_REQUEST'
 }
 
 module.exports = ({ accountRepository: Account }) => {
@@ -115,6 +116,13 @@ module.exports = ({ accountRepository: Account }) => {
     callback(null, { success: true, message: messages.ACCOUNT_EMAIL_UPDATED });
   }
 
+  const sendFriendRequest = async (call, callback, next) => {
+    const { self_id, target_id } = call.request;
+    const [ err ] = await to(Account.sendFriendRequest({ self_id, target_id }));
+
+    callback(null, { success: true, message: messages.ACCOUNT_SENT_FRIEND_REQUEST });
+  }
+
   return {
     findById,
     create,
@@ -126,6 +134,7 @@ module.exports = ({ accountRepository: Account }) => {
     findByUsername,
     resetPassword,
     updatePasswordById,
-    updateEmailById
+    updateEmailById,
+    sendFriendRequest
   }
 }

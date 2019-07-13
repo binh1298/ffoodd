@@ -25,5 +25,7 @@ module.exports = ({ accountController: controller, createRoute }) => {
 
   router.updateEmailById = createRoute(controller.updateEmailById);
 
+  router.sendFriendRequest = createRoute(controller.sendFriendRequest);
+
   return router;
 }

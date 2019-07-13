@@ -26,6 +26,8 @@ service Account {
   rpc UpdatePasswordById (UpdatePasswordByIdRequest) returns (DefaultReply) {}
 
   rpc UpdateEmailById (UpdateEmailByIdRequest) returns (DefaultReply) {}
+
+  rpc SendFriendRequest (SendFriendRequestRequest) returns (DefaultReply) {}
 }
 
 message CreateRequest {
@@ -77,6 +79,11 @@ message UpdatePasswordByIdRequest {
 message UpdateEmailByIdRequest {
   string id = 1;
   string email = 2;
+}
+
+message SendFriendRequestRequest {
+  string self_id = 1;
+  string target_id = 2;
 }
 
 message DefaultReply {

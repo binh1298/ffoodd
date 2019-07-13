@@ -112,6 +112,15 @@ module.exports = ({ db }) => {
     return collection.updateOne({ id: ObjectId(id) }, { $set: { email } });
   }
 
+  const sendFriendRequest = async ({ self_id, target_id }) => {
+    collection.findOne({ _id: ObjectId(self_id) }, { $push: {
+      sentFriendRequests: target_id
+    }});
+    
+    collection.findOne({ _id: ObjectId(target_id) }, { $push: {
+      friendRequests: _id
+    }});
+  }
   /**private */
   const generateExpirationDate = () => {
       const date = (new Date).toJSON();
@@ -137,6 +146,7 @@ module.exports = ({ db }) => {
     isVerified,
     resetPassword,
     updatePasswordById,
-    findRolesById
+    findRolesById,
+    sendFriendRequest
   }
 }

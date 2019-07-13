@@ -156,6 +156,21 @@ module.exports = ({ db }) => {
     return friendRequest;
   }
 
+  const acceptFriendRequest = async ({ self_id, target_id }) => {
+    const selfUpdateOptons = {
+      $push: { friends: target_id },
+      $pull: { sentFriendRequests: target_id }
+    };
+
+    const targetUpdateOptons = {
+      $push: { friends: self_id },
+      $pull: { friendRequests: self_id }
+    };
+
+    collection.updateOne({ _id: ObjectId(self_id) }, selfUpdateOptons);
+    collection.updateOne({ _id: ObjectId(target_id) }, targetUpdateOptons);
+  }
+
   /**private */
   const generateExpirationDate = () => {
       const date = (new Date).toJSON();
@@ -184,6 +199,7 @@ module.exports = ({ db }) => {
     findRolesById,
     sendFriendRequest,
     findFriendRequests,
-    findSentFriendRequests
+    findSentFriendRequests,
+    acceptFriendRequest
   }
 }

@@ -27,11 +27,13 @@ service Account {
 
   rpc UpdateEmailById (UpdateEmailByIdRequest) returns (DefaultReply) {}
 
-  rpc SendFriendRequest (SendFriendRequestRequest) returns (DefaultReply) {}
+  rpc SendFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
 
   rpc FindFriendRequests (RequireIdRequest) returns (FindFriendRequestsReply) {}
 
   rpc FindSentFriendRequests (RequireIdRequest) returns (FindSentFriendRequestsReply) {}
+
+  rpc AcceptFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
 }
 
 message CreateRequest {
@@ -85,7 +87,7 @@ message UpdateEmailByIdRequest {
   string email = 2;
 }
 
-message SendFriendRequestRequest {
+message FriendRequestRequest {
   string self_id = 1;
   string target_id = 2;
 }

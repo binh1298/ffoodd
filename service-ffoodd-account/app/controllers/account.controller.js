@@ -20,7 +20,8 @@ const messages = {
   ACCOUNT_EMAIL_UPDATED: 'ACCOUNT_EMAIL_UPDATED',
   ACCOUNT_SENT_FRIEND_REQUEST: 'ACCOUNT_SENT_FRIEND_REQUEST',
   ACCOUNT_FIND_FRIEND_REQUESTS: 'ACCOUNT_FIND_FRIEND_REQUESTS',
-  ACCOUNT_FIND_SENT_FRIEND_REQUESTS: 'ACCOUNT_FIND_SENT_FRIEND_REQUESTS'
+  ACCOUNT_FIND_SENT_FRIEND_REQUESTS: 'ACCOUNT_FIND_SENT_FRIEND_REQUESTS',
+  ACCOUNT_ACCEPT_FRIEND_REQUEST: 'ACCOUNT_ACCEPT_FRIEND_REQUEST'
 }
 
 module.exports = ({ accountRepository: Account }) => {
@@ -136,7 +137,15 @@ module.exports = ({ accountRepository: Account }) => {
     const [ err, sentFriendRequests ] = await to(Account.findSentFriendRequests({ _id: call.request._id }));
     if (err) return next(err);
 
-    callback(null, { message: messages.ACCOUNT_FIND_SENT_FRIEND_REQUESTS });
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_SENT_FRIEND_REQUESTS });
+  }
+
+  const acceptFriendRequest = async (call, callback, next) => {
+    const { self_id, target_id } = call.request;
+    const [ err ] = await to(Account.acceptFriendRequest({ self_id, target_id }));
+    if (err) return next(err);
+
+    callback(null, { success: true, message: messages.ACCOUNT_ACCEPT_FRIEND_REQUEST });
   }
   return {
     findById,
@@ -152,6 +161,7 @@ module.exports = ({ accountRepository: Account }) => {
     updateEmailById,
     sendFriendRequest,
     findFriendRequests,
-    findSentFriendRequests
+    findSentFriendRequests,
+    acceptFriendRequest
   }
 }

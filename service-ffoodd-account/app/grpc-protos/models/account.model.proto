@@ -12,3 +12,9 @@ message AccountModel {
   bool isVerified = 7;
   repeated string roles = 8;
 }
+
+message AccountModel_1 {
+	string _id = 1;
+	string lastname = 2;
+	string firstname = 3;
+}

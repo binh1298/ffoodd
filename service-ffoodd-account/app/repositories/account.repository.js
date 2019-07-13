@@ -121,6 +121,24 @@ module.exports = ({ db }) => {
       friendRequests: _id
     }});
   }
+
+  const findFriendRequests = async ({ _id }) => {
+    const account = await findById({ _id });
+    const friendRequests = [];
+
+    for (let target_id of account.friendRequests) {;
+      const target = await findById({ _id: target_id });
+
+      friendRequests.push({
+        _id: target_id,
+        firstname: target.firstname,
+        lastname: target.lastname
+      });
+    }
+
+    return friendRequest;
+  }
+
   /**private */
   const generateExpirationDate = () => {
       const date = (new Date).toJSON();
@@ -147,6 +165,7 @@ module.exports = ({ db }) => {
     resetPassword,
     updatePasswordById,
     findRolesById,
-    sendFriendRequest
+    sendFriendRequest,
+    findFriendRequests
   }
 }

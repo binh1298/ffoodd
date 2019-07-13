@@ -28,6 +28,8 @@ service Account {
   rpc UpdateEmailById (UpdateEmailByIdRequest) returns (DefaultReply) {}
 
   rpc SendFriendRequest (SendFriendRequestRequest) returns (DefaultReply) {}
+
+  rpc FindFriendRequests (RequireIdRequest) returns (FindFriendRequestsReply) {}
 }
 
 message CreateRequest {
@@ -89,4 +91,10 @@ message SendFriendRequestRequest {
 message DefaultReply {
   bool success = 1;
   string message = 2;
+}
+
+message FindFriendRequestsReply {
+  bool success = 1;
+  string message = 2;
+  repeated AccountModel_1 friendRequests = 3;
 }

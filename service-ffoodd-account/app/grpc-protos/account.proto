@@ -35,7 +35,7 @@ service Account {
 
   rpc AcceptFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
 
-  rpc DeclineFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
+  rpc RemoveFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
 }
 
 message CreateRequest {

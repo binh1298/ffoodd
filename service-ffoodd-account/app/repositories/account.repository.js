@@ -171,7 +171,7 @@ module.exports = ({ db }) => {
     collection.updateOne({ _id: ObjectId(target_id) }, targetUpdateOptons);
   }
 
-  const declineFriendRequest = async ({ sender_id, target_id }) => {
+  const removeFriendRequest = async ({ sender_id, target_id }) => {
     const senderUpdateOptons = {
       $pull: { sentFriendRequests: target_id }
     };
@@ -214,6 +214,6 @@ module.exports = ({ db }) => {
     findFriendRequests,
     findSentFriendRequests,
     acceptFriendRequest,
-    declineFriendRequest
+    removeFriendRequest
   }
 }

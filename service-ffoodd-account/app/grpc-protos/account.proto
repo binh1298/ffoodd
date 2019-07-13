@@ -40,6 +40,8 @@ service Account {
   rpc AddOwnMeal (OwnMealRequest) returns (DefaultReply) {}
 
   rpc RemoveOwnMeal (OwnMealRequest) returns (DefaultReply) {}
+
+  rpc FindOwnMeals (RequireIdRequest) returns (DefaultReply) {}
 }
 
 message CreateRequest {

@@ -192,7 +192,7 @@ module.exports = ({ db }) => {
 
   const removeOwnMeal = async ({ _id, meal_id }) => {
     collection.updateOne({ _id: ObjectId(_id) }, { $pull: {
-      ownMeal: meal_id
+      ownMeals: meal_id
     }});
   }
 

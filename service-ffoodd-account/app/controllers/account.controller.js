@@ -4,6 +4,7 @@ const { to } = require('await-to-js');
 
 const messages = {
   ACCOUNT_FIND_BY_ID: 'ACCOUNT_FIND_BY_ID',
+  ACCOUNT_NOT_FOUND: 'ACCOUNT_NOT_FOUND',
   ACCOUNT_CREATED: 'ACCOUNT_CREATED',
   ACCOUNT_UPDATED: 'ACCOUNT_UPDATED',
   ACCOUNT_REMOVED: 'ACCOUNT_REMOVED',
@@ -24,13 +25,17 @@ const messages = {
   ACCOUNT_ACCEPT_FRIEND_REQUEST: 'ACCOUNT_ACCEPT_FRIEND_REQUEST',
   ACCOUNT_REMOVE_FRIEND_REQUEST: 'ACCOUNT_REMOVE_FRIEND_REQUEST',
   ACCOUNT_ADD_OWN_MEAL: 'ACCOUNT_ADD_OWN_MEAL',
-  ACCOUNT_REMOVE_OWN_MEAL: 'ACCOUNT_REMOVE_OWN_MEAL'
+  ACCOUNT_REMOVE_OWN_MEAL: 'ACCOUNT_REMOVE_OWN_MEAL',
+  ACCOUNT_FIND_OWN_MEAL: 'ACCOUNT_FIND_OWN_MEAL'
 }
 
 module.exports = ({ accountRepository: Account }) => {
   const findById = async (call, callback, next) => {
     const [ err, account ] = await to(Account.findById(call.request.id));
     if (err) return next(err);
+
+    if (!account)
+      return callback(null, { success: true, message: messages.ACCOUNT_NOT_FOUND, account: null });
 
     callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_ID });
   }
@@ -87,6 +92,9 @@ module.exports = ({ accountRepository: Account }) => {
   const findByUsername = async (call, callback, next) => {
     const [ err, account ] = await to(Account.findByUsername(call.request.username));
     if (err) return next(err);
+
+    if (!account)
+      return callback(null, { success: true, message: messages.ACCOUNT_NOT_FOUND, account: null });
 
     callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_USERNAME, account })
   }
@@ -175,6 +183,16 @@ module.exports = ({ accountRepository: Account }) => {
     callback(null, { success: true, message: messages.ACCOUNT_REMOVE_OWN_MEAL })
   }
 
+  const findOwnMeals = async (call, callback, next) => {
+    const [ err, account ] = await to(Account.findById({ _id: call.request._id }));
+    if (err) return next(err);
+
+    if (!account)
+      return callback(null, { success: false, message: messages.ACCOUNT_NOT_FOUND, ownMeals: null });
+
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_OWN_MEAL, ownMeals: account.ownMeals });
+  }
+
   return {
     findById,
     create,
@@ -193,6 +211,7 @@ module.exports = ({ accountRepository: Account }) => {
     acceptFriendRequest,
     removeFriendRequest,
     addOwnMeal,
-    removeOwnMeal
+    removeOwnMeal,
+    findOwnMeals
   }
 }

@@ -121,7 +121,6 @@ const connect = ({ logger }) => async () => {
   })
 
   return {
-    accountGRPCClientService: await connectToGRPCServer('ACCOUNT_GRPC_SERVER', process.env.SERVICE_FFOODD_ACCOUNT_SERVER_ADDRESS),
     mealGRPCClientService: await connectToGRPCServer('MEAL_GRPC_SERVER', process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS)
   };
 };

@@ -10,7 +10,7 @@ const messages = {
   REVIEW_NOT_FOUND: 'REVIEW_NOT_FOUND'
 };
 
-module.exports = ({ reviewRepository: Review }) => {
+module.exports = ({ mealRepository: Meal, reviewRepository: Review }) => {
   const review = async (call, callback, next) => {
     const { meal_id, review } = call.request;
     // Checking if the meal exists in the database
@@ -23,12 +23,8 @@ module.exports = ({ reviewRepository: Review }) => {
       });
     }
 
-    // Create new review document
-    const [errReview, newReview] = await to(Review.create(review));
-    if (errReview) return next(errReview);
-
     // Add review_id to meal
-    const [err, reviewedMeal] = await to(Meal.addReview(meal, newReview));
+    const [err, reviewedMeal] = await to(Review.addReview(meal, review));
     if (err) return next(err);
 
     callback(null, {

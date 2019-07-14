@@ -30,16 +30,10 @@ module.exports = () => {
     return editedMeal;
   };
 
-  const addReview = async (meal, review_id) => {
-    meal.reviews.push(review_id);
-    await meal.save();
-    return meal;
-  };
   return {
     create,
     findById,
     remove,
-    update,
-    addReview
+    update
   };
 };

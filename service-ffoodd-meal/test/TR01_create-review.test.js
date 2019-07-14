@@ -5,16 +5,16 @@ require('should');
 
 describe('Meal gRPC-client-Happy Case: Review a meal', () => {
   it('should review a meal', done => {
-    mealClient.start().then(({ mealClient }) => {
+    mealClient.start().then(({ reviewClient }) => {
       const reviewMealRequest = {
-        meal_id: '5d26016be68e77262efbfc46',
+        meal_id: '5d260174e68e77262efbfc47',
         review: {
           account_id: 'Test',
           rating: 4,
           content: 'This meal is delicious'
         }
       };
-      mealClient.review(reviewMealRequest, async (err, response) => {
+      reviewClient.review(reviewMealRequest, async (err, response) => {
         assert(response.success, true);
         assert(response.message, 'REVIEW_CREATED!');
         done();

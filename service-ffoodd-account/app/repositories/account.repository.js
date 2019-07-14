@@ -14,11 +14,11 @@ module.exports = ({ db }) => {
   const create = async ({ username, password, email, lastname, firstname }) => {
     const hashPassword = await bcrypt.hash(password, 10);
 
-    const created = await collection.insertOne({
+    const response = await collection.insertOne({
       username, password: hashPassword, email, lastname, firstname
     });
-
-    return created.ops[0];
+    
+    return response.ops[0];
   }
 
   const update = async ({ _id, firstname, lastname, roles }) => {

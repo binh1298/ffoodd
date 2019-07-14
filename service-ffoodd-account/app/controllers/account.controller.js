@@ -46,7 +46,7 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     if (err) return next(err);
 
     amqp.sendToQueue({ queue: 'account-service', msg: {
-      message: 'CREATE_ACCOUNT',
+      event: 'CREATE_ACCOUNT',
       account: {
         _id: account._id,
         email: account.email

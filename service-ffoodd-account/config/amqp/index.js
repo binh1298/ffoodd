@@ -2,40 +2,38 @@
 
 const amqp = require('amqplib/callback_api');
 
-const connect = ({ logger }) => async () => {
+const connect = ({ logger }) => new Promise((resolve, reject) => {
   amqp.connect(process.env.AMQP_SERVER_ADDRESS, (err, connection) => {
     if (err) throw err;
 
     connection.createChannel(function(error1, channel) {
       if (error1)
-        throw error1;
+        return reject(err);
 
       const sendToQueue = async ({ queue, msg }) => {
-        logger.log(`[*] Send to queue: ${queue}, message: ${msg}`);
-        channel.sendToQueue(queue, Buffer.from(msg));
+        logger.info(`[*] Send to queue: ${queue}, message: `, msg);
+        channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
       }
 
-      const consume = async ({ queue }) => {
+      const consume = ({ queue }) => new Promise((resolve, reject) => {
         channel.assertQueue(queue, {
           durable: false
         });
 
-        logger.log(`[*] Waiting for messages in: ${queue}`);
+        logger.info(`[*] Waiting for messages in: ${queue}`);
 
         channel.consume(queue, msg => {
-          logger.log(`[x] Receive message: ${msg.content.toString()} from queue: ${queue}`);
+          logger.info(`[x] Receive message: ${msg.content.toString()} from queue: ${queue}`);
+
+          resolve(JSON.parse(msg));
         }, {
           noAck: true
         });
-      }
+      })
 
-      return {
-        channel,
-        sendToQueue,
-        consume
-      }
+      resolve({ channel, sendToQueue, consume });
     });
   });
-}
+})
 
-module.exports = connect;
+module.exports = { connect };

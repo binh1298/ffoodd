@@ -11,7 +11,7 @@ service Review {
 
   rpc Update(ReviewMealRequest) returns (DefaultReply) {}
 
-  rpc Remove(ReviewMealRequest) returns (DefaultReply) {}
+  rpc Remove(RequiredIdRequest) returns (DefaultReply) {}
 }
 
 message ReviewMealRequest {

@@ -1,15 +1,24 @@
 'use strict';
 
-const mongoose = require('mongoose');
+const MealModel = require('../models/meal.model');
 
 module.exports = () => {
-  const addReview = async (meal, review) => {
-    review._id = mongoose.Types.ObjectId();
+  const create = async (meal, review) => {
     meal.reviews.push(review);
     await meal.save();
     return meal;
   };
+  const findById = async (meal, id) => {
+    return await meal.reviews.id(id);
+  };
+
+  const remove = async ({ id }) => {};
+
+  const update = async () => {};
   return {
-    addReview
+    create,
+    findById,
+    remove,
+    update
   };
 };

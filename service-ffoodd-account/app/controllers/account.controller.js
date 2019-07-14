@@ -29,7 +29,8 @@ const messages = {
   ACCOUNT_FIND_OWN_MEAL: 'ACCOUNT_FIND_OWN_MEAL'
 }
 
-module.exports = ({ accountRepository: Account }) => {
+module.exports = ({ accountRepository: Account, amqp }) => {
+
   const findById = async (call, callback, next) => {
     const [ err, account ] = await to(Account.findById(call.request._id));
     if (err) return next(err);
@@ -43,6 +44,14 @@ module.exports = ({ accountRepository: Account }) => {
   const create = async (call, callback, next) => {
     const [ err, account ] = await to(Account.create(call.request.account));
     if (err) return next(err);
+
+    amqp.sendToQueue({ queue: 'account-service', msg: {
+      message: 'CREATE_ACCOUNT',
+      account: {
+        _id: account._id,
+        email: account.email
+      }
+    }});
     
     callback(null, { success: true, message: messages.ACCOUNT_CREATED, account });
   }

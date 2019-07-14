@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const ReviewSchema = require('./review.schema');
+
 const MealSchema = new mongoose.Schema({
   themealdb_id: {
     type: String
@@ -29,23 +31,7 @@ const MealSchema = new mongoose.Schema({
   image: {
     type: String
   },
-  reviews: [
-    {
-      account_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Account'
-      },
-      rating: {
-        type: Number,
-        min: 0,
-        max: 4
-      },
-      content: {
-        type: String,
-        required: true
-      }
-    }
-  ],
+  reviews: [ReviewSchema],
   recipe: {
     instruction: {
       type: String,

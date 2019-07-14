@@ -9,7 +9,6 @@ const initDI = ({ logger, database }) => async () => {
     logger: asValue(logger),
     db: asValue(db)
   });
-  console.log(container);
   return container;
 };
 

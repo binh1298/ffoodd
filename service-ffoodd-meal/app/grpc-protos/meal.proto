@@ -5,7 +5,6 @@ package meal;
 import "models/ingredient.model.proto";
 import "models/meal.model.proto";
 import "models/recipe.model.proto";
-import "models/review.model.proto";
 
 service Meal {
   rpc Create (DefaultMealRequest) returns (DefaultReply) {}
@@ -15,6 +14,7 @@ service Meal {
   rpc Remove (RequiredIdRequest) returns (DefaultReply) {}
 
   rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
+
 }
 
 message DefaultMealRequest {
@@ -22,18 +22,17 @@ message DefaultMealRequest {
 }
 
 message RequiredIdRequest {
-  required string id = 1;
+  required string _id = 1;
 }
 
 message UpdateMealRequest {
-  string id = 1;
+  string _id = 1;
   string name = 2;
   string description = 3;
   string origin = 4;
   string image = 5;
   string category_id = 6;
-  repeated ReviewModel reviews = 7;
-  RecipeModel recipe = 8;
+  RecipeModel recipe = 7;
 }
 
 message DefaultReply {

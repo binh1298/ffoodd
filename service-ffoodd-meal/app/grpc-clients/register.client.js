@@ -20,7 +20,7 @@ const start = async () => {
   const registerProto = grpc.loadPackageDefinition(packageDefinition).register;
 
   const registerClient = new registerProto.Register(
-    process.env.SERVICE_FFOODD_ACCOUNT_SERVER_ADDRESS,
+    process.env.SERVICE_FFOODD_MEAL_SERVER_ADDRESS,
     grpc.credentials.createInsecure()
   );
 

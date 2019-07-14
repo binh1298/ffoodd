@@ -5,13 +5,13 @@ package review;
 import "models/review.model.proto";
 
 service Review {
-  rpc Review(ReviewMealRequest) returns (DefaultReply) {}
+  rpc Create(ReviewMealRequest) returns (DefaultReply) {}
 
-  rpc FindById(RequiredIdRequest) returns (DefaultReviewsReply) {}
+  rpc FindById(RequiredIdRequest) returns (DefaultReviewReply) {}
 
-  rpc UpdateReview(ReviewMealRequest) returns (DefaultReply) {}
+  rpc Update(ReviewMealRequest) returns (DefaultReply) {}
 
-  rpc RemoveReview(ReviewMealRequest) returns (DefaultReply) {}
+  rpc Remove(ReviewMealRequest) returns (DefaultReply) {}
 }
 
 message ReviewMealRequest {
@@ -21,6 +21,7 @@ message ReviewMealRequest {
 
 message RequiredIdRequest {
   required string id = 1;
+  required string meal_id = 2;
 }
 
 message DefaultReply {
@@ -28,8 +29,8 @@ message DefaultReply {
   string message = 2;
 }
 
-message DefaultReviewsReply {
+message DefaultReviewReply {
   bool success = 1;
   string message = 2;
-  repeated ReviewModel review = 3;
+  ReviewModel review = 3;
 }

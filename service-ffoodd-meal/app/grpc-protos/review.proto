@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package review; 
+
+import "models/review.model.proto";
+
+service Review {
+  rpc Review(ReviewMealRequest) returns (DefaultReply) {}
+
+  rpc FindById(RequiredIdRequest) returns (DefaultReviewsReply) {}
+
+  rpc UpdateReview(ReviewMealRequest) returns (DefaultReply) {}
+
+  rpc RemoveReview(ReviewMealRequest) returns (DefaultReply) {}
+}
+
+message ReviewMealRequest {
+  required string meal_id = 1;
+  required ReviewModel review = 2;
+}
+
+message RequiredIdRequest {
+  required string id = 1;
+}
+
+message DefaultReply {
+  bool success = 1;
+  string message = 2;
+}
+
+message DefaultReviewsReply {
+  bool success = 1;
+  string message = 2;
+  repeated ReviewModel review = 3;
+}

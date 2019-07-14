@@ -5,7 +5,6 @@ package meal;
 import "models/ingredient.model.proto";
 import "models/meal.model.proto";
 import "models/recipe.model.proto";
-import "models/review.model.proto";
 
 service Meal {
   rpc Create (DefaultMealRequest) returns (DefaultReply) {}
@@ -16,13 +15,6 @@ service Meal {
 
   rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
 
-  rpc Review(ReviewMealRequest) returns (DefaultReply) {}
-
-  rpc getReviewsById(RequiredIdRequest) returns (DefaultReviewsReply) {}
-
-  rpc UpdateReview(ReviewMealRequest) returns (DefaultMealReply) {}
-
-  rpc RemoveReview(ReviewMealRequest) returns (DefaultMealReply) {}
 }
 
 message DefaultMealRequest {
@@ -42,10 +34,7 @@ message UpdateMealRequest {
   string category_id = 6;
   RecipeModel recipe = 7;
 }
-message ReviewMealRequest {
-  required string meal_id = 1;
-  required ReviewModel review = 2;
-}
+
 message DefaultReply {
   bool success = 1;
   string message = 2;
@@ -55,10 +44,4 @@ message DefaultMealReply {
   bool success = 1;
   string message = 2;
   MealModel meal = 3;
-}
-
-message DefaultReviewsReply {
-  bool success = 1;
-  string message = 2;
-  repeated ReviewModel review = 3;
 }

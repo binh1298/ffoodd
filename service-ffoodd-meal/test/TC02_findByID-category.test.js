@@ -6,11 +6,11 @@ require('should');
 describe('Meal gRPC-client-Happy Case: Find a category by ID', () => {
   it('should receive a category object', done => {
     mealClient.start().then(({ categoryClient }) => {
-      const requiredIdRequest = { id: '5d2603b077104d2b1720242f' };
+      const requiredIdRequest = { _id: '5d2b6293c2183b6bcdf32124' };
       categoryClient.findById(requiredIdRequest, async (err, response) => {
         assert(response.success, true);
         assert(response.message, 'CATEGORY FOUNDED');
-        assert(response.category.id, '5d2603b077104d2b1720242f');
+        assert(response.category._id, '5d2b6293c2183b6bcdf32124');
         done();
       });
     });

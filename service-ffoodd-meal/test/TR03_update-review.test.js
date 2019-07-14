@@ -7,9 +7,9 @@ describe('Meal gRPC-client-Happy Case: Update a review', () => {
   it('should update a review', done => {
     client.start().then(({ reviewClient }) => {
       const reviewMealRequest = {
-        meal_id: '5d2b3bf792c2ea23761d590e',
+        meal_id: '5d2b6334406c706d1809d14e',
         review: {
-          id: '5d2b3c1a1378ca24050ddc66',
+          _id: '5d2b636607fb1a6d9303039a',
           rating: 1,
           content: 'This meal is terrible'
         }

@@ -20,7 +20,7 @@ message DefaultCategoryRequest {
 }
 
 message RequiredIdRequest {
-  required string id = 1;
+  required string _id = 1;
 }
 
 message DefaultReply {

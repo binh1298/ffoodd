@@ -15,7 +15,7 @@ module.exports = ({ mealRepository: Meal, reviewRepository: Review }) => {
   const create = async (call, callback, next) => {
     const { meal_id, review } = call.request;
     // Checking if the meal exists in the database
-    const [errMeal, meal] = await to(Meal.findById({ id: meal_id }));
+    const [errMeal, meal] = await to(Meal.findById({ _id: meal_id }));
     if (errMeal) return next(errMeal);
     if (!meal) {
       return callback(null, {
@@ -35,8 +35,8 @@ module.exports = ({ mealRepository: Meal, reviewRepository: Review }) => {
   };
 
   const findById = async (call, callback, next) => {
-    const { id, meal_id } = call.request;
-    const [errMeal, meal] = await to(Meal.findById({ id: meal_id }));
+    const { _id, meal_id } = call.request;
+    const [errMeal, meal] = await to(Meal.findById({ _id: meal_id }));
     if (errMeal) return next(errMeal);
     if (!meal)
       return callback(null, {
@@ -44,7 +44,7 @@ module.exports = ({ mealRepository: Meal, reviewRepository: Review }) => {
         message: messages.MEAL_NOT_FOUND
       });
 
-    const [err, review] = await to(Review.findById(meal, id));
+    const [err, review] = await to(Review.findById(meal, _id));
     if (err) return next(err);
     if (!review)
       return callback(null, {
@@ -58,15 +58,15 @@ module.exports = ({ mealRepository: Meal, reviewRepository: Review }) => {
     });
   };
   const remove = async (call, callback, next) => {
-    const { id, meal_id } = call.request;
-    const [errMeal, meal] = await to(Meal.findById({ id: meal_id }));
+    const { _id, meal_id } = call.request;
+    const [errMeal, meal] = await to(Meal.findById({ _id: meal_id }));
     if (errMeal) return next(errMeal);
     if (!meal)
       return callback(null, {
         success: false,
         message: messages.MEAL_NOT_FOUND
       });
-    const [err, review] = await to(Review.remove(meal, id));
+    const [err, review] = await to(Review.remove(meal, _id));
     if (err) return next(err);
     if (!review)
       return callback(null, {
@@ -82,7 +82,7 @@ module.exports = ({ mealRepository: Meal, reviewRepository: Review }) => {
   const update = async (call, callback, next) => {
     const { meal_id, review } = call.request;
     // Checking if the meal exists in the database
-    const [errMeal, meal] = await to(Meal.findById({ id: meal_id }));
+    const [errMeal, meal] = await to(Meal.findById({ _id: meal_id }));
     if (errMeal) return next(errMeal);
     if (!meal) {
       return callback(null, {

@@ -3,7 +3,7 @@ syntax = "proto3";
 package models;
 
 message ReviewModel {
-  string id = 1;
+  string _id = 1;
   string account_id = 2;
   float rating = 3;
   string content = 4;

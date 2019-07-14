@@ -22,11 +22,11 @@ message DefaultMealRequest {
 }
 
 message RequiredIdRequest {
-  required string id = 1;
+  required string _id = 1;
 }
 
 message UpdateMealRequest {
-  string id = 1;
+  string _id = 1;
   string name = 2;
   string description = 3;
   string origin = 4;

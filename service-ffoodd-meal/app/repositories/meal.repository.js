@@ -3,21 +3,21 @@
 const MealModel = require('../models/meal.model');
 
 module.exports = () => {
-  const create = async meal => {
-    const newMeal = new MealModel(meal);
+  const create = async ({ name, description, origin, image, themealdb_id, recipe }) => {
+    const newMeal = new MealModel({ name, description, origin, image, themealdb_id, recipe });
     newMeal.save();
   };
 
-  const findById = async ({ id }) => {
-    return await MealModel.findById(id);
+  const findById = async ({ _id }) => {
+    return await MealModel.findById(_id);
   };
 
-  const remove = async ({ id }) => {
-    return MealModel.findByIdAndRemove(id);
+  const remove = async ({ _id }) => {
+    return MealModel.findByIdAndRemove(_id);
   };
 
-  const update = async ({ id, name, description, origin, category_id, image, recipe }) => {
-    let editedMeal = await MealModel.findById(id);
+  const update = async ({ _id, name, description, origin, category_id, image, recipe }) => {
+    let editedMeal = await MealModel.findById(_id);
     if (!editedMeal) return;
     editedMeal.name = name;
     editedMeal.description = description;

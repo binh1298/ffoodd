@@ -23,8 +23,8 @@ module.exports = ({ categoryRepository: Category }) => {
   };
 
   const findById = async (call, callback, next) => {
-    const { id } = call.request;
-    const [err, category] = await to(Category.findById({ id }));
+    const { _id } = call.request;
+    const [err, category] = await to(Category.findById({ _id }));
     if (err) return next(err);
 
     callback(null, {
@@ -35,8 +35,8 @@ module.exports = ({ categoryRepository: Category }) => {
   };
 
   const remove = async (call, callback, next) => {
-    const { id } = call.request;
-    const [err, result] = await to(Category.remove({ id }));
+    const { _id } = call.request;
+    const [err, result] = await to(Category.remove({ _id }));
     if (err) return next(err);
 
     if (!result)

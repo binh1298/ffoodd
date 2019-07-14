@@ -6,7 +6,7 @@ require('should');
 describe('Meal gRPC-client-Happy Case: Remove a review', () => {
   it('should delete a review object', done => {
     client.start().then(({ reviewClient }) => {
-      const requiredIdRequest = { id: '5d2b47284f5f75357731b0d3', meal_id: '5d2b3bf792c2ea23761d590e' };
+      const requiredIdRequest = { _id: '5d2b6624b7f8ec773b3a95dc', meal_id: '5d2b6334406c706d1809d14e' };
       reviewClient.remove(requiredIdRequest, async (err, response) => {
         assert(response.success, true);
         done();

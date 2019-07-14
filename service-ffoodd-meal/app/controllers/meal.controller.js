@@ -23,8 +23,8 @@ module.exports = ({ mealRepository: Meal }) => {
   };
 
   const findById = async (call, callback, next) => {
-    const { id } = call.request;
-    const [err, meal] = await to(Meal.findById({ id }));
+    const { _id } = call.request;
+    const [err, meal] = await to(Meal.findById({ _id }));
     if (err) return next(err);
 
     callback(null, {
@@ -35,8 +35,8 @@ module.exports = ({ mealRepository: Meal }) => {
   };
 
   const remove = async (call, callback, next) => {
-    const { id } = call.request;
-    const [err, result] = await to(Meal.remove({ id }));
+    const { _id } = call.request;
+    const [err, result] = await to(Meal.remove({ _id }));
     if (err) return next(err);
 
     if (!result)

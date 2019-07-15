@@ -47,7 +47,7 @@ module.exports = ({ accountRepository: Account, amqp }) => {
 
     amqp.sendToQueue({ queue: 'account-service', msg: {
       event: 'CREATE_ACCOUNT',
-      account: {
+      data: {
         _id: account._id,
         email: account.email
       }
@@ -139,7 +139,7 @@ module.exports = ({ accountRepository: Account, amqp }) => {
 
     amqp.sendToQueue({ queue: 'account-service', msg: {
       event: 'UPDATE_EMAIL',
-      account: { _id, email }
+      data: { _id, email }
     }});
 
     callback(null, { success: true, message: messages.ACCOUNT_EMAIL_UPDATED });
@@ -171,6 +171,11 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     const [ err ] = await to(Account.acceptFriendRequest({ sender_id, target_id }));
     if (err) return next(err);
 
+    amqp.sendToQueue({ queue: 'account-service', msg: {
+      event: 'ADD_FRIEND',
+      data: { sender_id, target_id }
+    }});
+
     callback(null, { success: true, message: messages.ACCOUNT_ACCEPT_FRIEND_REQUEST });
   }
 
@@ -178,6 +183,11 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     const { sender_id, target_id } = call.request;
     const [ err ] = await to(Account.removeFriendRequest({ sender_id, target_id }));
     if (err) return next(err);
+
+    amqp.sendToQueue({ queue: 'account-service', msg: {
+      event: 'REMOVE_FRIEND',
+      data: { sender_id, target_id }
+    }});
 
     callback(null, { success: true, message: messages.ACCOUNT_REMOVE_FRIEND_REQUEST }); 
   }

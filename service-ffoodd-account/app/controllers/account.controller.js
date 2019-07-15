@@ -32,7 +32,8 @@ const messages = {
 module.exports = ({ accountRepository: Account, amqp }) => {
 
   const findById = async (call, callback, next) => {
-    const [ err, account ] = await to(Account.findById(call.request._id));
+    const { _id } = call.request;
+    const [ err, account ] = await to(Account.findById({ _id }));
     if (err) return next(err);
 
     if (!account)
@@ -60,26 +61,28 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     const [ err ] = await to(Account.update(call.request));
     if (err) return next(err);
 
-    callback(null, { success: false, message: messages.ACCOUNT_UPDATED});
+    callback(null, { success: false, message: messages.ACCOUNT_UPDATED });
   }
 
   const remove = async (call, callback, next) => {
-    const [ err ] = await to(Account.remove(call.request._id));
+    const { _id } = call.request;
+    const [ err ] = await to(Account.remove({ _id }));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_REMOVED });
   }
 
   const removeMany = async (call, callback, next) => {
-    const { ids } = call.request;
-    const [ err ] = await to(Account.removeMany({ ids }));
+    const { _ids } = call.request;
+    const [ err ] = await to(Account.removeMany({ _ids }));
     if (err) return next(err);
 
     callback(null, { success: false, message: messages.ACCOUNT_REMOVED_MANY });
   }
 
   const newEmailVerifyKey = async (call, callback, next) => {
-    const [ err, { email, verifyEmailKey } ] = await to(Account.newEmailVerifyKey(call.request));
+    const { _id, username } = call.request;
+    const [ err, { email, verifyEmailKey } ] = await to(Account.newEmailVerifyKey({ _id, username }));
     if (err) return next(err);
 
     if (!email)
@@ -89,7 +92,8 @@ module.exports = ({ accountRepository: Account, amqp }) => {
   }
 
   const verifyEmail = async (call, callback, next) => {
-    const [ err, result ] = await to(Account.verifyEmail(call.request));
+    const { _id, key } = call.request;
+    const [ err, result ] = await to(Account.verifyEmail({ _id, key }));
     if(err) return next(err);
 
     if (!result)
@@ -99,7 +103,8 @@ module.exports = ({ accountRepository: Account, amqp }) => {
   }
 
   const findByUsername = async (call, callback, next) => {
-    const [ err, account ] = await to(Account.findByUsername(call.request.username));
+    const { username } = call.request;
+    const [ err, account ] = await to(Account.findByUsername({ username }));
     if (err) return next(err);
 
     if (!account)
@@ -109,7 +114,8 @@ module.exports = ({ accountRepository: Account, amqp }) => {
   }
 
   const resetPassword = async (call, callback, next) => {
-    const [ err, result ] = await to(Account.resetPassword(call.request));
+    const { username, password, key } = call.request;
+    const [ err, result ] = await to(Account.resetPassword({ username, password, key }));
     if (err) return next(err);
 
     if (!result)
@@ -119,14 +125,16 @@ module.exports = ({ accountRepository: Account, amqp }) => {
   }
 
   const updatePasswordById = async (call, callback, next) => {
-    const [ err, result ] = await to(Account.updatePasswordById(call.request));
+    const { password, _id } = call.request;
+    const [ err, result ] = await to(Account.updatePasswordById({ password, id }));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_PASSWORD_UPDATED});
   }
 
   const findRolesById = async (call, callback, next) => {
-    const [ err, roles ] = await to(Account.findRolesById(call.request._id));
+    const { _id } = call.request;
+    const [ err, roles ] = await to(Account.findRolesById({ _id }));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_FIND_ROLES_BY_ID });

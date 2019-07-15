@@ -7,7 +7,7 @@ const { ObjectId } = require('mongodb');
 module.exports = ({ db }) => {
   const collection = db.collection('accounts')
   
-  const findById = async _id => {
+  const findById = async ({ _id }) => {
     return collection.findOne({ _id: ObjectId(_id) });
   }
 
@@ -25,7 +25,7 @@ module.exports = ({ db }) => {
     return collection.updateOne({ _id: ObjectId(_id) }, { $set: { firstname, lastname, roles } });
   }
 
-  const remove = async _id => {
+  const remove = async ({ _id }) => {
     return collection.deleteOne({ _id: ObjectId(_id) });
   }
 
@@ -38,17 +38,25 @@ module.exports = ({ db }) => {
     if (_id) queryOptions._id =  ObjectId(_id);
     if (username) queryOptions.username =  username;
 
+    if (Object.keys(queryOptions).length === 0)
+      return null;
+
     const verifyEmailKey = randomKey(6);
     const verifyEmailKeyExpDate = generateExpirationDate();
 
-    const updated = await collection.findOneAndUpdate(queryOptions,{ $set: { verifyEmailKey, verifyEmailKeyExpDate } });
-    const account = updated.value;
+    const response = await collection.findOneAndUpdate(queryOptions, { $set: { verifyEmailKey, verifyEmailKeyExpDate } });
+    const account = response.value;
+    if (!account)
+      return null;
     
     return { email: account.email, verifyEmailKey };
   }
 
   const verifyEmail = async ({ _id, email }) => {
     const account = await collection.findOne({ _id: ObjectId(_id) });
+    
+    if (!account)
+      return false;
 
     if (account.verifyEmailKey != key)
       return false;
@@ -65,11 +73,11 @@ module.exports = ({ db }) => {
     return true;
   }
 
-  const findByUsername = async username => {
-    return await collection.findOne({ username });
+  const findByUsername = async ({ username }) => {
+    return collection.findOne({ username });
   }
 
-  const isVerified = async _id => {
+  const isVerified = async ({ _id }) => {
     const account = await collection.findOne({ _id: OjbectId(_id) });
 
     return account.isVerified;

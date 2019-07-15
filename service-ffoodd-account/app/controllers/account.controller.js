@@ -133,8 +133,14 @@ module.exports = ({ accountRepository: Account, amqp }) => {
   }
 
   const updateEmailById = async (call, callback, next) => {
-    const [ err ] = await to(Account.updateEmailById(call.request));
+    const { _id, email } = call.request;
+    const [ err ] = await to(Account.updateEmailById({ _id, email }));
     if (err) return next(err);
+
+    amqp.sendToQueue({ queue: 'account-service', msg: {
+      event: 'UPDATE_EMAIL',
+      account: { _id, email }
+    }});
 
     callback(null, { success: true, message: messages.ACCOUNT_EMAIL_UPDATED });
   }

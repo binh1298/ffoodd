@@ -19,6 +19,14 @@ describe('Account gRPC-client', () => {
     client = await accountClient.start();
   });
 
+  after(() => {
+    client.remove({ _id: account._id }, (err, response) => {
+      assert.equal(err, null);
+      assert.equal(response.success, true);
+      assert.equal(response.message, 'ACCOUNT_REMOVED');
+    });
+  });
+
   describe('CRUD', () => {
     it('should create an account', done => {
       client.create({ account }, (err, response) => {
@@ -31,12 +39,22 @@ describe('Account gRPC-client', () => {
       });
     });
 
-    it('should find account by _id', () => {
+    it('should find account by _id', done => {
       client.findById({ _id: account._id }, (err, response) => {
         assert.equal(err, null);
         assert.equal(response.success, true);
         assert.equal(response.message, 'ACCOUNT_FOUND')
         assert.notEqual(response.account, null);
+        done();
+      });
+    });
+
+    it('should update account', done => {
+      client.update({ _id: account._id, firstname: 'new-firstname', lastname: 'new-lastname' }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_UPDATED');
+        done();
       });
     });
 
@@ -50,11 +68,13 @@ describe('Account gRPC-client', () => {
     });
   })
 
-  it('should generate an emailVerifyKey', done => {
-    client.newEmailVerifyKey({ username: account.username }, (err, response) => {
-      assert.equal(err, null);
-      assert.equal(response.message, 'ACCOUNT_EMAIL_VERIFY_KEY');
-      done();
+  describe('Other', () => {
+    it('should generate an emailVerifyKey', done => {
+      client.newEmailVerifyKey({ username: account.username }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.message, 'ACCOUNT_EMAIL_VERIFY_KEY');
+        done();
+      });
     });
-  });
+  })
 });

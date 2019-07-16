@@ -50,7 +50,7 @@ module.exports = ({ accountRepository: Account }) => {
     const [ err ] = await to(Account.update(call.request));
     if (err) return next(err);
 
-    callback(null, { success: false, message: messages.ACCOUNT_UPDATED});
+    callback(null, { success: true, message: messages.ACCOUNT_UPDATED});
   }
 
   const remove = async (call, callback, next) => {

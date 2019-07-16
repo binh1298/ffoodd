@@ -143,14 +143,14 @@ module.exports = ({ accountRepository: Account }) => {
     const [ err, friendRequests ] = await to(Account.findFriendRequests({ _id: call.request._id }));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.ACCOUNT_FIND_FRIEND_REQUESTS });
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_FRIEND_REQUESTS, friendRequests });
   }
 
   const findSentFriendRequests = async (call, callback, next) => {
     const [ err, sentFriendRequests ] = await to(Account.findSentFriendRequests({ _id: call.request._id }));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.ACCOUNT_FIND_SENT_FRIEND_REQUESTS });
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_SENT_FRIEND_REQUESTS, sendFriendRequests });
   }
 
   const acceptFriendRequest = async (call, callback, next) => {

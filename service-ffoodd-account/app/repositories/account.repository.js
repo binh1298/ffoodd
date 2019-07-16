@@ -118,11 +118,11 @@ module.exports = ({ db }) => {
   }
 
   const sendFriendRequest = async ({ sender_id, target_id }) => {
-    collection.findOne({ _id: ObjectId(sender_id) }, { $push: {
+    collection.updateOne({ _id: ObjectId(sender_id) }, { $push: {
       sentFriendRequests: target_id
     }});
     
-    collection.findOne({ _id: ObjectId(target_id) }, { $push: {
+    collection.updateOne({ _id: ObjectId(target_id) }, { $push: {
       friendRequests: sender_id
     }});
   }
@@ -130,6 +130,9 @@ module.exports = ({ db }) => {
   const findFriendRequests = async ({ _id }) => {
     const account = await findById({ _id });
     const friendRequests = [];
+
+    if (!account.friendRequests || account.friendRequests.length === 0)
+      return [];
 
     for (let target_id of account.friendRequests) {;
       const target = await findById({ _id: target_id });
@@ -147,6 +150,9 @@ module.exports = ({ db }) => {
   const findSentFriendRequests = async ({ _id }) => {
     const account = await findById({ _id });
     const sentFriendRequests = [];
+
+    if (!account.sentFriendRequests || account.sentFriendRequests.length === 0)
+      return [];
 
     for (let target_id of account.sentFriendRequests) {;
       const target = await findById({ _id: target_id });

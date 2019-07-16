@@ -13,6 +13,7 @@ const account = {
   email: 'quangdat2000.pham@gmail.com'
 };
 
+let target_id;
 
 describe('Account gRPC-client', () => {
   before(async () => {
@@ -107,4 +108,64 @@ describe('Account gRPC-client', () => {
       })
     });
   })
+
+  describe('Friend requests', () => {
+    it('should send friend request', done => {
+      client.create({ account: {
+        username: 'target',
+        password: 'target',
+        lastname: 'FR',
+        firstname: 'FR',
+        email: 'target@gmail.com'
+      }}, (err, response) => {
+        target_id = response.account._id;
+        client.sendFriendRequest({ sender_id: account._id, target_id }, (err, response) => {
+          assert.equal(err, null);
+          assert.equal(response.success, true);
+          assert.equal(response.message, 'ACCOUNT_SENT_FRIEND_REQUEST');
+          done();
+        });
+      });
+    });
+
+    it('should find friend requests', done => {
+      client.findFriendRequests({ _id: target_id }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_FIND_FRIEND_REQUESTS');
+        assert.equal(response.friendRequests.constructor, Array);
+        done();
+      });
+    });
+
+    it('should find sent friend requests', done => {
+      client.findSentFriendRequests({ _id: account._id }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_FIND_SENT_FRIEND_REQUESTS');
+        assert.equal(response.sendFriendRequests.constructor, Array);
+        done();
+      });
+    });
+
+    it('should accept friend request', done => {
+      client.findSentFriendRequests({ _id: account._id }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_ACCEPT_FRIEND_REQUEST');
+        done();
+      });
+    });    
+
+    it('should remove friend requests', done => {
+      client.removeFriendRequest({ _id: account._id }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_REMOVE_FRIEND_REQUEST');
+        done();
+      });
+    });
+    
+  })
+
 });

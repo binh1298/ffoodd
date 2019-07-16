@@ -119,7 +119,10 @@ module.exports = ({ accountRepository: Account }) => {
     const [ err, roles ] = await to(Account.findRolesById(call.request._id));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.ACCOUNT_FIND_ROLES_BY_ID });
+    if (!roles)
+      return callback(null, { success: true, message: message.ACCOUNT_NOT_FOUND, roles: null });
+
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_ROLES_BY_ID, roles });
   }
 
   const updateEmailById = async (call, callback, next) => {
@@ -202,6 +205,7 @@ module.exports = ({ accountRepository: Account }) => {
     verifyEmail,
     findByUsername,
     resetPassword,
+    findRolesById,
     updatePasswordById,
     updateEmailById,
     sendFriendRequest,

@@ -25,6 +25,8 @@ service Account {
 
   rpc UpdatePasswordById (UpdatePasswordByIdRequest) returns (DefaultReply) {}
 
+  rpc FindRolesById (RequireIdRequest) returns (FindRolesByIdReply) {}
+
   rpc UpdateEmailById (UpdateEmailByIdRequest) returns (DefaultReply) {}
 
   rpc SendFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
@@ -124,4 +126,10 @@ message FindSentFriendRequestsReply {
   bool success = 1;
   string message = 2;
   repeated AccountModel_1 sentFriendRequests = 3;
+}
+
+message FindRolesByIdReply {
+  bool success = 1;
+  string message = 2;
+  repeated string roles = 3;
 }

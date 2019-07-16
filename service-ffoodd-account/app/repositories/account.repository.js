@@ -107,6 +107,9 @@ module.exports = ({ db }) => {
   const findRolesById = async _id => {
     const account = await collection.findOne({ _id: ObjectId(_id) });
 
+    if (!account)
+      return null;
+
     return account.roles;
   }
 

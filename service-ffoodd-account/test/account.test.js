@@ -43,7 +43,7 @@ describe('Account gRPC-client', () => {
       client.findById({ _id: account._id }, (err, response) => {
         assert.equal(err, null);
         assert.equal(response.success, true);
-        assert.equal(response.message, 'ACCOUNT_FOUND')
+        assert.equal(response.message, 'ACCOUNT_FOUND');
         assert.notEqual(response.account, null);
         done();
       });
@@ -61,6 +61,7 @@ describe('Account gRPC-client', () => {
     it('should get an account with username provided', done => {
       client.findByUsername({ username: account.username }, (err, response) => {
         assert.equal(err, null);
+        assert.equal(response.success, true);
         assert.equal(response.message, 'ACCOUNT_FOUND');
         assert.equal(response.account.username, account.username);
         done();
@@ -72,9 +73,38 @@ describe('Account gRPC-client', () => {
     it('should generate an emailVerifyKey', done => {
       client.newEmailVerifyKey({ username: account.username }, (err, response) => {
         assert.equal(err, null);
+        assert.equal(response.success, true);
         assert.equal(response.message, 'ACCOUNT_EMAIL_VERIFY_KEY');
         done();
       });
+    });
+
+    it('should update password by _id', done => {
+      client.updatePasswordById({ _id: account._id, password: 'new-password' }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_PASSWORD_UPDATED');
+        done();
+      });
+    });
+
+    it('should return roles by _id', done => {
+      client.findRolesById({ _id: account._id }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_FIND_ROLES_BY_ID');
+        assert.equal(response.roles.constructor, Array);
+        done();
+      });
+    });
+
+    it('should update email by _id', done => {
+      client.updateEmailById({ _id: account._id, email: 'new.email@gmail.com' }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_EMAIL_UPDATED');
+        done();
+      })
     });
   })
 });

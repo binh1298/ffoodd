@@ -3,6 +3,8 @@ const assert = require('assert');
 const bcrypt = require('bcrypt');
 require('should');
 
+let client;
+
 const account = {
   username: 'dat',
   password: '123456',
@@ -11,41 +13,48 @@ const account = {
   email: 'quangdat2000.pham@gmail.com'
 };
 
+
 describe('Account gRPC-client', () => {
+  before(async () => {
+    client = await accountClient.start();
+  });
+
   describe('CRUD', () => {
     it('should create an account', done => {
-      accountClient.start()
-        .then(client => {
-          client.create({ account }, async (err, response) => {
-            assert(response.success, true)
-            assert.equal(err, null);
-            assert.equal(response.message, 'ACCOUNT_CREATED');
-            done();
-          });
-        });
+      client.create({ account }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_CREATED');
+        assert.notEqual(response.account, null);
+        account._id = response.account._id;
+        done();
+      });
+    });
+
+    it('should find account by _id', () => {
+      client.findById({ _id: account._id }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.success, true);
+        assert.equal(response.message, 'ACCOUNT_FOUND')
+        assert.notEqual(response.account, null);
+      });
     });
 
     it('should get an account with username provided', done => {
-      accountClient.start()
-        .then(client => {
-          client.findByUsername({ username: account.username }, (err, response) => {
-            assert.equal(err, null);
-            assert.equal(response.message, 'ACCOUNT_FIND_BY_USERNAME');
-            assert.equal(response.account.username, account.username);
-            done();
-          });
+      client.findByUsername({ username: account.username }, (err, response) => {
+        assert.equal(err, null);
+        assert.equal(response.message, 'ACCOUNT_FOUND');
+        assert.equal(response.account.username, account.username);
+        done();
       });
     });
   })
 
   it('should generate an emailVerifyKey', done => {
-    accountClient.start()
-      .then(client => {
-        client.newEmailVerifyKey({ username: account.username }, (err, response) => {
-          assert.equal(err, null);
-          assert.equal(response.message, 'ACCOUNT_EMAIL_VERIFY_KEY');
-          done();
-        });
+    client.newEmailVerifyKey({ username: account.username }, (err, response) => {
+      assert.equal(err, null);
+      assert.equal(response.message, 'ACCOUNT_EMAIL_VERIFY_KEY');
+      done();
     });
   });
 });

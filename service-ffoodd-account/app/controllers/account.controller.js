@@ -3,7 +3,7 @@
 const { to } = require('await-to-js');
 
 const messages = {
-  ACCOUNT_FIND_BY_ID: 'ACCOUNT_FIND_BY_ID',
+  ACCOUNT_FOUND: 'ACCOUNT_FOUND',
   ACCOUNT_NOT_FOUND: 'ACCOUNT_NOT_FOUND',
   ACCOUNT_CREATED: 'ACCOUNT_CREATED',
   ACCOUNT_UPDATED: 'ACCOUNT_UPDATED',
@@ -13,7 +13,6 @@ const messages = {
   ACCOUNT_EMAIL_VERIFY_KEY: 'ACCOUNT_EMAIL_VERIFY_KEY',
   ACCOUNT_COULD_NOT_VERIFIED: 'ACCOUNT_COULD_NOT_VERIFIED',
   ACCOUNT_VERIFIED: 'ACCOUNT_VERIFIED',
-  ACCOUNT_FIND_BY_USERNAME: 'ACCOUNT_FIND_BY_USERNAME',
   ACCOUNT_RESET_PASSWORD_FAILED: 'ACCOUNT_RESET_PASSWORD_FAILED',
   ACCOUNT_PASSWORD_RESETTED: 'ACCOUNT_PASSWORD_RESETTED',
   ACCOUNT_PASSWORD_UPDATED: 'ACCOUNT_PASSWORD_UPDATED',
@@ -37,7 +36,7 @@ module.exports = ({ accountRepository: Account }) => {
     if (!account)
       return callback(null, { success: true, message: messages.ACCOUNT_NOT_FOUND, account: null });
 
-    callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_ID, account });
+    callback(null, { success: true, message: messages.ACCOUNT_FOUND, account });
   }
 
   const create = async (call, callback, next) => {
@@ -96,7 +95,7 @@ module.exports = ({ accountRepository: Account }) => {
     if (!account)
       return callback(null, { success: true, message: messages.ACCOUNT_NOT_FOUND, account: null });
 
-    callback(null, { success: true, message: messages.ACCOUNT_FIND_BY_USERNAME, account })
+    callback(null, { success: true, message: messages.ACCOUNT_FOUND, account })
   }
 
   const resetPassword = async (call, callback, next) => {

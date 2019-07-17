@@ -23,6 +23,8 @@ module.exports = ({ accountController: controller, createRoute }) => {
 
   router.updatePasswordById = createRoute(controller.updatePasswordById);
 
+  router.findRolesById = createRoute(controller.findRolesById);
+
   router.updateEmailById = createRoute(controller.updateEmailById);
 
   router.sendFriendRequest = createRoute(controller.sendFriendRequest);

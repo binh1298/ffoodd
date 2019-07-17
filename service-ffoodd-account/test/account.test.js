@@ -143,13 +143,13 @@ describe('Account gRPC-client', () => {
         assert.equal(err, null);
         assert.equal(response.success, true);
         assert.equal(response.message, 'ACCOUNT_FIND_SENT_FRIEND_REQUESTS');
-        assert.equal(response.sendFriendRequests.constructor, Array);
+        assert.equal(response.sentFriendRequests.constructor, Array);
         done();
       });
     });
 
     it('should accept friend request', done => {
-      client.findSentFriendRequests({ _id: account._id }, (err, response) => {
+      client.acceptFriendRequest({ sender_id: account._id, target_id }, (err, response) => {
         assert.equal(err, null);
         assert.equal(response.success, true);
         assert.equal(response.message, 'ACCOUNT_ACCEPT_FRIEND_REQUEST');
@@ -158,7 +158,7 @@ describe('Account gRPC-client', () => {
     });    
 
     it('should remove friend requests', done => {
-      client.removeFriendRequest({ _id: account._id }, (err, response) => {
+      client.removeFriendRequest({ sender_id: account._id, target_id }, (err, response) => {
         assert.equal(err, null);
         assert.equal(response.success, true);
         assert.equal(response.message, 'ACCOUNT_REMOVE_FRIEND_REQUEST');

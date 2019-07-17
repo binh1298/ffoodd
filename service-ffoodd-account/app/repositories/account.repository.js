@@ -112,7 +112,7 @@ module.exports = ({ db }) => {
     collection.updateOne({ _id: ObjectId(_id) }, { $set: { password: newPassword } });
   }
 
-  const findRolesById = async _id => {
+  const findRolesById = async ({ _id }) => {
     const account = await collection.findOne({ _id: ObjectId(_id) });
 
     if (!account)
@@ -152,7 +152,7 @@ module.exports = ({ db }) => {
       });
     }
 
-    return friendRequest;
+    return friendRequests;
   }
 
   const findSentFriendRequests = async ({ _id }) => {
@@ -172,10 +172,11 @@ module.exports = ({ db }) => {
       });
     }
 
-    return friendRequest;
+    return sentFriendRequests;
   }
 
   const acceptFriendRequest = async ({ sender_id, target_id }) => {
+    console.log(sender_id, target_id);
     const senderUpdateOptons = {
       $push: { friends: target_id },
       $pull: { sentFriendRequests: target_id }

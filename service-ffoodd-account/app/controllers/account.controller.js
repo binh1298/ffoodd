@@ -60,7 +60,7 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     const [ err ] = await to(Account.update(call.request));
     if (err) return next(err);
 
-    callback(null, { success: false, message: messages.ACCOUNT_UPDATED });
+    callback(null, { success: true, message: messages.ACCOUNT_UPDATED });
   }
 
   const remove = async (call, callback, next) => {
@@ -76,7 +76,7 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     const [ err ] = await to(Account.removeMany({ _ids }));
     if (err) return next(err);
 
-    callback(null, { success: false, message: messages.ACCOUNT_REMOVED_MANY });
+    callback(null, { success: true, message: messages.ACCOUNT_REMOVED_MANY });
   }
 
   const newEmailVerifyKey = async (call, callback, next) => {
@@ -87,7 +87,7 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     if (!email)
       return callback(null, { success: false, message:  messages.ACCOUNT_EMAIL_NOT_PROVIDED });
 
-    callback(null, { success:true, message: messages.ACCOUNT_EMAIL_VERIFY_KEY });
+    callback(null, { success: true, message: messages.ACCOUNT_EMAIL_VERIFY_KEY });
   }
 
   const verifyEmail = async (call, callback, next) => {
@@ -98,7 +98,7 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     if (!result)
       return callback({ success: false, message: messages.ACCOUNT_COULD_NOT_VERIFIED });
 
-    callback({ success: false, message: messages.ACCOUNT_VERIFIED });
+    callback({ success: true, message: messages.ACCOUNT_VERIFIED });
   }
 
   const findByUsername = async (call, callback, next) => {
@@ -125,7 +125,7 @@ module.exports = ({ accountRepository: Account, amqp }) => {
 
   const updatePasswordById = async (call, callback, next) => {
     const { password, _id } = call.request;
-    const [ err, result ] = await to(Account.updatePasswordById({ password, id }));
+    const [ err, result ] = await to(Account.updatePasswordById({ password, _id }));
     if (err) return next(err);
 
     callback(null, { success: true, message: messages.ACCOUNT_PASSWORD_UPDATED});
@@ -173,7 +173,7 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     const [ err, sentFriendRequests ] = await to(Account.findSentFriendRequests({ _id: call.request._id }));
     if (err) return next(err);
 
-    callback(null, { success: true, message: messages.ACCOUNT_FIND_SENT_FRIEND_REQUESTS, sendFriendRequests });
+    callback(null, { success: true, message: messages.ACCOUNT_FIND_SENT_FRIEND_REQUESTS, sentFriendRequests });
   }
 
   const acceptFriendRequest = async (call, callback, next) => {

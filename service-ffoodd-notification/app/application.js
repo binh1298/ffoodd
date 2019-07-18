@@ -11,6 +11,7 @@ const controllers = require('./controllers/');
 const routes = require('./routes/');
 const libs = require('./libs/');
 const middlewares = require('./middlewares/');
+const consumers = require('./amqp-consumers/');
 
 let container;
 
@@ -23,7 +24,8 @@ const registerApplicationDependencies = async () => {
     controllers.initialize(),
     routes.initialize(),
     libs.initialize(),
-    middlewares.initialize()
+    middlewares.initialize(),
+    consumers.initialize()
   ]);
 
   for (let resolved of resolveds) {

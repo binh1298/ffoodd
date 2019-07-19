@@ -19,7 +19,7 @@ describe('Email client', () => {
           html: 'Integrated - Client'
         };
 
-        client.send(emailOptions, (err, response) => {
+        client.send({ emailOptions }, (err, response) => {
           assert.equal(err, null);
           assert.equal(response.success, true);
           assert.equal(response.message, 'EMAIL_SENT');

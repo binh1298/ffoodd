@@ -7,21 +7,24 @@ import "models/attachment.model.proto";
 
 service Email {
   rpc Send (SendRequest) returns (DefaultReply) {}
+
+  rpc SendToOneUser (SendToOneUserRequest) returns (DefaultReply) {}
+
+  rpc SendToManyUsers (SendToManyUsersRequest) returns (DefaultReply) {}
 }
 
 message SendRequest {
-  repeated string to = 1;
-  repeated string cc = 2;
-  repeated string bcc = 3;
-  string from = 4;
-  string replyTo = 5;
-  string subject = 6;
-  string text = 7;
-  string html = 8;
-  string templateId = 9;
-  repeated AttachmentModel attachments = 10;
-  repeated string categories = 11;
-  string sendAt = 12;
+  EmailOptionsModel emailOptions = 1;
+}
+
+message SendToOneUserRequest {
+  string account_id = 1;
+  EmailOptionsModel emailOptions = 2;
+}
+
+message SendToManyUsersRequest {
+  repeated string account_ids = 1;
+  EmailOptionsModel emailOptions = 2;
 }
 
 message DefaultReply {

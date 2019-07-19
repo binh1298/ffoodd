@@ -5,5 +5,9 @@ module.exports = ({ emailController: controller, createRoute }) => {
 
   router.send = createRoute(controller.send);
   
+  router.sendToOneUser = createRoute(controller.sendToOneUser);
+
+  router.sendToManyUsers = createRoute(controller.sendToManyUsers);
+
   return router;
 }

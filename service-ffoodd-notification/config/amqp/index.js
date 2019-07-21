@@ -25,7 +25,7 @@ const connect = ({ logger }) => new Promise((resolve, reject) => {
         channel.consume(queue, msg => {
           logger.info(`[x] Receive message: ${msg.content.toString()} from queue: ${queue}`);
 
-          cb(JSON.parse());
+          cb(JSON.parse(msg.content));
         }, {
           noAck: true
         });

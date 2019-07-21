@@ -1,9 +1,12 @@
 const { to } = require('await-to-js');
 
-module.exports = ({ amqp, accountRepository: Account }) => {
+module.exports = ({ logger, amqp, accountRepository: Account }) => {
   
   const consume = async () => {
-    amqp.consume({ queue: 'account' }, () => {
+    
+    logger.info('ACCOUNT_CONSUMER starting');
+
+    amqp.consume({ queue: 'account' }, msg => {
       const { event, data } = msg;
       let consumeEvent;
 
@@ -29,18 +32,24 @@ module.exports = ({ amqp, accountRepository: Account }) => {
     const { _id, email } = msg.data;
     const [ err ] = await to(Account.create({ account_id: _id, email }));
     if (err) throw err;
+
+    logger.info('ACCOUNT_CONSUMER create account', msg.data);
   }
 
   const consumeUpdateEmail = async msg => {
     const { _id, email } = msg.data;
-    const [ err ] = await to(Account.udpate({ account_id: _id, email }));
+    const [ err ] = await to(Account.update({ account_id: _id, email }));
     if (err) throw err;
+
+    logger.info('ACCOUNT_CONSUMER update account', msg.data);
   }
 
   const consumeRemoveAccount = async msg => {
     const { _id } = msg.data;
     const [ err ] = await to(Account.remove({ account_id: _id }));
     if (err) throw err;
+
+    logger.info('ACCOUNT_CONSUMER remove account', msg.data);
   }
 
   return { consume };

@@ -47,6 +47,10 @@ registerApplicationDependencies()
     const startServer = container.resolve('startServer');
     return startServer();
   })
+  .then(() => {
+    const accountConsumer = container.resolve('accountConsumer');
+    accountConsumer.consume();
+  })
   .catch(err => {
     const logger = container.resolve('logger');
     logger.error(err.message);

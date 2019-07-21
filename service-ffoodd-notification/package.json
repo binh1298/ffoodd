@@ -31,6 +31,7 @@
   "dependencies": {
     "@grpc/proto-loader": "^0.5.1",
     "@sendgrid/mail": "^6.4.0",
+    "amqplib": "^0.5.3",
     "app-root-path": "^2.2.1",
     "await-to-js": "^2.1.1",
     "awilix": "^4.2.2",

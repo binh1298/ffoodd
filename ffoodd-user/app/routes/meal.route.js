@@ -1,0 +1,7 @@
+'use strict';
+
+const express = require('express');
+
+module.exports = ({ mealController: controller }) => {
+  const router = express.Router();
+}

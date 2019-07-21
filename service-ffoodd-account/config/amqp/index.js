@@ -15,7 +15,7 @@ const connect = ({ logger }) => new Promise((resolve, reject) => {
         channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
       }
 
-      const consume = ({ queue }) => new Promise((resolve, reject) => {
+      const consume = ({ queue }, cb) => {
         channel.assertQueue(queue, {
           durable: false
         });
@@ -25,11 +25,11 @@ const connect = ({ logger }) => new Promise((resolve, reject) => {
         channel.consume(queue, msg => {
           logger.info(`[x] Receive message: ${msg.content.toString()} from queue: ${queue}`);
 
-          resolve(JSON.parse(msg));
+          cb(JSON.parse(msg.content));
         }, {
           noAck: true
         });
-      })
+      }
 
       resolve({ channel, sendToQueue, consume });
     });

@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package meal;
+
+import "models/ingredient.model.proto";
+import "models/meal.model.proto";
+import "models/recipe.model.proto";
+
+service Meal {
+  rpc Create (DefaultMealRequest) returns (DefaultReply) {}
+
+  rpc FindById (RequiredIdRequest) returns (DefaultMealReply) {}
+
+  rpc Remove (RequiredIdRequest) returns (DefaultReply) {}
+
+  rpc Update (UpdateMealRequest) returns (DefaultMealReply) {}
+
+}
+
+message DefaultMealRequest {
+  MealModel meal = 1;
+}
+
+message RequiredIdRequest {
+  required string _id = 1;
+}
+
+message UpdateMealRequest {
+  string _id = 1;
+  string name = 2;
+  string description = 3;
+  string origin = 4;
+  string image = 5;
+  string category_id = 6;
+  RecipeModel recipe = 7;
+}
+
+message DefaultReply {
+  bool success = 1;
+  string message = 2;
+}
+
+message DefaultMealReply {
+  bool success = 1;
+  string message = 2;
+  MealModel meal = 3;
+}

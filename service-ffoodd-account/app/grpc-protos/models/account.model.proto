@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package models;
+
+message AccountModel {
+  string _id = 1;
+  string username = 2;
+  string password = 3;
+  string email = 4;
+  string lastname = 5;
+  string firstname = 6;
+  bool isVerified = 7;
+  repeated string roles = 8;
+}

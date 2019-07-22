@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package models;
+
+message RecipeModel {
+  string instruction = 1;
+  repeated IngredientModel ingredients = 2;
+}

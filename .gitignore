@@ -1,0 +1,27 @@
+# npm
+/**/node_modules
+/**/package-lock.json
+/**/*.log
+/**/*.gz
+
+# Logs
+/**/logs
+/**/*.log
+/**/npm-debug.log*
+/**/yarn-debug.log*
+/**/yarn-error.log*
+/**/lerna-debug.log*
+
+# dotenv environment variables file
+/**/.env
+/**/.env.test
+
+# Optional npm cache directory
+/**/.npm
+
+# others
+/**/temp
+/**/app/services/grpc-protos/temp
+
+# Api-gateway-service
+/api-gateway/certs/*.pem

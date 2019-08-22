@@ -53,10 +53,10 @@ const connect = ({ logger }) => async () => {
     })
   })
 
-  const makeAsyncWithProxyObject = client => {
+  const makeAsyncWithProxyObject = ({ client, SERVER_NAME }) => {
     return new Proxy({}, {
       get(target, key) {
-        logger.info(`Calling to service <---- ${key}`);
+        logger.info(`${SERVER_NAME}: Calling to procedure <---- ${key}`);
 
         return options => new Promise((resolve, reject) => {
           if (!(key in client))
@@ -77,8 +77,6 @@ const connect = ({ logger }) => async () => {
       .then(registerClient => {
         const gRPCClientService = {};
 
-        logger.info(`${SERVER_NAME}: retriving proto files`);
-
         registerClient.registerServiceProtos({}, async (err, res) => {
           if (err) {
             logger.warn(`${SERVER_NAME}: Can not connect to gRPC-server`, err);
@@ -94,7 +92,7 @@ const connect = ({ logger }) => async () => {
 
           const { protoFiles, protoModelFiles } = res;
         
-          logger.info(`${SERVER_NAME}: register-service-protos connected`);
+          logger.info(`${SERVER_NAME}: retriving proto files`);
 
           for (let { name: filename, content } of protoModelFiles) {
             const [ err ] = await to(writeProtoModelFile({ filename, content }));
@@ -116,7 +114,7 @@ const connect = ({ logger }) => async () => {
 
             logger.info(`${SERVER_NAME}: ${name}-service connected`);
 
-            gRPCClientService[name] = makeAsyncWithProxyObject(client);
+            gRPCClientService[name] = makeAsyncWithProxyObject({ client, SERVER_NAME });
           }
 
           resolve(gRPCClientService);

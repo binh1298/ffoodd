@@ -1,0 +1,29 @@
+#%RAML 1.0
+title: collection
+version: v1
+
+resourceTypes:
+  Collection:
+    description: Collection of available <<resourcePathName>>
+    get:
+      description: Get list of <<resourcePathName>>
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<type>>
+              example: <<customExample>>
+    post:
+      description: Create a new <<resourcePathName|!singularize>>
+      body:
+        application/x-www-form-urlencoded:
+          type: <<model>>
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "success": true,
+                  "message": "The <<resourcePathName|!singularize>> has been created successfully"
+                }

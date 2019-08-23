@@ -1,0 +1,50 @@
+#%RAML 1.0
+title: member
+
+resourceTypes:
+  GetResource:
+    description: Entity representing a <<resourcePathName|!singularize>>
+    get:
+      description: Get a <<resourcePathName>>
+      responses:
+        200:
+          body:
+            application/json:
+              type: <<type>>
+              example: <<customExample>>
+  PatchResource:
+    description: Entity representing a <<resourcePathName|!singularize>>
+    patch:
+      description: Patch update a <<resourcePathName|!singularize>>
+      body:
+        application/x-www-form-urlencoded:
+          type: <<model>>
+      responses:
+        200:
+          body:
+            application/json:
+              type: object
+              example: <<customExample>>
+  PutResource:
+    description: Entity representing a <<resourcePathName|!singularize>>
+    put:
+      description: Put update a <<resourcePathName|!singularize>>
+      body:
+        application/x-www-form-urlencoded:
+          type: <<model>>
+      responses:
+        200:
+          body:
+            application/json:
+              type: object
+              example: <<customExample>>
+  DeleteResource:
+    description: Entity representing a <<resourcePathName|!singularize>>
+    delete:
+      description: Delete a <<resourcePathName|!singularize>> with id = {<<resourcePathName>>id}
+      responses:
+        200:
+          body:
+            application/json:
+              type: object
+              example: <<customExample>>

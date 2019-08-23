@@ -1,0 +1,55 @@
+#%RAML 1.0
+title: user
+baseUri: /user
+version: v1
+
+uses:
+  collection: resource-types/collection.raml
+  member: resource-types/member.raml
+  types: types/types.raml
+
+/profile:
+  get:
+    description: Retrive user's profile
+    responses:
+      200:
+        body:
+          application/json:
+            type: types.ProfileType
+  put:
+    description: Update user's profile
+    body:
+      application/x-www-form-urlecnoded:
+        type: types.ProfileModel
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            example: |
+              {
+                "success": true,
+                "message": "The profile has been updated successfully"
+              }
+  /password:
+      type:
+        member.PatchResource:
+          customExample: !include samples/accounts/update-password.sample
+      patch:
+        description: Update user's password
+        body:
+          application/x-www-form-urlencoded:
+            type: object
+            properties:
+              password: string
+  /email:
+    type:
+      member.PatchResource:
+        customExample: !include samples/accounts/update-email.sample
+    patch:
+      description: Update user's email
+      body:
+        application/x-www-form-urlencoded:
+          type: object
+          properties:
+            email: string

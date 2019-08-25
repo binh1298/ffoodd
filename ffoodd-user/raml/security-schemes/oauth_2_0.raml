@@ -1,0 +1,29 @@
+#%RAML 1.0 SecurityScheme
+
+description: |
+  This API supports OAuth 2.0 Authentication.
+type: OAuth 2.0
+describedBy:
+  headers:
+    Authorization:
+      description: |
+        Used to send a valid OAuth 2 access token. Do not use
+        with the "access_token" query string parameter.
+      type: string
+  queryParameters:
+    access_token:
+      description: |
+        Used to send a valid OAuth 2 access token. Do not use with
+        the "Authorization" header.
+      type: string
+  responses:
+    401:
+      description: |
+        Unauthorized. Bad or expired token.
+    403:
+      description: |
+        Forbidden. The server understood the request, but is refusing to fulfill it.
+settings:
+  authorizationUri: https://www.authorization-uri.com
+  accessTokenUri: https://www.access-token-url
+  authorizationGrants: [ authorization_code, implicit, 'urn:ietf:params:oauth:grant-type:saml2-bearer' ]

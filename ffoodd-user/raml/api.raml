@@ -2,10 +2,19 @@
 title: user
 baseUri: /user
 version: v1
+securedBy: [ bearer ]
+
+securitySchemes:
+  oauth_1_0: !include security-schemes/oauth_1_0.raml
+  oauth_2_0: !include security-schemes/oauth_2_0.raml
+  basic: !include security-schemes/basic.raml
+  digest: !include security-schemes/digest.raml
+  passthough: !include security-schemes/passthough.raml
+  bearer: !include security-schemes/bearer.raml
 
 uses:
-  collection: resource-types/collection.raml
-  member: resource-types/member.raml
+  collections: resource-types/collections.raml
+  members: resource-types/members.raml
   types: types/types.raml
 
 /profile:
@@ -32,19 +41,19 @@ uses:
                 "message": "The profile has been updated successfully"
               }
   /password:
-      type:
-        member.PatchResource:
-          customExample: !include samples/accounts/update-password.sample
-      patch:
-        description: Update user's password
-        body:
-          application/x-www-form-urlencoded:
-            type: object
-            properties:
-              password: string
+    type:
+      members.PatchResource:
+        customExample: !include samples/accounts/update-password.sample
+    patch:
+      description: Update user's password
+      body:
+        application/x-www-form-urlencoded:
+          type: object
+          properties:
+            password: string
   /email:
     type:
-      member.PatchResource:
+      members.PatchResource:
         customExample: !include samples/accounts/update-email.sample
     patch:
       description: Update user's email

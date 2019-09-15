@@ -1,0 +1,10 @@
+#%RAML 1.0 SecurityScheme
+
+description: |
+  This API supports OAuth 1.0 Authentication.
+type: OAuth 1.0
+settings:
+  requestTokenUri: https://www.request-token-uri.com
+  authorizationUri: https://www.authorization-uri.com
+  tokenCredentialsUri: https://www.token-credenticals-uri.com
+  signatures: [ 'HMAC-SHA1', 'PLAINTEXT' ]

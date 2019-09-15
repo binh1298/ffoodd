@@ -62,7 +62,7 @@ const start = ({ logger, mealRoute, categoryRoute, reviewRoute }) => () =>
 
       const reviewProtoFile = {
         name: 'review',
-        content: fs.readFileSync(MEAL_PROTO_PATH, { encoding: 'utf-8' })
+        content: fs.readFileSync(REVIEW_PROTO_PATH, { encoding: 'utf-8' })
       };
 
       const reviewModelFile = {
@@ -70,9 +70,21 @@ const start = ({ logger, mealRoute, categoryRoute, reviewRoute }) => () =>
         content: fs.readFileSync(path.join(__dirname, '/../grpc-protos/models/review.model.proto'))
       };
 
+      ///////////////////////////////////////////////////////
+
+      const recipeModelFile = {
+        name: 'recipe',
+        content: fs.readFileSync(path.join(__dirname, '/../grpc-protos/models/recipe.model.proto'))
+      };
+
+      const ingredientModelFile = {
+        name: 'ingredient',
+        content: fs.readFileSync(path.join(__dirname, '/../grpc-protos/models/ingredient.model.proto'))
+      };
+
       callback(null, {
         protoFiles: [mealProtoFile, categoryProtoFile, reviewProtoFile],
-        protoModelFiles: [mealModelFile, categoryModelFile, reviewModelFile]
+        protoModelFiles: [mealModelFile, categoryModelFile, reviewModelFile, recipeModelFile, ingredientModelFile]
       });
     };
 

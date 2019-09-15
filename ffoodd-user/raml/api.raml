@@ -1,0 +1,80 @@
+#%RAML 1.0
+title: user
+baseUri: /user
+version: v1
+securedBy: [ bearer ]
+
+securitySchemes:
+  oauth_1_0: !include security-schemes/oauth_1_0.raml
+  oauth_2_0: !include security-schemes/oauth_2_0.raml
+  basic: !include security-schemes/basic.raml
+  digest: !include security-schemes/digest.raml
+  passthough: !include security-schemes/passthough.raml
+  bearer: !include security-schemes/bearer.raml
+
+uses:
+  collections: resource-types/collections.raml
+  members: resource-types/members.raml
+  types: types/types.raml
+
+/profile:
+  description: User's profile
+  get:
+    description: Retrive user's profile
+    responses:
+      200:
+        body:
+          application/json:
+            type: types.ProfileType
+  put:
+    description: Update user's profile
+    body:
+      application/x-www-form-urlecnoded:
+        type: types.ProfileModel
+    responses:
+      200:
+        body:
+          application/json:
+            type: object
+            example: |
+              {
+                "success": true,
+                "message": "The profile has been updated successfully"
+              }
+  /password:
+    type:
+      members.PatchResource:
+        resExample: !include samples/accounts/update-password.sample
+    patch:
+      description: Update user's password
+      body:
+        application/x-www-form-urlencoded:
+          type: object
+          properties:
+            password: string
+  /email:
+    type:
+      members.PatchResource:
+        resExample: !include samples/accounts/update-email.sample
+    patch:
+      description: Update user's email
+      body:
+        application/x-www-form-urlencoded:
+          type: object
+          properties:
+            email: string
+
+/auth:
+  description: Authorization
+  /signin:
+    type:
+      members.PostResource:
+        resExample: !include samples/auth/sign-in.sample
+        model: types.SignInModel
+    post:
+      description: Sign In
+  /signup:
+    description: Sign Up
+    type:
+      members.PostResource:
+        resExample: !include sample/auth/sign-up.sample

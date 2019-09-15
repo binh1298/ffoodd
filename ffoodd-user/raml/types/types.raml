@@ -1,0 +1,34 @@
+#%RAML 1.0
+title: types
+
+types:
+  DefaultType:
+    type: object
+    require: true
+    description: default model
+    properties:
+      success: boolean
+      message: string
+
+  ProfileModel:
+    properties:
+      username: string
+      firstname: string
+      lastname: string
+      email: string
+    example: !include ../sample-models/profile.sample
+
+  SignInModel:
+    properties:
+      username: string
+      password: string
+    example: !include ../sample-models/sign-in.sample
+
+  ProfileType:
+    type: DefaultType
+    require: true
+    properties:
+      profile:
+        type: ProfileModel
+        require: true
+    example: !include ../samples/accounts/profile.sample

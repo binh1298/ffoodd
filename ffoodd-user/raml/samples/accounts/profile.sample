@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "message": "Get profile",
+  "profile": {
+    "username": "master",
+    "firstname": "MasterMM",
+    "lastname": "MM",
+    "email": "quangdat2000.pham@gmail.com"
+  }
+}

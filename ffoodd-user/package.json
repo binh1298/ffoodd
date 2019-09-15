@@ -14,7 +14,7 @@
     "dev": "nodemon --inspect app/application.js",
     "dev:chrome-debug": "nodemon --inspect-brk app/application.js",
     "test": "NODE_ENV=test mocha ./test/**/*.test.js ./test/*.test.js",
-    "raml": "raml2html services.raml > temp/api.html",
+    "raml2html": "raml2html raml/api.raml > temp/api.html",
     "init:lint": "./node_modules/.bin/eslint --init",
     "inspect:lint": "eslint .",
     "inspect:vulnerabilities": "npm audit",

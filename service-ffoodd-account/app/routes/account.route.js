@@ -23,7 +23,25 @@ module.exports = ({ accountController: controller, createRoute }) => {
 
   router.updatePasswordById = createRoute(controller.updatePasswordById);
 
+  router.findRolesById = createRoute(controller.findRolesById);
+
   router.updateEmailById = createRoute(controller.updateEmailById);
+
+  router.sendFriendRequest = createRoute(controller.sendFriendRequest);
+
+  router.findFriendRequests = createRoute(controller.findFriendRequests);
+
+  router.findSentFriendRequests = createRoute(controller.findSentFriendRequests);
+
+  router.acceptFriendRequest = createRoute(controller.acceptFriendRequest);
+
+  router.removeFriendRequest = createRoute(controller.removeFriendRequest);
+
+  router.addOwnMeal = createRoute(controller.addOwnMeal);
+
+  router.removeOwnMeal = createRoute(controller.removeOwnMeal);
+
+  router.findOwnMeals = createRoute(controller.findOwnMeals);
 
   return router;
 }

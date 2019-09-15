@@ -25,7 +25,25 @@ service Account {
 
   rpc UpdatePasswordById (UpdatePasswordByIdRequest) returns (DefaultReply) {}
 
+  rpc FindRolesById (RequireIdRequest) returns (FindRolesByIdReply) {}
+
   rpc UpdateEmailById (UpdateEmailByIdRequest) returns (DefaultReply) {}
+
+  rpc SendFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
+
+  rpc FindFriendRequests (RequireIdRequest) returns (FindFriendRequestsReply) {}
+
+  rpc FindSentFriendRequests (RequireIdRequest) returns (FindSentFriendRequestsReply) {}
+
+  rpc AcceptFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
+
+  rpc RemoveFriendRequest (FriendRequestRequest) returns (DefaultReply) {}
+
+  rpc AddOwnMeal (OwnMealRequest) returns (DefaultReply) {}
+
+  rpc RemoveOwnMeal (OwnMealRequest) returns (DefaultReply) {}
+
+  rpc FindOwnMeals (RequireIdRequest) returns (DefaultReply) {}
 }
 
 message CreateRequest {
@@ -83,7 +101,35 @@ message UpdateEmailByIdRequest {
   string email = 2;
 }
 
+message FriendRequestRequest {
+  string sender_id = 1;
+  string target_id = 2;
+}
+
+message OwnMealRequest {
+  string _id = 1;
+  string meal_id = 2;
+}
+
 message DefaultReply {
   bool success = 1;
   string message = 2;
+}
+
+message FindFriendRequestsReply {
+  bool success = 1;
+  string message = 2;
+  repeated AccountModel_1 friendRequests = 3;
+}
+
+message FindSentFriendRequestsReply {
+  bool success = 1;
+  string message = 2;
+  repeated AccountModel_1 sentFriendRequests = 3;
+}
+
+message FindRolesByIdReply {
+  bool success = 1;
+  string message = 2;
+  repeated string roles = 3;
 }

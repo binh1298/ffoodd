@@ -68,6 +68,11 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     const [ err ] = await to(Account.remove({ _id }));
     if (err) return next(err);
 
+    amqp.sendToQueue({ queue: 'account-service', msg: {
+      event: 'REMOVE_ACCOUNT',
+      data: { _id }
+    }});
+
     callback(null, { success: true, message: messages.ACCOUNT_REMOVED });
   }
 
@@ -75,6 +80,13 @@ module.exports = ({ accountRepository: Account, amqp }) => {
     const { _ids } = call.request;
     const [ err ] = await to(Account.removeMany({ _ids }));
     if (err) return next(err);
+
+    for (let id of _ids) {
+      amqp.sendToQueue({ queue: 'account-service', msg: {
+        event: 'REMOVE_ACCOUNT',
+        data: { _id }
+      }});      
+    }
 
     callback(null, { success: true, message: messages.ACCOUNT_REMOVED_MANY });
   }

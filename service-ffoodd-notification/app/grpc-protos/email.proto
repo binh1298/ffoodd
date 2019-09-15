@@ -3,7 +3,31 @@ syntax = "proto3";
 package email;
 
 import "models/email.model.proto";
+import "models/attachment.model.proto";
 
 service Email {
-  
+  rpc Send (SendRequest) returns (DefaultReply) {}
+
+  rpc SendToOneUser (SendToOneUserRequest) returns (DefaultReply) {}
+
+  rpc SendToManyUsers (SendToManyUsersRequest) returns (DefaultReply) {}
+}
+
+message SendRequest {
+  EmailOptionsModel emailOptions = 1;
+}
+
+message SendToOneUserRequest {
+  string account_id = 1;
+  EmailOptionsModel emailOptions = 2;
+}
+
+message SendToManyUsersRequest {
+  repeated string account_ids = 1;
+  EmailOptionsModel emailOptions = 2;
+}
+
+message DefaultReply {
+  bool success = 1;
+  string message = 2;
 }

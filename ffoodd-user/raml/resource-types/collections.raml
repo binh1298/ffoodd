@@ -3,7 +3,7 @@ title: collection
 version: v1
 
 resourceTypes:
-  Collection:
+  Restful:
     description: Collection of available <<resourcePathName>>
     get:
       description: Get list of <<resourcePathName>>
@@ -12,7 +12,7 @@ resourceTypes:
           body:
             application/json:
               type: <<type>>
-              example: <<customExample>>
+              example: <<customExampleGetList>>
     post:
       description: Create a new <<resourcePathName|!singularize>>
       body:
@@ -22,8 +22,32 @@ resourceTypes:
         200:
           body:
             application/json:
-              example: |
-                {
-                  "success": true,
-                  "message": "The <<resourcePathName|!singularize>> has been created successfully"
-                }
+              example: <<customExamplePost>>
+    /{id}:
+      get:
+        description: Get a <<resourcePathName|!singularize>>
+        responses:
+          200:
+            body:
+              application/json:
+                type: <<type>>
+                example: <<customExampleGetById>>
+      put:
+        description: Put update a <<resourcePathName|!singularize>>
+        body:
+          application/x-www-form-urlencoded:
+            type: <<model>>
+        responses:
+          200:
+            body:
+              application/json:
+                type: object
+                example: <<customExamplePut>>
+      delete:
+        description: Delete a <<resourcePathName|!singularize>>
+        responses:
+          200:
+            body:
+              application/json:
+                type: object
+                example: <<customExampleDelete>>

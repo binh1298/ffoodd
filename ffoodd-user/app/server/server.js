@@ -22,7 +22,7 @@ const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware, rootRo
   });
 
   if (!port)
-    reject(new Error('port is require'));
+    throw new Error('port is require');
 
   const app = express();
 

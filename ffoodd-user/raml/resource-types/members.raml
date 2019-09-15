@@ -11,7 +11,21 @@ resourceTypes:
           body:
             application/json:
               type: <<type>>
-              example: <<customExample>>
+              example: <<resExample>>
+  PostResource:
+    description: Entity representing a <<resourcePathName|!singularize>>
+    post:
+      description: Post create a <<resourcePathName|!singularize>>
+      body:
+        application/x-www-form-urlencoded:
+          type: <<model>>
+      responses:
+        200:
+          body:
+            application/json:
+              type: object
+              example: <<resExample>>
+
   PatchResource:
     description: Entity representing a <<resourcePathName|!singularize>>
     patch:
@@ -24,7 +38,7 @@ resourceTypes:
           body:
             application/json:
               type: object
-              example: <<customExample>>
+              example: <<resExample>>
   PutResource:
     description: Entity representing a <<resourcePathName|!singularize>>
     put:
@@ -37,7 +51,7 @@ resourceTypes:
           body:
             application/json:
               type: object
-              example: <<customExample>>
+              example: <<resExample>>
   DeleteResource:
     description: Entity representing a <<resourcePathName|!singularize>>
     delete:
@@ -47,4 +61,4 @@ resourceTypes:
           body:
             application/json:
               type: object
-              example: <<customExample>>
+              example: <<resExample>>

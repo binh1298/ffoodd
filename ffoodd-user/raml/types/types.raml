@@ -9,14 +9,20 @@ types:
     properties:
       success: boolean
       message: string
-  
+
   ProfileModel:
     properties:
       username: string
       firstname: string
       lastname: string
       email: string
-    example: !include ../samples/accounts/models/profile.sample
+    example: !include ../sample-models/profile.sample
+
+  SignInModel:
+    properties:
+      username: string
+      password: string
+    example: !include ../sample-models/sign-in.sample
 
   ProfileType:
     type: DefaultType

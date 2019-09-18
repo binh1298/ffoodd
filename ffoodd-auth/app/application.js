@@ -1,6 +1,5 @@
 'use strict';
 
-require('dotenv').config();
 const { asValue, asFunction } = require('awilix');
 
 const server = require('./server/server');

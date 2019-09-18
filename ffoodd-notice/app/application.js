@@ -1,7 +1,5 @@
 'use strict';
 
-require('dotenv').config();
-
 const gRPCServer = require('./server/grpc-server');
 const config = require('../config');
 const { asFunction } = require('awilix');

@@ -1,7 +1,7 @@
 {
-  "name": "SERVICE-FFOODD-PANTRY",
+  "name": "FFOODD-PANTRY",
   "version": "1.0.0",
-  "description": "Microservices service pantry",
+  "description": "Microservices - PANTRY",
   "main": "index.js",
   "author": "Quang Dat Pham <quangdat2000.pham@gmail.com>",
   "repository": "quangdatpham/nodejs-microservices",
@@ -37,7 +37,6 @@
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
-    "dotenv": "^8.0.0",
     "express": "^4.17.0",
     "express-handlebars": "^3.1.0",
     "grpc": "^1.21.1",

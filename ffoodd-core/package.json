@@ -37,7 +37,6 @@
     "bcrypt": "^3.0.6",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
-    "dotenv": "^8.0.0",
     "express": "^4.17.0",
     "express-json-views": "git+https://github.com/quangdatpham/express-json-views.git#development/render-nested-json-structure",
     "express-handlebars": "^3.1.0",

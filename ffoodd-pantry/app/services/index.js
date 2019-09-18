@@ -72,7 +72,7 @@ const connect = ({ logger }) => async () => {
       }
     });
   }
-  
+
   const connectToGRPCServer = (SERVER_NAME, SERVER_ADDRESS) => new Promise((resolve, reject) => {
     registerClientService.start(SERVER_ADDRESS)
       .then(registerClient => {
@@ -93,7 +93,7 @@ const connect = ({ logger }) => async () => {
           }
 
           const { protoFiles, protoModelFiles } = res;
-        
+
           logger.info(`${SERVER_NAME}: register-service-protos connected`);
 
           for (let { name: filename, content } of protoModelFiles) {
@@ -103,7 +103,7 @@ const connect = ({ logger }) => async () => {
 
           for (let pf of protoFiles) {
             const { name, content } = pf;
-            
+
             const [ err0 ] = await to(writeProtoFile({ filename: name, content }));
             if (err0) return reject(err0);
 

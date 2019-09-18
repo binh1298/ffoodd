@@ -25,3 +25,6 @@
 
 # Api-gateway-service
 /api-gateway/certs/*.pem
+
+# env
+**.env.sh

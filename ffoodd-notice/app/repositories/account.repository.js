@@ -6,7 +6,7 @@ const { ObjectID } = require('mongodb');
 
 module.exports = ({ db }) => {
   const collection = db.collection('accounts');
-  
+
   const findById = async ({ account_id }) => {
     return collection.findOne({ account_id });
   }
@@ -15,7 +15,7 @@ module.exports = ({ db }) => {
     const accounts = [];
     const cursor = await collection.find({ account_id: { $in: account_ids } });
     cursor.forEach((a, i) => account.push(a));
-    
+
     return accounts;
   }
 

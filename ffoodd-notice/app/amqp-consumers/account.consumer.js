@@ -1,9 +1,9 @@
 const { to } = require('await-to-js');
 
 module.exports = ({ logger, amqp, accountRepository: Account }) => {
-  
+
   const consume = async () => {
-    
+
     logger.info('ACCOUNT_CONSUMER starting');
 
     amqp.consume({ queue: 'account' }, msg => {

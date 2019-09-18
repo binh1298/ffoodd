@@ -1,10 +1,10 @@
 'use strict';
 
-module.exports = ({ emailController: controller, createRoute }) => {
+module.exports = ({ emailGRPCController: controller, createRoute }) => {
   const router = {};
 
   router.send = createRoute(controller.send);
-  
+
   router.sendToOneUser = createRoute(controller.sendToOneUser);
 
   router.sendToManyUsers = createRoute(controller.sendToManyUsers);

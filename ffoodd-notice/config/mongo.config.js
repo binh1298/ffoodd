@@ -1,16 +1,17 @@
 'use strict';
 
 const { MongoClient } = require('mongodb');
-const configs = require('./db.config');
 
 const connect = () => new Promise((resolve, reject) => {
+  const configs = global.configuration.database;
+
   MongoClient.connect(
     configs.connectionString,
     configs.attributes,
     (err, client) => {
-      if (err) 
+      if (err)
         return reject(err);
-      
+
       const db = client.db(configs.dbName);
       resolve(db);
     }

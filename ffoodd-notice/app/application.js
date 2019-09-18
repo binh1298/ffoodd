@@ -2,13 +2,13 @@
 
 require('dotenv').config();
 
-const server = require('./server/server');
+const gRPCServer = require('./server/grpc-server');
 const config = require('../config');
 const { asFunction } = require('awilix');
 
 const repositories = require('./repositories/');
-const controllers = require('./controllers/');
-const routes = require('./routes/');
+const gRPCControllers = require('./grpc/controllers/');
+const gRPCRoutes = require('./grpc/routes/');
 const libs = require('./libs/');
 const middlewares = require('./middlewares/');
 const consumers = require('./amqp-consumers/');
@@ -21,8 +21,8 @@ const registerApplicationDependencies = async () => {
 
   const resolveds = await Promise.all([
     repositories.initialize(),
-    controllers.initialize(),
-    routes.initialize(),
+    gRPCControllers.initialize(),
+    gRPCRoutes.initialize(),
     libs.initialize(),
     middlewares.initialize(),
     consumers.initialize()
@@ -38,14 +38,14 @@ const registerApplicationDependencies = async () => {
   }
 
   container.register({
-    startServer: asFunction(server.start)
+    startGRPCServer: asFunction(gRPCServer.start)
   });
 }
 
 registerApplicationDependencies()
   .then(() => {
-    const startServer = container.resolve('startServer');
-    return startServer();
+    const startGRPCServer = container.resolve('startGRPCServer');
+    return startGRPCServer();
   })
   .then(() => {
     const accountConsumer = container.resolve('accountConsumer');

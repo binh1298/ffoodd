@@ -3,8 +3,8 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const fs = require('fs');
 
-const EMAIL_PROTO_PATH = path.join(__dirname + '/../grpc-protos/email.proto');
-const REGISTER_PROTO_PATH = path.join(__dirname + '/../grpc-protos/register.proto');
+const EMAIL_PROTO_PATH = path.join(__dirname + '/../grpc/protos/email.proto');
+const REGISTER_PROTO_PATH = path.join(__dirname + '/../grpc/protos/register.proto');
 
 const packageDefinitionOptions =  {
   keepCase: true,
@@ -17,8 +17,8 @@ const packageDefinitionOptions =  {
 const emailPackageDefinition = protoLoader.loadSync(EMAIL_PROTO_PATH, packageDefinitionOptions);
 const registerPackageDefinition = protoLoader.loadSync(REGISTER_PROTO_PATH, packageDefinitionOptions);
 
-const start = ({ logger, rootRoute }) => async () => {
-  process.on('uncaughtException', err => {  
+const start = ({ logger, emailGRPCRoute }) => async () => {
+  process.on('uncaughtException', err => {
     logger.error('Unhandled Exception', err);
   });
 
@@ -49,10 +49,8 @@ const start = ({ logger, rootRoute }) => async () => {
   const RegisterProto = grpc.loadPackageDefinition(registerPackageDefinition).register;
 
   const server = new grpc.Server();
-  
-  server.addService(EmailProto.Email.service, {
-    ...rootRoute.emailRoute
-  });
+
+  server.addService(EmailProto.Email.service, emailGRPCRoute);
   server.addService(RegisterProto.Register.service, { registerServiceProtos });
 
   server.bind(process.env.SERVICE_FFOODD_NOTIFICATION_SERVER_ADDRESS, grpc.ServerCredentials.createInsecure());

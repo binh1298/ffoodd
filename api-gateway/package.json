@@ -1,0 +1,36 @@
+{
+  "name": "API-GATEWAY",
+  "version": "1.0.0",
+  "description": "Microservices - API-GATEWAY",
+  "main": "index.js",
+  "author": "Quang Dat Pham <quangdat2000.pham@gmail.com>",
+  "repository": "binh1298/ffoodd",
+  "license": "ISC",
+  "engines": {
+    "node": ">= 10.15.3"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "api-gateway",
+    "microservices",
+    "nodejs",
+    "express"
+  ],
+  "dependencies": {
+    "app-root-path": "^2.2.1",
+    "await-to-js": "^2.1.1",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.0",
+    "express-json-views": "git+https://github.com/quangdatpham/express-json-views.git#development/render-nested-json-structure",
+    "helmet": "^3.18.0",
+    "http-proxy": "^1.18.0",
+    "http-status": "^1.3.2",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.9.1",
+    "spdy": "^4.0.0",
+    "winston": "^3.2.1"
+  }
+}

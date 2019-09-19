@@ -43,7 +43,7 @@ const start = ({ serverConfigs: { port, ssl }, logger, requestMiddleware, rootRo
 
   app.use(requestMiddleware.wirePreRequest);
 
-  app.use('/auth', rootRoute);
+  app.use('/core', rootRoute);
 
   app.use(requestMiddleware.wirePostRequest);
 

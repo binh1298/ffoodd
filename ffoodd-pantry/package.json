@@ -4,7 +4,7 @@
   "description": "Microservices - PANTRY",
   "main": "index.js",
   "author": "Quang Dat Pham <quangdat2000.pham@gmail.com>",
-  "repository": "quangdatpham/nodejs-microservices",
+  "repository": "binh1298/ffoodd",
   "license": "ISC",
   "engines": {
     "node": ">= 10.15.3"

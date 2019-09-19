@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 module.exports = ({ authMiddleware: auth, accountRoute, authController: controller }) => {
-  router.get('/', (req, res) => res.send('<h1>USER</h1>'));
+  router.get('/', (req, res) => res.send('<h1>AUTH</h1>'));
 
   router.use('/accounts',
     auth.requireAuth,

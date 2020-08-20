@@ -34,7 +34,7 @@
     "app-root-path": "^2.2.1",
     "await-to-js": "^2.1.1",
     "awilix": "^4.2.2",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.0.0",
